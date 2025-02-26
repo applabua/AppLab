@@ -34,8 +34,8 @@
       transition: background 0.5s, color 0.5s;
     }
 
-    /* ========== ТЕМЫ ========== */
-    /* Тема LIGHT */
+    /* ====== ТЕМЫ ====== */
+    /* LIGHT */
     .theme-light {
       background: #ffffff;
       color: #000000;
@@ -44,7 +44,7 @@
       background-color: rgba(255, 255, 255, 0.2);
     }
 
-    /* Тема DARK */
+    /* DARK */
     .theme-dark {
       background: #111111;
       color: #eeeeee;
@@ -53,40 +53,50 @@
       background-color: rgba(17, 17, 17, 0.2);
     }
 
-    /* Тема CYBER (пример неонового стиля) */
+    /* CYBER */
     .theme-cyber {
       background: #000000;
-      color: #0ff; /* Неоновый голубой */
+      color: #0ff;
     }
     .theme-cyber .container {
       background-color: rgba(0, 0, 0, 0.2);
     }
 
-    /* Тема RETRO (пример пастельного стиля) */
+    /* RETRO */
     .theme-retro {
       background: #f2dcb3;
-      color: #3b2d1f; /* Тёмно-коричневый */
+      color: #3b2d1f;
     }
     .theme-retro .container {
       background-color: rgba(242, 220, 179, 0.2);
     }
 
-    /* Canvas для нейросетевой анимации */
-    #bgCanvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: -1;
+    /* FOREST (новая) */
+    .theme-forest {
+      background: #2e4600; /* тёмно-зелёный */
+      color: #b0ffb0;      /* мягкий салатовый */
+    }
+    .theme-forest .container {
+      background-color: rgba(46,70,0, 0.2);
     }
 
-    /* ========== ЭКРАН ЗАГРУЗКИ ========== */
+    /* MINIMAL (новая) */
+    .theme-minimal {
+      background: #f0f0f0;
+      color: #333;
+    }
+    .theme-minimal .container {
+      background-color: rgba(240,240,240, 0.2);
+    }
+
+    /* ====== ЭКРАН ЗАГРУЗКИ ====== */
     .loader {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(0,0,0,0.8); /* полупрозрачный чёрный, чтобы видеть анимацию позади */
+      background: #000; /* полностью чёрный */
       color: #fff;
       display: flex;
       flex-direction: column;
@@ -104,14 +114,12 @@
     .loader p {
       margin-top: 10px;
       font-size: 1rem;
-      font-family: 'Montserrat', sans-serif;
       animation: pulseText 2s ease-in-out infinite;
     }
     @keyframes pulseText {
       0%, 100% { text-shadow: 0 0 0px #fff; }
       50%      { text-shadow: 0 0 10px #fff; }
     }
-    /* Спиннер с подсветкой */
     .spinner {
       width: 40px;
       height: 40px;
@@ -129,36 +137,7 @@
       100% { box-shadow: 0 0 20px #fff; }
     }
 
-    /* ========== БЛОК СОЦСЕТЕЙ (левый верх) ========== */
-    .social {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      display: flex;
-      gap: 15px;
-      z-index: 9999;
-    }
-    .social a {
-      display: inline-block;
-      width: 28px;
-      height: 28px;
-      transition: transform 0.2s, color 0.3s;
-      cursor: pointer;
-    }
-    .social a:hover {
-      transform: scale(1.1);
-    }
-    .social a:active {
-      transform: scale(0.95);
-    }
-    .social a .icon {
-      width: 100%;
-      height: 100%;
-      fill: currentColor;
-    }
-    /* Цвет иконок меняется в зависимости от темы (через currentColor) */
-
-    /* ========== БЛОК УПРАВЛЕНИЯ (правый верх) ========== */
+    /* ====== БЛОК УПРАВЛЕНИЯ (правый верх) ====== */
     .controls {
       position: absolute;
       top: 10px;
@@ -184,7 +163,7 @@
       font-family: 'Montserrat', sans-serif;
       background: transparent;
       border: 1px solid currentColor;
-      padding: 3px 8px; /* немного уменьшили */
+      padding: 3px 8px; 
       display: flex;
       align-items: center;
       gap: 5px;
@@ -201,7 +180,7 @@
       transition: fill 0.3s;
     }
 
-    /* ========== ОСНОВНОЙ КОНТЕЙНЕР (центр экрана) ========== */
+    /* ====== ОСНОВНОЙ КОНТЕЙНЕР (центр) ====== */
     .container {
       width: 100vw;
       height: 100vh;
@@ -227,7 +206,7 @@
       }
     }
 
-    /* Заголовок AppLab */
+    /* Заголовок */
     #title {
       font-family: 'Peace Sans', sans-serif;
       font-size: 2.8rem;
@@ -235,26 +214,31 @@
       font-weight: 700;
     }
 
-    /* Описание (уменьшен шрифт) */
+    /* Описание */
     #description {
-      font-family: 'Montserrat', sans-serif;
       font-size: 0.95rem;
       line-height: 1.3;
       max-width: 600px;
-      margin: 0 20px 15px;
+      margin: 0 20px 0; /* убрали нижний отступ, чтобы кнопки отодвинуть отдельно */
       text-align: justify;
     }
+    /* Второй абзац – меньше и в одну строку */
+    #secondLine {
+      display: block;
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
 
-    /* Блок кнопок (немного меньше ширина) */
+    /* Блок кнопок – отдаляем от текста */
     .buttons {
       display: flex;
       flex-direction: column;
       gap: 15px;
       width: 70%;
       max-width: 350px;
-      margin-top: -5px;
+      margin-top: 25px; /* отступ от описания */
     }
-    /* Кнопки */
+    /* Кнопки (универсально, цвет определяется темой) */
     .btn {
       font-family: 'Montserrat', sans-serif;
       position: relative;
@@ -265,7 +249,7 @@
       text-decoration: none;
       text-align: center;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
-      border: 1px solid; /* Цвет зададим ниже через тему */
+      border: 1px solid; 
     }
     .btn:hover {
       transform: translateY(-2px);
@@ -276,29 +260,36 @@
       box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
     }
 
-    /* Кнопки в LIGHT */
+    /* Кнопки в разных темах */
     .theme-light .btn {
       background-color: #000;
       color: #fff;
       border-color: #000;
     }
-    /* Кнопки в DARK */
     .theme-dark .btn {
       background-color: #fff;
       color: #000;
       border-color: #fff;
     }
-    /* Кнопки в CYBER */
     .theme-cyber .btn {
       background-color: #0ff;
       color: #000;
       border-color: #0ff;
     }
-    /* Кнопки в RETRO */
     .theme-retro .btn {
       background-color: #3b2d1f;
       color: #f2dcb3;
       border-color: #3b2d1f;
+    }
+    .theme-forest .btn {
+      background-color: #b0ffb0;
+      color: #2e4600;
+      border-color: #b0ffb0;
+    }
+    .theme-minimal .btn {
+      background-color: #fff;
+      color: #333;
+      border-color: #fff;
     }
 
     /* Футер */
@@ -321,49 +312,6 @@
     <div class="spinner"></div>
   </div>
 
-  <!-- Canvas с «нейросетевой» анимацией -->
-  <canvas id="bgCanvas"></canvas>
-
-  <!-- Соцсети (левый верх) -->
-  <div class="social">
-    <!-- Telegram (теперь конверт) -->
-    <a href="https://t.me/applab_ua" target="_blank">
-      <svg class="icon" viewBox="0 0 512 512">
-        <!-- Envelope иконка (упрощённая) -->
-        <path d="M0 128c0-17.7 14.3-32 32-32h448c17.7 0 32 14.3 
-                 32 32v256c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3
-                 -32-32V128zm80 32 176 121.1c8.6 5.9 20.2 5.9 
-                 28.8 0L464 160H80z"/>
-      </svg>
-    </a>
-    <!-- Instagram (без круга) -->
-    <a href="#" target="_blank">
-      <svg class="icon" viewBox="0 0 448 512">
-        <path d="M224.1 141c-63.6 0-114.9 51.3-114.9
-                 114.9S160.5 370.8 224.1 370.8 339 319.5
-                 339 255.9 287.7 141 224.1 141zm0
-                 189.6c-41.3 0-74.7-33.4-74.7-74.7s33.4
-                 -74.7 74.7-74.7 74.7 33.4 74.7 74.7
-                 -33.4 74.7-74.7 74.7zm146.4-194.3c0
-                 14.9-12.1 27-27 27-14.9 0-27-12.1-27
-                 -27 0-14.9 12.1-27 27-27 14.9 0 27
-                 12.1 27 27zm76.1 27.2c-1.7-36.8
-                 -9.9-69.2-36.2-95.5-26.3-26.4
-                 -58.7-34.5-95.5-36.2-37.8-2.1
-                 -151.3-2.1-189.1 0-36.8 1.7
-                 -69.2 9.9-95.5 36.2C9.9 105.8
-                 1.7 138.2 0 175c-2.1 37.8-2.1
-                 151.3 0 189.1 1.7 36.8 9.9
-                 69.2 36.2 95.5 26.4 26.3 58.7
-                 34.5 95.5 36.2 37.8 2.1 151.3
-                 2.1 189.1 0 36.8-1.7 69.2
-                 -9.9 95.5-36.2 26.3-26.4
-                 34.5-58.7 36.2-95.5 2.1-37.8
-                 2.1-151.3 0-189.1z"/>
-      </svg>
-    </a>
-  </div>
-
   <!-- Блок управления (правый верх) -->
   <div class="controls">
     <div class="lang-switch">
@@ -372,7 +320,7 @@
     </div>
     <button class="theme-btn" id="themeBtn">
       <svg class="theme-icon" id="themeIcon" viewBox="0 0 24 24">
-        <!-- Иконка солнца (Heroicons) -->
+        <!-- Иконка солнца (по умолчанию) -->
         <path d="M12 3v2m0 14v2m7.07-7.07h2M3 
                  12h2m15.07 4.93l1.414 1.414M4.93
                  4.93L6.343 6.343m12.727 0l-1.414
@@ -391,7 +339,11 @@
       <strong>Telegram-ботів, міні-ігор, мобільних додатків та інтернет-магазинів</strong>. 
       Також ми <strong>розробляємо програми та боти з ШІ</strong>, що допоможуть автоматизувати бізнес, 
       залучити нових клієнтів та вивести ваші проєкти на новий рівень!<br><br>
-      <strong>Ми можемо реалізувати все, незалежно від рівня складності.</strong>
+
+      <!-- Второй абзац отдельным блоком -->
+      <span id="secondLine">
+        <strong>Ми можемо реалізувати все, незалежно від рівня складності.</strong>
+      </span>
     </p>
     <div class="buttons">
       <a href="#" class="btn" id="btn1">Про нас</a>
@@ -414,7 +366,7 @@
           <strong>Telegram-ботів, міні-ігор, мобільних додатків та інтернет-магазинів</strong>. 
           Також ми <strong>розробляємо програми та боти з ШІ</strong>, що допоможуть автоматизувати бізнес, 
           залучити нових клієнтів та вивести ваші проєкти на новий рівень!<br><br>
-          <strong>Ми можемо реалізувати все, незалежно від рівня складності.</strong>
+          <span id="secondLine"><strong>Ми можемо реалізувати все, незалежно від рівня складності.</strong></span>
         `,
         btn1: "Про нас",
         btn2: "Замовити",
@@ -429,7 +381,7 @@
           <strong>Telegram bots, mini-games, mobile apps, and online stores</strong>. 
           We also develop <strong>AI-powered programs and bots</strong> to help automate your business, 
           attract new customers, and take your projects to the next level!<br><br>
-          <strong>We can create anything, regardless of complexity.</strong>
+          <span id="secondLine"><strong>We can create anything, regardless of complexity.</strong></span>
         `,
         btn1: "About Us",
         btn2: "Order Now",
@@ -439,16 +391,16 @@
       }
     };
 
-    /* Массив тем и индекс текущей */
-    const themes = ["theme-light", "theme-dark", "theme-cyber", "theme-retro"];
+    /* Список тем (6 штук) */
+    const themes = [
+      "theme-light",
+      "theme-dark",
+      "theme-cyber",
+      "theme-retro",
+      "theme-forest",
+      "theme-minimal"
+    ];
     let currentThemeIndex = 0;
-
-    /* Точки для анимации нейросети */
-    const points = [];
-    const POINTS_NUM = 12;
-    const SPEED = 0.3;
-
-    let canvas, ctx;
 
     document.addEventListener('DOMContentLoaded', () => {
       // Показываем лоадер 5 секунд
@@ -457,13 +409,10 @@
         setLanguage('ua'); // Язык по умолчанию
       }, 5000);
 
-      // Подключаем обработчики
+      // Обработчики
       document.getElementById('langUa').addEventListener('click', () => setLanguage('ua'));
       document.getElementById('langEn').addEventListener('click', () => setLanguage('en'));
       document.getElementById('themeBtn').addEventListener('click', cycleTheme);
-
-      // Инициализируем Canvas
-      initCanvas();
     });
 
     /* Установка языка */
@@ -487,12 +436,14 @@
       const newTheme = themes[currentThemeIndex];
       document.documentElement.classList.add(newTheme);
 
-      // Обновляем текст кнопки
+      // Меняем иконку и текст в зависимости от темы
       const themeBtnText = document.getElementById('themeBtnText');
+      const themeIcon = document.getElementById('themeIcon');
       switch(newTheme) {
         case "theme-light":
           themeBtnText.textContent = "Light Mode";
-          document.getElementById('themeIcon').innerHTML = `
+          themeIcon.setAttribute('viewBox', '0 0 24 24');
+          themeIcon.innerHTML = `
             <path d="M12 3v2m0 14v2m7.07-7.07h2M3 
                      12h2m15.07 4.93l1.414 1.414M4.93
                      4.93L6.343 6.343m12.727 0l-1.414
@@ -502,7 +453,8 @@
           break;
         case "theme-dark":
           themeBtnText.textContent = "Dark Mode";
-          document.getElementById('themeIcon').innerHTML = `
+          themeIcon.setAttribute('viewBox', '0 0 24 24');
+          themeIcon.innerHTML = `
             <path d="M17.293 13.293A8 8 0 1110.707 
                      2.707a8.003 8.003 0 006.586 
                      10.586z"/>
@@ -510,117 +462,40 @@
           break;
         case "theme-cyber":
           themeBtnText.textContent = "Cyber Mode";
-          document.getElementById('themeIcon').innerHTML = `
-            <!-- Неоновая молния, к примеру -->
+          themeIcon.setAttribute('viewBox', '0 0 24 24');
+          themeIcon.innerHTML = `
             <path d="M13 2L3 14h7v6l7-12h-7z"/>
           `;
           break;
         case "theme-retro":
           themeBtnText.textContent = "Retro Mode";
-          document.getElementById('themeIcon').innerHTML = `
-            <!-- Пример иконки кассеты -->
-            <path d="M448 80v352H0V80h448zM64
-                     304c0 8.8 7.2 16 16 16h288c8.8
-                     0 16-7.2 16-16v-96c0-8.8-7.2
-                     -16-16-16H80c-8.8 0-16 7.2
-                     -16 16v96zm256-48c0 17.7-14.3
-                     32-32 32s-32-14.3-32-32
-                     14.3-32 32-32 32 14.3 32
-                     32z"/>
+          themeIcon.setAttribute('viewBox', '0 0 24 24');
+          /* Добавляем маленькую картинку (пример) */
+          themeIcon.innerHTML = `
+            <image x="0" y="0" width="24" height="24" 
+                   xlink:href="https://cdn-icons-png.flaticon.com/512/3487/3487286.png" />
+          `;
+          break;
+        case "theme-forest":
+          themeBtnText.textContent = "Forest Mode";
+          themeIcon.setAttribute('viewBox', '0 0 24 24');
+          /* Пример иконки листика */
+          themeIcon.innerHTML = `
+            <path d="M12 2C8 6 5 10 5 14c0 
+                     5.523 4.477 10 10 10 4 
+                     0 8-3 8-8 0-4-4-7-8
+                     -14z"/>
+          `;
+          break;
+        case "theme-minimal":
+          themeBtnText.textContent = "Minimal Mode";
+          themeIcon.setAttribute('viewBox', '0 0 24 24');
+          /* Пример иконки круга */
+          themeIcon.innerHTML = `
+            <circle cx="12" cy="12" r="8"/>
           `;
           break;
       }
-    }
-
-    /* Инициализация Canvas */
-    function initCanvas() {
-      canvas = document.getElementById('bgCanvas');
-      ctx = canvas.getContext('2d');
-      resizeCanvas();
-
-      // Создаём точки
-      for (let i = 0; i < POINTS_NUM; i++) {
-        points.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * SPEED,
-          vy: (Math.random() - 0.5) * SPEED
-        });
-      }
-
-      window.addEventListener('resize', resizeCanvas);
-      requestAnimationFrame(animate);
-    }
-
-    /* Подгоняем размер Canvas под окно */
-    function resizeCanvas() {
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
-      ctx.scale(dpr, dpr);
-    }
-
-    /* Главный цикл анимации */
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Определяем цвет линий в зависимости от темы
-      const lineColor = getLineColor();
-
-      // Двигаем точки
-      for (let p of points) {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-      }
-
-      // Рисуем связи между точками
-      for (let i = 0; i < POINTS_NUM; i++) {
-        for (let j = i + 1; j < POINTS_NUM; j++) {
-          const p1 = points[i];
-          const p2 = points[j];
-          const dist = distance(p1, p2);
-          const maxDist = 150;
-          if (dist < maxDist) {
-            const alpha = 1 - dist / maxDist;
-            ctx.strokeStyle = lineColor + alphaToHex(alpha);
-            ctx.beginPath();
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.stroke();
-          }
-        }
-      }
-
-      requestAnimationFrame(animate);
-    }
-
-    /* Вычисляем расстояние между двумя точками */
-    function distance(p1, p2) {
-      const dx = p1.x - p2.x;
-      const dy = p1.y - p2.y;
-      return Math.sqrt(dx * dx + dy * dy);
-    }
-
-    /* Преобразуем alpha (0..1) в двухсимвольный HEX */
-    function alphaToHex(alpha) {
-      let hex = Math.floor(alpha * 255).toString(16);
-      return hex.length === 1 ? '0' + hex : hex;
-    }
-
-    /* Определяем цвет линий для текущей темы */
-    function getLineColor() {
-      if (document.documentElement.classList.contains('theme-light')) {
-        return '#000';
-      } else if (document.documentElement.classList.contains('theme-dark')) {
-        return '#fff';
-      } else if (document.documentElement.classList.contains('theme-cyber')) {
-        return '#0ff'; /* неоновый */
-      } else if (document.documentElement.classList.contains('theme-retro')) {
-        return '#ff00ff'; /* розовый/фиолетовый */
-      }
-      return '#000'; // fallback
     }
   </script>
 </body>
