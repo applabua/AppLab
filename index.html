@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>AppLab</title>
+
+  <!-- Отключаем масштабирование, подстраиваем под экраны -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+  <!-- Шрифт Peace Sans (для заголовка) -->
+  <link rel="preconnect" href="https://fonts.cdnfonts.com" />
+  <link href="https://fonts.cdnfonts.com/css/peace-sans" rel="stylesheet" />
+
+  <!-- Шрифт Montserrat (для основного текста и кнопок) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Отключаем скролл, масштабирование, выделение текста */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      overflow: hidden;
+    }
+
+    /* Светлая тема (по умолчанию) */
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #ffffff;
+      color: #000000;
+      letter-spacing: -0.5px;
+      word-spacing: -2px;
+      transition: background 0.5s, color 0.5s;
+    }
+    /* Тёмная тема */
+    body.dark-mode {
+      background: #111111;
+      color: #eeeeee;
+    }
+
+    /* Canvas для анимации нейросети */
+    #bgCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    /* Экран загрузки */
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #000;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 99999;
+    }
+    .loader h2 {
+      font-family: 'Peace Sans', sans-serif;
+      font-size: 2rem;
+      margin: 0;
+      padding: 0;
+      animation: pulseShadow 3s ease-in-out infinite;
+    }
+    .loader p {
+      margin-top: 10px;
+      font-size: 1rem;
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: 0.5px;
+      /* Пульсирующая тень для текста */
+      animation: pulseShadow 3s ease-in-out infinite;
+    }
+    @keyframes pulseShadow {
+      0%   { text-shadow: 0 0 0px #777; }
+      50%  { text-shadow: 0 0 10px #777; }
+      100% { text-shadow: 0 0 0px #777; }
+    }
+    /* Новый спиннер */
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #fff;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite, pulse 1s ease-in-out infinite;
+      margin-top: 20px;
+    }
+    @keyframes spin {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    /* Новые социконки (верхний левый угол) – без чёрных кругов */
+    .social {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      display: flex;
+      gap: 15px;
+      z-index: 9999;
+    }
+    .social a {
+      display: inline-block;
+      width: 28px;
+      height: 28px;
+      transition: transform 0.2s, color 0.3s;
+      cursor: pointer;
+    }
+    .social a:hover {
+      transform: scale(1.1);
+    }
+    .social a:active {
+      transform: scale(0.95);
+    }
+    .social a .icon {
+      width: 100%;
+      height: 100%;
+      fill: currentColor;
+    }
+    /* Цвет иконок в зависимости от темы */
+    .social a {
+      color: #000;
+    }
+    body.dark-mode .social a {
+      color: #fff;
+    }
+
+    /* Блок управления (язык и тема) в правом верхнем углу */
+    .controls {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      gap: 15px;
+      z-index: 9999;
+    }
+    .lang-switch span {
+      cursor: pointer;
+      font-weight: 700;
+      text-decoration: underline;
+    }
+    .lang-switch span:hover {
+      opacity: 0.7;
+    }
+    /* Кнопка смены темы */
+    .theme-btn {
+      cursor: pointer;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      background: transparent;
+      border: 1px solid currentColor;
+      padding: 5px 10px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: 0.3s;
+      color: #000;
+    }
+    .theme-btn:hover {
+      opacity: 0.7;
+    }
+    body.dark-mode .theme-btn {
+      color: #eee;
+      border-color: #eee;
+    }
+    .theme-icon {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+      transition: fill 0.3s;
+    }
+
+    /* Основной контейнер – центр экрана */
+    .container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      animation: fadeUpScale 1s ease forwards;
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+      background-color: rgba(255, 255, 255, 0.5);
+      box-sizing: border-box;
+      padding: 20px;
+    }
+    body.dark-mode .container {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    @keyframes fadeUpScale {
+      0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Заголовок AppLab */
+    #title {
+      font-family: 'Peace Sans', sans-serif;
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    /* Описание – уменьшен межстрочный интервал, выделены основные услуги */
+    #description {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.1rem;
+      line-height: 1.4;
+      max-width: 600px;
+      margin: 0 20px 15px;
+      text-align: justify;
+    }
+
+    /* Блок кнопок – немного меньше ширина и подняты вверх */
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      width: 70%;
+      max-width: 350px;
+      margin-top: -10px;
+    }
+    /* Кнопки в светлом режиме: чёрные с белым текстом */
+    .btn {
+      font-family: 'Montserrat', sans-serif;
+      position: relative;
+      display: inline-block;
+      padding: 12px 0;
+      border: 1px solid #000;
+      font-weight: 700;
+      font-size: 1.1rem;
+      text-decoration: none;
+      background-color: #000;
+      color: #fff;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    .btn:active {
+      transform: scale(0.95);
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+    }
+    /* Кнопки в темном режиме: белые с чёрным текстом */
+    body.dark-mode .btn {
+      background-color: #fff;
+      color: #000;
+      border-color: #fff;
+    }
+
+    /* Футер */
+    #footer {
+      font-size: 0.85rem;
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      font-weight: 400;
+      transition: color 0.5s;
+    }
+  </style>
+</head>
+<body>
+  <!-- Экран загрузки -->
+  <div class="loader" id="loader">
+    <h2>AppLab</h2>
+    <p>Будуємо майбутнє разом...</p>
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Canvas для нейросетевой анимации -->
+  <canvas id="bgCanvas"></canvas>
+
+  <!-- Соцсети (новые иконки без чёрных кругов) -->
+  <div class="social">
+    <a href="https://t.me/applab_ua" target="_blank">
+      <svg class="icon" viewBox="0 0 496 512">
+        <path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm114.2 148.3-32.5 145.9c-1.6 7.1-5.7 8.9-11.6 5.5l-32-23.5-15.5 15.1c-1.7 1.7-3.1 3.1-6.3 3.1l2.2-31.9 58-52.7c2.5-2.5-0.5-3.9-3.8-2.6l-71.6 28.4-31-9.7c-6.7-2.1-6.8-6.7 1.4-9.9l119.3-46.1c5.2-1.9 9.8 1.2 8.1 8.7z"/>
+      </svg>
+    </a>
+    <a href="#" target="_blank">
+      <svg class="icon" viewBox="0 0 448 512">
+        <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9S160.5 370.8 224.1 370.8 339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.3 0-74.7-33.4-74.7-74.7s33.4-74.7 74.7-74.7 74.7 33.4 74.7 74.7-33.4 74.7-74.7 74.7zm146.4-194.3c0 14.9-12.1 27-27 27-14.9 0-27-12.1-27-27 0-14.9 12.1-27 27-27 14.9 0 27 12.1 27 27zm76.1 27.2c-1.7-36.8-9.9-69.2-36.2-95.5-26.3-26.4-58.7-34.5-95.5-36.2-37.8-2.1-151.3-2.1-189.1 0-36.8 1.7-69.2 9.9-95.5 36.2C9.9 105.8 1.7 138.2 0 175c-2.1 37.8-2.1 151.3 0 189.1 1.7 36.8 9.9 69.2 36.2 95.5 26.4 26.3 58.7 34.5 95.5 36.2 37.8 2.1 151.3 2.1 189.1 0 36.8-1.7 69.2-9.9 95.5-36.2 26.3-26.4 34.5-58.7 36.2-95.5 2.1-37.8 2.1-151.3 0-189.1zm-48.5 224c-7.8 20.1-23 35.2-43.1 43.1-29.8 11.8-100.8 9-134.9 9s-105.2 2.6-134.9-9c-20.1-7.8-35.2-23-43.1-43.1-11.8-29.8-9-100.8-9-134.9s-2.6-105.2 9-134.9c7.8-20.1 23-35.2 43.1-43.1 29.8-11.8 100.8-9 134.9-9s105.2-2.6 134.9 9c20.1 7.8 35.2 23 43.1 43.1 11.8 29.8 9 100.8 9 134.9s2.7 105.2-9 134.9z"/>
+      </svg>
+    </a>
+  </div>
+
+  <!-- Блок управления (язык и тема) в правом верхнем углу -->
+  <div class="controls">
+    <div class="lang-switch">
+      <span id="langUa">UA</span> |
+      <span id="langEn">EN</span>
+    </div>
+    <button class="theme-btn" id="themeBtn">
+      <svg class="theme-icon" id="themeIcon" viewBox="0 0 24 24">
+        <!-- Иконка солнца (при лёгком режиме) -->
+        <path d="M12 3v2m0 14v2m7.07-7.07h2M3 12h2m15.07 4.93l1.414 1.414M4.93 4.93L6.343 6.343m12.727 0l-1.414 1.414M4.93 19.07l1.414-1.414M12 8a4 4 0 100 8 4 4 0 000-8z"/>
+      </svg>
+      <span id="themeBtnText">Light Mode</span>
+    </button>
+  </div>
+
+  <!-- Основной контейнер -->
+  <div class="container">
+    <h1 id="title">AppLab</h1>
+    <p id="description">
+      Ласкаво просимо до <strong>AppLab</strong> – вашого надійного партнера у створенні 
+      <strong>Telegram-ботів, міні-ігор, мобільних додатків та інтернет-магазинів</strong>. 
+      Також ми <strong>розробляємо програми та боти з ШІ</strong>, що допоможуть автоматизувати бізнес, залучити нових клієнтів та вивести ваші проєкти на новий рівень!<br><br>
+      <strong>Ми можемо реалізувати все, що ви придумаєте, незалежно від рівня складності.</strong>
+    </p>
+    <div class="buttons">
+      <a href="#" class="btn" id="btn1">Про нас</a>
+      <a href="#" class="btn" id="btn2">Замовити</a>
+      <a href="#" class="btn" id="btn3">Послуги</a>
+      <a href="#" class="btn" id="btn4">Контакти</a>
+    </div>
+  </div>
+
+  <!-- Футер -->
+  <div id="footer"></div>
+
+  <script>
+    /* Данные для двух языков */
+    const translations = {
+      ua: {
+        title: "AppLab",
+        paragraph: `Ласкаво просимо до <strong>AppLab</strong> – вашого надійного партнера у створенні <strong>Telegram-ботів, міні-ігор, мобільних додатків та інтернет-магазинів</strong>. Також ми <strong>розробляємо програми та боти з ШІ</strong>, що допоможуть автоматизувати бізнес, залучити нових клієнтів та вивести ваші проєкти на новий рівень!<br><br><strong>Ми можемо реалізувати все, що ви придумаєте, незалежно від рівня складності.</strong>`,
+        btn1: "Про нас",
+        btn2: "Замовити",
+        btn3: "Послуги",
+        btn4: "Контакти",
+        footer: "&copy; 2025 AppLab. Усі права захищено."
+      },
+      en: {
+        title: "AppLab",
+        paragraph: `Welcome to <strong>AppLab</strong> – your reliable partner in creating <strong>Telegram bots, mini-games, mobile apps, and online stores</strong>. We also develop <strong>AI-powered programs and bots</strong> to help automate your business, attract new customers, and take your projects to the next level!<br><br><strong>We can create anything you can imagine, regardless of complexity.</strong>`,
+        btn1: "About Us",
+        btn2: "Order Now",
+        btn3: "Services",
+        btn4: "Contacts",
+        footer: "&copy; 2025 AppLab. All rights reserved."
+      }
+    };
+
+    /* Анимация нейросети */
+    const points = [];
+    const POINTS_NUM = 12;
+    const SPEED = 0.3;
+    let canvas, ctx;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        document.getElementById('loader').style.display = 'none';
+        setLanguage('ua'); // язык по умолчанию – украинский
+      }, 3000);
+
+      document.getElementById('langUa').addEventListener('click', () => setLanguage('ua'));
+      document.getElementById('langEn').addEventListener('click', () => setLanguage('en'));
+      document.getElementById('themeBtn').addEventListener('click', toggleTheme);
+      initCanvas();
+    });
+
+    function setLanguage(lang) {
+      const t = translations[lang];
+      document.getElementById('title').textContent = t.title;
+      document.getElementById('description').innerHTML = t.paragraph;
+      document.getElementById('btn1').textContent = t.btn1;
+      document.getElementById('btn2').textContent = t.btn2;
+      document.getElementById('btn3').textContent = t.btn3;
+      document.getElementById('btn4').textContent = t.btn4;
+      document.getElementById('footer').innerHTML = t.footer;
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      const themeBtnText = document.getElementById('themeBtnText');
+      const themeIcon = document.getElementById('themeIcon');
+
+      if (document.body.classList.contains('dark-mode')) {
+        themeBtnText.textContent = 'Dark Mode';
+        themeIcon.setAttribute('viewBox', '0 0 24 24');
+        // Иконка луны (упрощённая)
+        themeIcon.innerHTML = `<path d="M17.293 13.293A8 8 0 1110.707 2.707a8.003 8.003 0 006.586 10.586z" />`;
+      } else {
+        themeBtnText.textContent = 'Light Mode';
+        themeIcon.setAttribute('viewBox', '0 0 24 24');
+        // Более симметричная иконка солнца (из Heroicons)
+        themeIcon.innerHTML = `<path d="M12 3v2m0 14v2m7.07-7.07h2M3 12h2m15.07 4.93l1.414 1.414M4.93 4.93L6.343 6.343m12.727 0l-1.414 1.414M4.93 19.07l1.414-1.414M12 8a4 4 0 100 8 4 4 0 000-8z"/>`;
+      }
+    }
+
+    function initCanvas() {
+      canvas = document.getElementById('bgCanvas');
+      ctx = canvas.getContext('2d');
+      resizeCanvas();
+      ctx.lineWidth = 2;
+
+      for (let i = 0; i < POINTS_NUM; i++) {
+        points.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * SPEED,
+          vy: (Math.random() - 0.5) * SPEED
+        });
+      }
+
+      window.addEventListener('resize', resizeCanvas);
+      requestAnimationFrame(animate);
+    }
+
+    function resizeCanvas() {
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      ctx.scale(dpr, dpr);
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const lineColor = '#000';
+
+      for (let p of points) {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+      }
+
+      for (let i = 0; i < POINTS_NUM; i++) {
+        for (let j = i + 1; j < POINTS_NUM; j++) {
+          const p1 = points[i];
+          const p2 = points[j];
+          const dist = distance(p1, p2);
+          const maxDist = 150;
+          if (dist < maxDist) {
+            const alpha = 1 - dist / maxDist;
+            ctx.strokeStyle = `${lineColor}${alphaToHex(alpha)}`;
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    function distance(p1, p2) {
+      const dx = p1.x - p2.x;
+      const dy = p1.y - p2.y;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    function alphaToHex(alpha) {
+      let hex = Math.floor(alpha * 255).toString(16);
+      return hex.length === 1 ? '0' + hex : hex;
+    }
+  </script>
+</body>
+</html>
