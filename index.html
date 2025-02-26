@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="uk" class="theme-light">
 <head>
   <meta charset="UTF-8">
   <title>AppLab</title>
@@ -7,45 +7,71 @@
   <!-- Отключаем масштабирование, подстраиваем под экраны -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
-  <!-- Шрифт Peace Sans (для заголовка) -->
+  <!-- Peace Sans (для заголовка) -->
   <link rel="preconnect" href="https://fonts.cdnfonts.com" />
   <link href="https://fonts.cdnfonts.com/css/peace-sans" rel="stylesheet" />
 
-  <!-- Шрифт Montserrat (для основного текста и кнопок) -->
+  <!-- Montserrat (для основного текста и кнопок) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
-    /* Отключаем скролл, масштабирование, выделение текста */
+    /* Сброс/базовые стили */
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
+      overflow: hidden; /* Без прокрутки */
       -webkit-user-select: none;
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
       -webkit-touch-callout: none;
-      overflow: hidden;
-    }
-
-    /* Светлая тема (по умолчанию) */
-    body {
       font-family: 'Montserrat', sans-serif;
-      background: #ffffff;
-      color: #000000;
       letter-spacing: -0.5px;
       word-spacing: -2px;
       transition: background 0.5s, color 0.5s;
     }
-    /* Тёмная тема */
-    body.dark-mode {
+
+    /* ========== ТЕМЫ ========== */
+    /* Тема LIGHT */
+    .theme-light {
+      background: #ffffff;
+      color: #000000;
+    }
+    .theme-light .container {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Тема DARK */
+    .theme-dark {
       background: #111111;
       color: #eeeeee;
     }
+    .theme-dark .container {
+      background-color: rgba(17, 17, 17, 0.2);
+    }
 
-    /* Canvas для анимации нейросети */
+    /* Тема CYBER (пример неонового стиля) */
+    .theme-cyber {
+      background: #000000;
+      color: #0ff; /* Неоновый голубой */
+    }
+    .theme-cyber .container {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+
+    /* Тема RETRO (пример пастельного стиля) */
+    .theme-retro {
+      background: #f2dcb3;
+      color: #3b2d1f; /* Тёмно-коричневый */
+    }
+    .theme-retro .container {
+      background-color: rgba(242, 220, 179, 0.2);
+    }
+
+    /* Canvas для нейросетевой анимации */
     #bgCanvas {
       position: absolute;
       top: 0;
@@ -53,14 +79,14 @@
       z-index: -1;
     }
 
-    /* Экран загрузки */
+    /* ========== ЭКРАН ЗАГРУЗКИ ========== */
     .loader {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: #000;
+      background: rgba(0,0,0,0.8); /* полупрозрачный чёрный, чтобы видеть анимацию позади */
       color: #fff;
       display: flex;
       flex-direction: column;
@@ -73,41 +99,37 @@
       font-size: 2rem;
       margin: 0;
       padding: 0;
-      animation: pulseShadow 3s ease-in-out infinite;
+      animation: pulseText 2s ease-in-out infinite;
     }
     .loader p {
       margin-top: 10px;
       font-size: 1rem;
       font-family: 'Montserrat', sans-serif;
-      letter-spacing: 0.5px;
-      /* Пульсирующая тень для текста */
-      animation: pulseShadow 3s ease-in-out infinite;
+      animation: pulseText 2s ease-in-out infinite;
     }
-    @keyframes pulseShadow {
-      0%   { text-shadow: 0 0 0px #777; }
-      50%  { text-shadow: 0 0 10px #777; }
-      100% { text-shadow: 0 0 0px #777; }
+    @keyframes pulseText {
+      0%, 100% { text-shadow: 0 0 0px #fff; }
+      50%      { text-shadow: 0 0 10px #fff; }
     }
-    /* Новый спиннер */
+    /* Спиннер с подсветкой */
     .spinner {
       width: 40px;
       height: 40px;
       border: 4px solid #fff;
       border-top-color: transparent;
       border-radius: 50%;
-      animation: spin 1s linear infinite, pulse 1s ease-in-out infinite;
       margin-top: 20px;
+      animation: spin 1s linear infinite, glow 1.5s ease-in-out infinite alternate;
     }
     @keyframes spin {
-      0%   { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      to { transform: rotate(360deg); }
     }
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.2); }
+    @keyframes glow {
+      0%   { box-shadow: 0 0 10px #fff; }
+      100% { box-shadow: 0 0 20px #fff; }
     }
 
-    /* Новые социконки (верхний левый угол) – без чёрных кругов */
+    /* ========== БЛОК СОЦСЕТЕЙ (левый верх) ========== */
     .social {
       position: absolute;
       top: 10px;
@@ -134,20 +156,15 @@
       height: 100%;
       fill: currentColor;
     }
-    /* Цвет иконок в зависимости от темы */
-    .social a {
-      color: #000;
-    }
-    body.dark-mode .social a {
-      color: #fff;
-    }
+    /* Цвет иконок меняется в зависимости от темы (через currentColor) */
 
-    /* Блок управления (язык и тема) в правом верхнем углу */
+    /* ========== БЛОК УПРАВЛЕНИЯ (правый верх) ========== */
     .controls {
       position: absolute;
       top: 10px;
       right: 10px;
       display: flex;
+      align-items: center;
       gap: 15px;
       z-index: 9999;
     }
@@ -159,6 +176,7 @@
     .lang-switch span:hover {
       opacity: 0.7;
     }
+
     /* Кнопка смены темы */
     .theme-btn {
       cursor: pointer;
@@ -166,19 +184,15 @@
       font-family: 'Montserrat', sans-serif;
       background: transparent;
       border: 1px solid currentColor;
-      padding: 5px 10px;
+      padding: 3px 8px; /* немного уменьшили */
       display: flex;
       align-items: center;
       gap: 5px;
       transition: 0.3s;
-      color: #000;
+      color: currentColor;
     }
     .theme-btn:hover {
       opacity: 0.7;
-    }
-    body.dark-mode .theme-btn {
-      color: #eee;
-      border-color: #eee;
     }
     .theme-icon {
       width: 20px;
@@ -187,7 +201,7 @@
       transition: fill 0.3s;
     }
 
-    /* Основной контейнер – центр экрана */
+    /* ========== ОСНОВНОЙ КОНТЕЙНЕР (центр экрана) ========== */
     .container {
       width: 100vw;
       height: 100vh;
@@ -199,12 +213,8 @@
       animation: fadeUpScale 1s ease forwards;
       opacity: 0;
       transform: translateY(20px) scale(0.95);
-      background-color: rgba(255, 255, 255, 0.5);
       box-sizing: border-box;
       padding: 20px;
-    }
-    body.dark-mode .container {
-      background-color: rgba(0, 0, 0, 0.5);
     }
     @keyframes fadeUpScale {
       0% {
@@ -225,52 +235,70 @@
       font-weight: 700;
     }
 
-    /* Описание – уменьшен межстрочный интервал, выделены основные услуги */
+    /* Описание (уменьшен шрифт) */
     #description {
       font-family: 'Montserrat', sans-serif;
-      font-size: 1.1rem;
-      line-height: 1.4;
+      font-size: 0.95rem;
+      line-height: 1.3;
       max-width: 600px;
       margin: 0 20px 15px;
       text-align: justify;
     }
 
-    /* Блок кнопок – немного меньше ширина и подняты вверх */
+    /* Блок кнопок (немного меньше ширина) */
     .buttons {
       display: flex;
       flex-direction: column;
       gap: 15px;
       width: 70%;
       max-width: 350px;
-      margin-top: -10px;
+      margin-top: -5px;
     }
-    /* Кнопки в светлом режиме: чёрные с белым текстом */
+    /* Кнопки */
     .btn {
       font-family: 'Montserrat', sans-serif;
       position: relative;
       display: inline-block;
       padding: 12px 0;
-      border: 1px solid #000;
       font-weight: 700;
       font-size: 1.1rem;
       text-decoration: none;
-      background-color: #000;
-      color: #fff;
+      text-align: center;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
+      border: 1px solid; /* Цвет зададим ниже через тему */
     }
     .btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
     }
     .btn:active {
       transform: scale(0.95);
       box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
     }
-    /* Кнопки в темном режиме: белые с чёрным текстом */
-    body.dark-mode .btn {
+
+    /* Кнопки в LIGHT */
+    .theme-light .btn {
+      background-color: #000;
+      color: #fff;
+      border-color: #000;
+    }
+    /* Кнопки в DARK */
+    .theme-dark .btn {
       background-color: #fff;
       color: #000;
       border-color: #fff;
+    }
+    /* Кнопки в CYBER */
+    .theme-cyber .btn {
+      background-color: #0ff;
+      color: #000;
+      border-color: #0ff;
+    }
+    /* Кнопки в RETRO */
+    .theme-retro .btn {
+      background-color: #3b2d1f;
+      color: #f2dcb3;
+      border-color: #3b2d1f;
     }
 
     /* Футер */
@@ -286,31 +314,57 @@
   </style>
 </head>
 <body>
-  <!-- Экран загрузки -->
+  <!-- Экран загрузки (5 секунд) -->
   <div class="loader" id="loader">
     <h2>AppLab</h2>
     <p>Будуємо майбутнє разом...</p>
     <div class="spinner"></div>
   </div>
 
-  <!-- Canvas для нейросетевой анимации -->
+  <!-- Canvas с «нейросетевой» анимацией -->
   <canvas id="bgCanvas"></canvas>
 
-  <!-- Соцсети (новые иконки без чёрных кругов) -->
+  <!-- Соцсети (левый верх) -->
   <div class="social">
+    <!-- Telegram (теперь конверт) -->
     <a href="https://t.me/applab_ua" target="_blank">
-      <svg class="icon" viewBox="0 0 496 512">
-        <path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm114.2 148.3-32.5 145.9c-1.6 7.1-5.7 8.9-11.6 5.5l-32-23.5-15.5 15.1c-1.7 1.7-3.1 3.1-6.3 3.1l2.2-31.9 58-52.7c2.5-2.5-0.5-3.9-3.8-2.6l-71.6 28.4-31-9.7c-6.7-2.1-6.8-6.7 1.4-9.9l119.3-46.1c5.2-1.9 9.8 1.2 8.1 8.7z"/>
+      <svg class="icon" viewBox="0 0 512 512">
+        <!-- Envelope иконка (упрощённая) -->
+        <path d="M0 128c0-17.7 14.3-32 32-32h448c17.7 0 32 14.3 
+                 32 32v256c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3
+                 -32-32V128zm80 32 176 121.1c8.6 5.9 20.2 5.9 
+                 28.8 0L464 160H80z"/>
       </svg>
     </a>
+    <!-- Instagram (без круга) -->
     <a href="#" target="_blank">
       <svg class="icon" viewBox="0 0 448 512">
-        <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9S160.5 370.8 224.1 370.8 339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.3 0-74.7-33.4-74.7-74.7s33.4-74.7 74.7-74.7 74.7 33.4 74.7 74.7-33.4 74.7-74.7 74.7zm146.4-194.3c0 14.9-12.1 27-27 27-14.9 0-27-12.1-27-27 0-14.9 12.1-27 27-27 14.9 0 27 12.1 27 27zm76.1 27.2c-1.7-36.8-9.9-69.2-36.2-95.5-26.3-26.4-58.7-34.5-95.5-36.2-37.8-2.1-151.3-2.1-189.1 0-36.8 1.7-69.2 9.9-95.5 36.2C9.9 105.8 1.7 138.2 0 175c-2.1 37.8-2.1 151.3 0 189.1 1.7 36.8 9.9 69.2 36.2 95.5 26.4 26.3 58.7 34.5 95.5 36.2 37.8 2.1 151.3 2.1 189.1 0 36.8-1.7 69.2-9.9 95.5-36.2 26.3-26.4 34.5-58.7 36.2-95.5 2.1-37.8 2.1-151.3 0-189.1zm-48.5 224c-7.8 20.1-23 35.2-43.1 43.1-29.8 11.8-100.8 9-134.9 9s-105.2 2.6-134.9-9c-20.1-7.8-35.2-23-43.1-43.1-11.8-29.8-9-100.8-9-134.9s-2.6-105.2 9-134.9c7.8-20.1 23-35.2 43.1-43.1 29.8-11.8 100.8-9 134.9-9s105.2-2.6 134.9 9c20.1 7.8 35.2 23 43.1 43.1 11.8 29.8 9 100.8 9 134.9s2.7 105.2-9 134.9z"/>
+        <path d="M224.1 141c-63.6 0-114.9 51.3-114.9
+                 114.9S160.5 370.8 224.1 370.8 339 319.5
+                 339 255.9 287.7 141 224.1 141zm0
+                 189.6c-41.3 0-74.7-33.4-74.7-74.7s33.4
+                 -74.7 74.7-74.7 74.7 33.4 74.7 74.7
+                 -33.4 74.7-74.7 74.7zm146.4-194.3c0
+                 14.9-12.1 27-27 27-14.9 0-27-12.1-27
+                 -27 0-14.9 12.1-27 27-27 14.9 0 27
+                 12.1 27 27zm76.1 27.2c-1.7-36.8
+                 -9.9-69.2-36.2-95.5-26.3-26.4
+                 -58.7-34.5-95.5-36.2-37.8-2.1
+                 -151.3-2.1-189.1 0-36.8 1.7
+                 -69.2 9.9-95.5 36.2C9.9 105.8
+                 1.7 138.2 0 175c-2.1 37.8-2.1
+                 151.3 0 189.1 1.7 36.8 9.9
+                 69.2 36.2 95.5 26.4 26.3 58.7
+                 34.5 95.5 36.2 37.8 2.1 151.3
+                 2.1 189.1 0 36.8-1.7 69.2
+                 -9.9 95.5-36.2 26.3-26.4
+                 34.5-58.7 36.2-95.5 2.1-37.8
+                 2.1-151.3 0-189.1z"/>
       </svg>
     </a>
   </div>
 
-  <!-- Блок управления (язык и тема) в правом верхнем углу -->
+  <!-- Блок управления (правый верх) -->
   <div class="controls">
     <div class="lang-switch">
       <span id="langUa">UA</span> |
@@ -318,8 +372,12 @@
     </div>
     <button class="theme-btn" id="themeBtn">
       <svg class="theme-icon" id="themeIcon" viewBox="0 0 24 24">
-        <!-- Иконка солнца (при лёгком режиме) -->
-        <path d="M12 3v2m0 14v2m7.07-7.07h2M3 12h2m15.07 4.93l1.414 1.414M4.93 4.93L6.343 6.343m12.727 0l-1.414 1.414M4.93 19.07l1.414-1.414M12 8a4 4 0 100 8 4 4 0 000-8z"/>
+        <!-- Иконка солнца (Heroicons) -->
+        <path d="M12 3v2m0 14v2m7.07-7.07h2M3 
+                 12h2m15.07 4.93l1.414 1.414M4.93
+                 4.93L6.343 6.343m12.727 0l-1.414
+                 1.414M4.93 19.07l1.414-1.414M12
+                 8a4 4 0 100 8 4 4 0 000-8z"/>
       </svg>
       <span id="themeBtnText">Light Mode</span>
     </button>
@@ -331,8 +389,9 @@
     <p id="description">
       Ласкаво просимо до <strong>AppLab</strong> – вашого надійного партнера у створенні 
       <strong>Telegram-ботів, міні-ігор, мобільних додатків та інтернет-магазинів</strong>. 
-      Також ми <strong>розробляємо програми та боти з ШІ</strong>, що допоможуть автоматизувати бізнес, залучити нових клієнтів та вивести ваші проєкти на новий рівень!<br><br>
-      <strong>Ми можемо реалізувати все, що ви придумаєте, незалежно від рівня складності.</strong>
+      Також ми <strong>розробляємо програми та боти з ШІ</strong>, що допоможуть автоматизувати бізнес, 
+      залучити нових клієнтів та вивести ваші проєкти на новий рівень!<br><br>
+      <strong>Ми можемо реалізувати все, незалежно від рівня складності.</strong>
     </p>
     <div class="buttons">
       <a href="#" class="btn" id="btn1">Про нас</a>
@@ -346,11 +405,17 @@
   <div id="footer"></div>
 
   <script>
-    /* Данные для двух языков */
+    /* Тексты для двух языков */
     const translations = {
       ua: {
         title: "AppLab",
-        paragraph: `Ласкаво просимо до <strong>AppLab</strong> – вашого надійного партнера у створенні <strong>Telegram-ботів, міні-ігор, мобільних додатків та інтернет-магазинів</strong>. Також ми <strong>розробляємо програми та боти з ШІ</strong>, що допоможуть автоматизувати бізнес, залучити нових клієнтів та вивести ваші проєкти на новий рівень!<br><br><strong>Ми можемо реалізувати все, що ви придумаєте, незалежно від рівня складності.</strong>`,
+        paragraph: `
+          Ласкаво просимо до <strong>AppLab</strong> – вашого надійного партнера у створенні 
+          <strong>Telegram-ботів, міні-ігор, мобільних додатків та інтернет-магазинів</strong>. 
+          Також ми <strong>розробляємо програми та боти з ШІ</strong>, що допоможуть автоматизувати бізнес, 
+          залучити нових клієнтів та вивести ваші проєкти на новий рівень!<br><br>
+          <strong>Ми можемо реалізувати все, незалежно від рівня складності.</strong>
+        `,
         btn1: "Про нас",
         btn2: "Замовити",
         btn3: "Послуги",
@@ -359,7 +424,13 @@
       },
       en: {
         title: "AppLab",
-        paragraph: `Welcome to <strong>AppLab</strong> – your reliable partner in creating <strong>Telegram bots, mini-games, mobile apps, and online stores</strong>. We also develop <strong>AI-powered programs and bots</strong> to help automate your business, attract new customers, and take your projects to the next level!<br><br><strong>We can create anything you can imagine, regardless of complexity.</strong>`,
+        paragraph: `
+          Welcome to <strong>AppLab</strong> – your reliable partner in creating 
+          <strong>Telegram bots, mini-games, mobile apps, and online stores</strong>. 
+          We also develop <strong>AI-powered programs and bots</strong> to help automate your business, 
+          attract new customers, and take your projects to the next level!<br><br>
+          <strong>We can create anything, regardless of complexity.</strong>
+        `,
         btn1: "About Us",
         btn2: "Order Now",
         btn3: "Services",
@@ -368,24 +439,34 @@
       }
     };
 
-    /* Анимация нейросети */
+    /* Массив тем и индекс текущей */
+    const themes = ["theme-light", "theme-dark", "theme-cyber", "theme-retro"];
+    let currentThemeIndex = 0;
+
+    /* Точки для анимации нейросети */
     const points = [];
     const POINTS_NUM = 12;
     const SPEED = 0.3;
+
     let canvas, ctx;
 
     document.addEventListener('DOMContentLoaded', () => {
+      // Показываем лоадер 5 секунд
       setTimeout(() => {
         document.getElementById('loader').style.display = 'none';
-        setLanguage('ua'); // язык по умолчанию – украинский
-      }, 3000);
+        setLanguage('ua'); // Язык по умолчанию
+      }, 5000);
 
+      // Подключаем обработчики
       document.getElementById('langUa').addEventListener('click', () => setLanguage('ua'));
       document.getElementById('langEn').addEventListener('click', () => setLanguage('en'));
-      document.getElementById('themeBtn').addEventListener('click', toggleTheme);
+      document.getElementById('themeBtn').addEventListener('click', cycleTheme);
+
+      // Инициализируем Canvas
       initCanvas();
     });
 
+    /* Установка языка */
     function setLanguage(lang) {
       const t = translations[lang];
       document.getElementById('title').textContent = t.title;
@@ -397,30 +478,67 @@
       document.getElementById('footer').innerHTML = t.footer;
     }
 
-    function toggleTheme() {
-      document.body.classList.toggle('dark-mode');
-      const themeBtnText = document.getElementById('themeBtnText');
-      const themeIcon = document.getElementById('themeIcon');
+    /* Переключение тем по циклу */
+    function cycleTheme() {
+      // Удаляем старую тему
+      document.documentElement.classList.remove(themes[currentThemeIndex]);
+      // Переходим к следующей
+      currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+      const newTheme = themes[currentThemeIndex];
+      document.documentElement.classList.add(newTheme);
 
-      if (document.body.classList.contains('dark-mode')) {
-        themeBtnText.textContent = 'Dark Mode';
-        themeIcon.setAttribute('viewBox', '0 0 24 24');
-        // Иконка луны (упрощённая)
-        themeIcon.innerHTML = `<path d="M17.293 13.293A8 8 0 1110.707 2.707a8.003 8.003 0 006.586 10.586z" />`;
-      } else {
-        themeBtnText.textContent = 'Light Mode';
-        themeIcon.setAttribute('viewBox', '0 0 24 24');
-        // Более симметричная иконка солнца (из Heroicons)
-        themeIcon.innerHTML = `<path d="M12 3v2m0 14v2m7.07-7.07h2M3 12h2m15.07 4.93l1.414 1.414M4.93 4.93L6.343 6.343m12.727 0l-1.414 1.414M4.93 19.07l1.414-1.414M12 8a4 4 0 100 8 4 4 0 000-8z"/>`;
+      // Обновляем текст кнопки
+      const themeBtnText = document.getElementById('themeBtnText');
+      switch(newTheme) {
+        case "theme-light":
+          themeBtnText.textContent = "Light Mode";
+          document.getElementById('themeIcon').innerHTML = `
+            <path d="M12 3v2m0 14v2m7.07-7.07h2M3 
+                     12h2m15.07 4.93l1.414 1.414M4.93
+                     4.93L6.343 6.343m12.727 0l-1.414
+                     1.414M4.93 19.07l1.414-1.414M12
+                     8a4 4 0 100 8 4 4 0 000-8z"/>
+          `;
+          break;
+        case "theme-dark":
+          themeBtnText.textContent = "Dark Mode";
+          document.getElementById('themeIcon').innerHTML = `
+            <path d="M17.293 13.293A8 8 0 1110.707 
+                     2.707a8.003 8.003 0 006.586 
+                     10.586z"/>
+          `;
+          break;
+        case "theme-cyber":
+          themeBtnText.textContent = "Cyber Mode";
+          document.getElementById('themeIcon').innerHTML = `
+            <!-- Неоновая молния, к примеру -->
+            <path d="M13 2L3 14h7v6l7-12h-7z"/>
+          `;
+          break;
+        case "theme-retro":
+          themeBtnText.textContent = "Retro Mode";
+          document.getElementById('themeIcon').innerHTML = `
+            <!-- Пример иконки кассеты -->
+            <path d="M448 80v352H0V80h448zM64
+                     304c0 8.8 7.2 16 16 16h288c8.8
+                     0 16-7.2 16-16v-96c0-8.8-7.2
+                     -16-16-16H80c-8.8 0-16 7.2
+                     -16 16v96zm256-48c0 17.7-14.3
+                     32-32 32s-32-14.3-32-32
+                     14.3-32 32-32 32 14.3 32
+                     32z"/>
+          `;
+          break;
       }
     }
 
+    /* Инициализация Canvas */
     function initCanvas() {
       canvas = document.getElementById('bgCanvas');
       ctx = canvas.getContext('2d');
       resizeCanvas();
-      ctx.lineWidth = 2;
 
+      // Создаём точки
       for (let i = 0; i < POINTS_NUM; i++) {
         points.push({
           x: Math.random() * canvas.width,
@@ -434,6 +552,7 @@
       requestAnimationFrame(animate);
     }
 
+    /* Подгоняем размер Canvas под окно */
     function resizeCanvas() {
       const dpr = window.devicePixelRatio || 1;
       canvas.width = window.innerWidth * dpr;
@@ -441,10 +560,14 @@
       ctx.scale(dpr, dpr);
     }
 
+    /* Главный цикл анимации */
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const lineColor = '#000';
 
+      // Определяем цвет линий в зависимости от темы
+      const lineColor = getLineColor();
+
+      // Двигаем точки
       for (let p of points) {
         p.x += p.vx;
         p.y += p.vy;
@@ -452,6 +575,7 @@
         if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
       }
 
+      // Рисуем связи между точками
       for (let i = 0; i < POINTS_NUM; i++) {
         for (let j = i + 1; j < POINTS_NUM; j++) {
           const p1 = points[i];
@@ -460,7 +584,7 @@
           const maxDist = 150;
           if (dist < maxDist) {
             const alpha = 1 - dist / maxDist;
-            ctx.strokeStyle = `${lineColor}${alphaToHex(alpha)}`;
+            ctx.strokeStyle = lineColor + alphaToHex(alpha);
             ctx.beginPath();
             ctx.moveTo(p1.x, p1.y);
             ctx.lineTo(p2.x, p2.y);
@@ -472,15 +596,31 @@
       requestAnimationFrame(animate);
     }
 
+    /* Вычисляем расстояние между двумя точками */
     function distance(p1, p2) {
       const dx = p1.x - p2.x;
       const dy = p1.y - p2.y;
       return Math.sqrt(dx * dx + dy * dy);
     }
 
+    /* Преобразуем alpha (0..1) в двухсимвольный HEX */
     function alphaToHex(alpha) {
       let hex = Math.floor(alpha * 255).toString(16);
       return hex.length === 1 ? '0' + hex : hex;
+    }
+
+    /* Определяем цвет линий для текущей темы */
+    function getLineColor() {
+      if (document.documentElement.classList.contains('theme-light')) {
+        return '#000';
+      } else if (document.documentElement.classList.contains('theme-dark')) {
+        return '#fff';
+      } else if (document.documentElement.classList.contains('theme-cyber')) {
+        return '#0ff'; /* неоновый */
+      } else if (document.documentElement.classList.contains('theme-retro')) {
+        return '#ff00ff'; /* розовый/фиолетовый */
+      }
+      return '#000'; // fallback
     }
   </script>
 </body>
