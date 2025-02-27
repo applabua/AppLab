@@ -29,19 +29,14 @@
       user-select: none;
       -webkit-touch-callout: none;
       font-family: 'Montserrat', sans-serif;
-      letter-spacing: -0.5px;
-      word-spacing: -2px;
       transition: background 0.5s, color 0.5s;
     }
 
-    /* ====== ТЕМЫ ====== */
+    /* ====== ТЕМЫ (6 штук) ====== */
     /* LIGHT */
     .theme-light {
       background: #ffffff;
       color: #000000;
-    }
-    .theme-light .container {
-      background-color: rgba(255, 255, 255, 0.2);
     }
 
     /* DARK */
@@ -49,17 +44,11 @@
       background: #111111;
       color: #eeeeee;
     }
-    .theme-dark .container {
-      background-color: rgba(17, 17, 17, 0.2);
-    }
 
     /* CYBER */
     .theme-cyber {
       background: #000000;
       color: #0ff;
-    }
-    .theme-cyber .container {
-      background-color: rgba(0, 0, 0, 0.2);
     }
 
     /* RETRO */
@@ -67,36 +56,27 @@
       background: #f2dcb3;
       color: #3b2d1f;
     }
-    .theme-retro .container {
-      background-color: rgba(242, 220, 179, 0.2);
-    }
 
-    /* FOREST (новая) */
+    /* FOREST */
     .theme-forest {
-      background: #2e4600; /* тёмно-зелёный */
-      color: #b0ffb0;      /* мягкий салатовый */
-    }
-    .theme-forest .container {
-      background-color: rgba(46,70,0, 0.2);
+      background: #2e4600;
+      color: #b0ffb0;
     }
 
-    /* MINIMAL (новая) */
+    /* MINIMAL */
     .theme-minimal {
       background: #f0f0f0;
       color: #333;
     }
-    .theme-minimal .container {
-      background-color: rgba(240,240,240, 0.2);
-    }
 
-    /* ====== ЭКРАН ЗАГРУЗКИ ====== */
+    /* Экран загрузки (5 секунд, чёрный фон) */
     .loader {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: #000; /* полностью чёрный */
+      background: #000;
       color: #fff;
       display: flex;
       flex-direction: column;
@@ -137,7 +117,16 @@
       100% { box-shadow: 0 0 20px #fff; }
     }
 
-    /* ====== БЛОК УПРАВЛЕНИЯ (правый верх) ====== */
+    /* Canvas для «нейросетевого» эффекта */
+    #bgCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1; /* позади всего контента */
+      display: none; /* скрыт, пока эффект Off */
+    }
+
+    /* Блок управления (правый верх) */
     .controls {
       position: absolute;
       top: 10px;
@@ -163,7 +152,7 @@
       font-family: 'Montserrat', sans-serif;
       background: transparent;
       border: 1px solid currentColor;
-      padding: 3px 8px; 
+      padding: 3px 8px;
       display: flex;
       align-items: center;
       gap: 5px;
@@ -180,7 +169,25 @@
       transition: fill 0.3s;
     }
 
-    /* ====== ОСНОВНОЙ КОНТЕЙНЕР (центр) ====== */
+    /* Кнопка включения/выключения эффекта */
+    .effect-btn {
+      cursor: pointer;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      background: transparent;
+      border: 1px solid currentColor;
+      padding: 3px 8px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: 0.3s;
+      color: currentColor;
+    }
+    .effect-btn:hover {
+      opacity: 0.7;
+    }
+
+    /* Основной контейнер (центр экрана) */
     .container {
       width: 100vw;
       height: 100vh;
@@ -188,57 +195,137 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      animation: fadeUpScale 1s ease forwards;
-      opacity: 0;
-      transform: translateY(20px) scale(0.95);
       box-sizing: border-box;
       padding: 20px;
     }
-    @keyframes fadeUpScale {
-      0% {
-        opacity: 0;
-        transform: translateY(20px) scale(0.95);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
+
+    /* Заголовок, описание, кнопки – по умолчанию прозрачны (для анимаций) */
+    #title, #description, .buttons {
+      opacity: 0;
     }
 
-    /* Заголовок */
+    /* Анимации (ключевые кадры) */
+    @keyframes fadeInUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+    @keyframes fadeInLeft {
+      from { transform: translateX(-20px); opacity: 0; }
+      to   { transform: translateX(0);     opacity: 1; }
+    }
+    @keyframes fadeInRight {
+      from { transform: translateX(20px); opacity: 0; }
+      to   { transform: translateX(0);    opacity: 1; }
+    }
+    @keyframes fadeInDown {
+      from { transform: translateY(-20px); opacity: 0; }
+      to   { transform: translateY(0);     opacity: 1; }
+    }
+    @keyframes scaleUp {
+      from { transform: scale(0.8); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* Тема LIGHT: всплывают вверх */
+    .theme-light #title.animate {
+      animation: fadeInUp 0.8s ease forwards;
+    }
+    .theme-light #description.animate {
+      animation: fadeInUp 0.8s ease 0.2s forwards;
+    }
+    .theme-light .buttons.animate {
+      animation: fadeInUp 0.8s ease 0.4s forwards;
+    }
+
+    /* Тема DARK: слева */
+    .theme-dark #title.animate {
+      animation: fadeInLeft 0.8s ease forwards;
+    }
+    .theme-dark #description.animate {
+      animation: fadeInLeft 0.8s ease 0.2s forwards;
+    }
+    .theme-dark .buttons.animate {
+      animation: fadeInLeft 0.8s ease 0.4s forwards;
+    }
+
+    /* Тема CYBER: справа */
+    .theme-cyber #title.animate {
+      animation: fadeInRight 0.8s ease forwards;
+    }
+    .theme-cyber #description.animate {
+      animation: fadeInRight 0.8s ease 0.2s forwards;
+    }
+    .theme-cyber .buttons.animate {
+      animation: fadeInRight 0.8s ease 0.4s forwards;
+    }
+
+    /* Тема RETRO: сверху */
+    .theme-retro #title.animate {
+      animation: fadeInDown 0.8s ease forwards;
+    }
+    .theme-retro #description.animate {
+      animation: fadeInDown 0.8s ease 0.2s forwards;
+    }
+    .theme-retro .buttons.animate {
+      animation: fadeInDown 0.8s ease 0.4s forwards;
+    }
+
+    /* Тема FOREST: scaleUp */
+    .theme-forest #title.animate,
+    .theme-forest #description.animate,
+    .theme-forest .buttons.animate {
+      animation: scaleUp 0.8s ease forwards;
+    }
+    /* Иконку листочка делаем меньше */
+    .theme-forest .theme-icon path {
+      transform: scale(0.8);
+      transform-origin: center;
+    }
+
+    /* Тема MINIMAL: простое проявление */
+    .theme-minimal #title.animate,
+    .theme-minimal #description.animate,
+    .theme-minimal .buttons.animate {
+      animation: fadeIn 0.8s ease forwards;
+    }
+
+    /* Заголовок (по центру) */
     #title {
       font-family: 'Peace Sans', sans-serif;
       font-size: 2.8rem;
       margin-bottom: 10px;
       font-weight: 700;
+      text-align: center;
     }
 
-    /* Описание */
+    /* Описание (по центру, увеличен line-height) */
     #description {
-      font-size: 0.95rem;
-      line-height: 1.3;
+      font-size: 1rem;
+      line-height: 1.5;
       max-width: 600px;
-      margin: 0 20px 0; /* убрали нижний отступ, чтобы кнопки отодвинуть отдельно */
-      text-align: justify;
+      margin: 0 20px;
+      text-align: center;
     }
-    /* Второй абзац – меньше и в одну строку */
-    #secondLine {
-      display: block;
-      font-size: 0.8rem;
-      white-space: nowrap;
+    /* Жирным выделяем отдельную фразу */
+    #boldLine {
+      font-weight: 700;
     }
 
-    /* Блок кнопок – отдаляем от текста */
+    /* Блок кнопок (ниже описания) */
     .buttons {
       display: flex;
       flex-direction: column;
       gap: 15px;
       width: 70%;
       max-width: 350px;
-      margin-top: 25px; /* отступ от описания */
+      margin-top: 25px;
     }
-    /* Кнопки (универсально, цвет определяется темой) */
+
+    /* Кнопки (цвет зависит от темы) */
     .btn {
       font-family: 'Montserrat', sans-serif;
       position: relative;
@@ -249,7 +336,7 @@
       text-decoration: none;
       text-align: center;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
-      border: 1px solid; 
+      border: 1px solid;
     }
     .btn:hover {
       transform: translateY(-2px);
@@ -260,7 +347,7 @@
       box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
     }
 
-    /* Кнопки в разных темах */
+    /* Цвет кнопок в темах */
     .theme-light .btn {
       background-color: #000;
       color: #fff;
@@ -312,12 +399,16 @@
     <div class="spinner"></div>
   </div>
 
+  <!-- Canvas для «нейросетевого» эффекта -->
+  <canvas id="bgCanvas"></canvas>
+
   <!-- Блок управления (правый верх) -->
   <div class="controls">
     <div class="lang-switch">
       <span id="langUa">UA</span> |
       <span id="langEn">EN</span>
     </div>
+    <!-- Переключение тем -->
     <button class="theme-btn" id="themeBtn">
       <svg class="theme-icon" id="themeIcon" viewBox="0 0 24 24">
         <!-- Иконка солнца (по умолчанию) -->
@@ -329,21 +420,21 @@
       </svg>
       <span id="themeBtnText">Light Mode</span>
     </button>
+
+    <!-- Включить/выключить «нейросетевой» эффект -->
+    <button class="effect-btn" id="effectBtn">Effect: Off</button>
   </div>
 
   <!-- Основной контейнер -->
   <div class="container">
     <h1 id="title">AppLab</h1>
     <p id="description">
-      Ласкаво просимо до <strong>AppLab</strong> – вашого надійного партнера у створенні 
-      <strong>Telegram-ботів, міні-ігор, мобільних додатків та інтернет-магазинів</strong>. 
-      Також ми <strong>розробляємо програми та боти з ШІ</strong>, що допоможуть автоматизувати бізнес, 
-      залучити нових клієнтів та вивести ваші проєкти на новий рівень!<br><br>
-
-      <!-- Второй абзац отдельным блоком -->
-      <span id="secondLine">
-        <strong>Ми можемо реалізувати все, незалежно від рівня складності.</strong>
-      </span>
+      Ласкаво просимо до AppLab – вашого надійного партнера у створенні 
+      Telegram-ботів, міні-ігор, мобільних додатків та інтернет-магазинів. 
+      Також ми розробляємо програми та боти з ШІ, включно з торговими ботами для трейдингу, 
+      що допоможуть автоматизувати бізнес, залучити нових клієнтів та вивести ваші проєкти 
+      на новий рівень! <br><br>
+      <span id="boldLine">Ми можемо реалізувати все, незалежно від рівня складності.</span>
     </p>
     <div class="buttons">
       <a href="#" class="btn" id="btn1">Про нас</a>
@@ -362,11 +453,12 @@
       ua: {
         title: "AppLab",
         paragraph: `
-          Ласкаво просимо до <strong>AppLab</strong> – вашого надійного партнера у створенні 
-          <strong>Telegram-ботів, міні-ігор, мобільних додатків та інтернет-магазинів</strong>. 
-          Також ми <strong>розробляємо програми та боти з ШІ</strong>, що допоможуть автоматизувати бізнес, 
-          залучити нових клієнтів та вивести ваші проєкти на новий рівень!<br><br>
-          <span id="secondLine"><strong>Ми можемо реалізувати все, незалежно від рівня складності.</strong></span>
+          Ласкаво просимо до AppLab – вашого надійного партнера у створенні 
+          Telegram-ботів, міні-ігор, мобільних додатків та інтернет-магазинів. 
+          Також ми розробляємо програми та боти з ШІ, включно з торговими ботами для трейдингу, 
+          що допоможуть автоматизувати бізнес, залучити нових клієнтів та вивести ваші проєкти 
+          на новий рівень! <br><br>
+          <span id="boldLine">Ми можемо реалізувати все, незалежно від рівня складності.</span>
         `,
         btn1: "Про нас",
         btn2: "Замовити",
@@ -377,11 +469,12 @@
       en: {
         title: "AppLab",
         paragraph: `
-          Welcome to <strong>AppLab</strong> – your reliable partner in creating 
-          <strong>Telegram bots, mini-games, mobile apps, and online stores</strong>. 
-          We also develop <strong>AI-powered programs and bots</strong> to help automate your business, 
-          attract new customers, and take your projects to the next level!<br><br>
-          <span id="secondLine"><strong>We can create anything, regardless of complexity.</strong></span>
+          Welcome to AppLab – your reliable partner in creating 
+          Telegram bots, mini-games, mobile apps, and online stores. 
+          We also develop AI-powered programs and bots, including trading bots, 
+          to help automate your business, attract new customers, and take your projects 
+          to the next level! <br><br>
+          <span id="boldLine">We can create anything, regardless of complexity.</span>
         `,
         btn1: "About Us",
         btn2: "Order Now",
@@ -391,7 +484,7 @@
       }
     };
 
-    /* Список тем (6 штук) */
+    /* Список тем */
     const themes = [
       "theme-light",
       "theme-dark",
@@ -402,17 +495,54 @@
     ];
     let currentThemeIndex = 0;
 
+    /* Для «нейросетевого» эффекта */
+    let effectOn = false;         // Активен ли эффект
+    let canvas, ctx;
+    const points = [];
+    const POINTS_NUM = 12;        // Кол-во «узлов»
+    const SPEED = 0.3;            // Скорость движения узлов
+    let animationId = null;       // ID requestAnimationFrame
+
     document.addEventListener('DOMContentLoaded', () => {
       // Показываем лоадер 5 секунд
       setTimeout(() => {
         document.getElementById('loader').style.display = 'none';
         setLanguage('ua'); // Язык по умолчанию
+        animateElements(); // Запускаем анимации появления
       }, 5000);
 
-      // Обработчики
-      document.getElementById('langUa').addEventListener('click', () => setLanguage('ua'));
-      document.getElementById('langEn').addEventListener('click', () => setLanguage('en'));
+      // Инициализируем Canvas
+      canvas = document.getElementById('bgCanvas');
+      ctx = canvas.getContext('2d');
+      resizeCanvas();
+
+      // Создаём точки
+      for (let i = 0; i < POINTS_NUM; i++) {
+        points.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * SPEED,
+          vy: (Math.random() - 0.5) * SPEED
+        });
+      }
+
+      window.addEventListener('resize', resizeCanvas);
+
+      // Обработчики языка
+      document.getElementById('langUa').addEventListener('click', () => {
+        setLanguage('ua');
+        animateElements();
+      });
+      document.getElementById('langEn').addEventListener('click', () => {
+        setLanguage('en');
+        animateElements();
+      });
+
+      // Кнопка темы
       document.getElementById('themeBtn').addEventListener('click', cycleTheme);
+
+      // Кнопка эффекта
+      document.getElementById('effectBtn').addEventListener('click', toggleEffect);
     });
 
     /* Установка языка */
@@ -470,16 +600,22 @@
         case "theme-retro":
           themeBtnText.textContent = "Retro Mode";
           themeIcon.setAttribute('viewBox', '0 0 24 24');
-          /* Добавляем маленькую картинку (пример) */
+          /* Кассета (SVG) – fill="currentColor" */
           themeIcon.innerHTML = `
-            <image x="0" y="0" width="24" height="24" 
-                   xlink:href="https://cdn-icons-png.flaticon.com/512/3487/3487286.png" />
+            <path fill="currentColor"
+                  d="M448 80v352H0V80h448zM64
+                   304c0 8.8 7.2 16 16 16h288c8.8
+                   0 16-7.2 16-16v-96c0-8.8-7.2
+                   -16-16-16H80c-8.8 0-16 7.2
+                   -16 16v96zm256-48c0 17.7-14.3
+                   32-32 32s-32-14.3-32-32
+                   14.3-32 32-32 32 14.3 32
+                   32z"/>
           `;
           break;
         case "theme-forest":
           themeBtnText.textContent = "Forest Mode";
           themeIcon.setAttribute('viewBox', '0 0 24 24');
-          /* Пример иконки листика */
           themeIcon.innerHTML = `
             <path d="M12 2C8 6 5 10 5 14c0 
                      5.523 4.477 10 10 10 4 
@@ -490,12 +626,132 @@
         case "theme-minimal":
           themeBtnText.textContent = "Minimal Mode";
           themeIcon.setAttribute('viewBox', '0 0 24 24');
-          /* Пример иконки круга */
           themeIcon.innerHTML = `
             <circle cx="12" cy="12" r="8"/>
           `;
           break;
       }
+
+      // Если эффект включён – перезапускаем анимацию для смены цвета линий
+      if (effectOn) {
+        cancelAnimationFrame(animationId);
+        animate();
+      }
+
+      // Запускаем анимации появления контента заново
+      animateElements();
+    }
+
+    /* Запуск анимаций для #title, #description, .buttons */
+    function animateElements() {
+      // Сбрасываем стили анимации (opacity), чтобы при переключении темы всё анимировалось заново
+      document.getElementById('title').style.opacity = 0;
+      document.getElementById('description').style.opacity = 0;
+      document.querySelector('.buttons').style.opacity = 0;
+
+      // Небольшая задержка, чтобы успеть сбросить opacity
+      setTimeout(() => {
+        document.getElementById('title').classList.add('animate');
+        document.getElementById('description').classList.add('animate');
+        document.querySelector('.buttons').classList.add('animate');
+      }, 50);
+    }
+
+    /* Включаем/выключаем нейросетевой эффект */
+    function toggleEffect() {
+      effectOn = !effectOn;
+      const btn = document.getElementById('effectBtn');
+      btn.textContent = effectOn ? 'Effect: On' : 'Effect: Off';
+
+      if (effectOn) {
+        // Показываем canvas, запускаем анимацию
+        document.getElementById('bgCanvas').style.display = 'block';
+        animate();
+      } else {
+        // Останавливаем анимацию
+        document.getElementById('bgCanvas').style.display = 'none';
+        cancelAnimationFrame(animationId);
+      }
+    }
+
+    /* Подгоняем Canvas под окно */
+    function resizeCanvas() {
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      ctx.scale(dpr, dpr);
+    }
+
+    /* Главный цикл анимации */
+    function animate() {
+      // Если эффект отключён — прерываем
+      if (!effectOn) return;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Определяем цвет линий в зависимости от темы
+      const lineColor = getLineColor();
+
+      // Двигаем точки
+      for (let p of points) {
+        p.x += p.vx;
+        p.y += p.vy;
+        // Отражаем от краёв
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+      }
+
+      // Соединяем точки
+      for (let i = 0; i < POINTS_NUM; i++) {
+        for (let j = i + 1; j < POINTS_NUM; j++) {
+          const p1 = points[i];
+          const p2 = points[j];
+          const dist = distance(p1, p2);
+          const maxDist = 150;
+          if (dist < maxDist) {
+            const alpha = 1 - dist / maxDist;
+            ctx.strokeStyle = lineColor + alphaToHex(alpha);
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      animationId = requestAnimationFrame(animate);
+    }
+
+    /* Цвет линий для каждой темы */
+    function getLineColor() {
+      if (document.documentElement.classList.contains('theme-light')) {
+        return '#000';
+      } else if (document.documentElement.classList.contains('theme-dark')) {
+        return '#fff';
+      } else if (document.documentElement.classList.contains('theme-cyber')) {
+        return '#0ff';
+      } else if (document.documentElement.classList.contains('theme-retro')) {
+        return '#3b2d1f'; 
+      } else if (document.documentElement.classList.contains('theme-forest')) {
+        return '#b0ffb0';
+      } else if (document.documentElement.classList.contains('theme-minimal')) {
+        return '#333';
+      }
+      return '#000'; // fallback
+    }
+
+    /* Расстояние между двумя точками */
+    function distance(p1, p2) {
+      const dx = p1.x - p2.x;
+      const dy = p1.y - p2.y;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    /* Преобразуем alpha (0..1) в двухсимвольный HEX */
+    function alphaToHex(alpha) {
+      let hex = Math.floor(alpha * 255).toString(16);
+      if (hex.length === 1) hex = '0' + hex;
+      return hex;
     }
   </script>
 </body>
