@@ -117,15 +117,6 @@
       100% { box-shadow: 0 0 20px #fff; }
     }
 
-    /* Canvas для «нейросетевого» эффекта */
-    #bgCanvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: -1; /* позади всего контента */
-      display: none; /* скрыт, пока эффект Off */
-    }
-
     /* Блок управления (правый верх) */
     .controls {
       position: absolute;
@@ -160,30 +151,6 @@
       color: currentColor;
     }
     .theme-btn:hover {
-      opacity: 0.7;
-    }
-    .theme-icon {
-      width: 20px;
-      height: 20px;
-      fill: currentColor;
-      transition: fill 0.3s;
-    }
-
-    /* Кнопка включения/выключения эффекта */
-    .effect-btn {
-      cursor: pointer;
-      font-weight: 700;
-      font-family: 'Montserrat', sans-serif;
-      background: transparent;
-      border: 1px solid currentColor;
-      padding: 3px 8px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      transition: 0.3s;
-      color: currentColor;
-    }
-    .effect-btn:hover {
       opacity: 0.7;
     }
 
@@ -302,10 +269,10 @@
       text-align: center;
     }
 
-    /* Описание (по центру, увеличен line-height) */
+    /* Описание (по центру, уменьшенный line-height) */
     #description {
       font-size: 1rem;
-      line-height: 1.5;
+      line-height: 1.3;
       max-width: 600px;
       margin: 0 20px;
       text-align: center;
@@ -315,14 +282,14 @@
       font-weight: 700;
     }
 
-    /* Блок кнопок (ниже описания) */
+    /* Блок кнопок (ниже описания, немного поднят ближе к центру) */
     .buttons {
       display: flex;
       flex-direction: column;
       gap: 15px;
       width: 70%;
       max-width: 350px;
-      margin-top: 25px;
+      margin-top: 15px;
     }
 
     /* Кнопки (цвет зависит от темы) */
@@ -399,9 +366,6 @@
     <div class="spinner"></div>
   </div>
 
-  <!-- Canvas для «нейросетевого» эффекта -->
-  <canvas id="bgCanvas"></canvas>
-
   <!-- Блок управления (правый верх) -->
   <div class="controls">
     <div class="lang-switch">
@@ -420,9 +384,6 @@
       </svg>
       <span id="themeBtnText">Light Mode</span>
     </button>
-
-    <!-- Включить/выключить «нейросетевой» эффект -->
-    <button class="effect-btn" id="effectBtn">Effect: Off</button>
   </div>
 
   <!-- Основной контейнер -->
@@ -495,14 +456,6 @@
     ];
     let currentThemeIndex = 0;
 
-    /* Для «нейросетевого» эффекта */
-    let effectOn = false;         // Активен ли эффект
-    let canvas, ctx;
-    const points = [];
-    const POINTS_NUM = 12;        // Кол-во «узлов»
-    const SPEED = 0.3;            // Скорость движения узлов
-    let animationId = null;       // ID requestAnimationFrame
-
     document.addEventListener('DOMContentLoaded', () => {
       // Показываем лоадер 5 секунд
       setTimeout(() => {
@@ -510,23 +463,6 @@
         setLanguage('ua'); // Язык по умолчанию
         animateElements(); // Запускаем анимации появления
       }, 5000);
-
-      // Инициализируем Canvas
-      canvas = document.getElementById('bgCanvas');
-      ctx = canvas.getContext('2d');
-      resizeCanvas();
-
-      // Создаём точки
-      for (let i = 0; i < POINTS_NUM; i++) {
-        points.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * SPEED,
-          vy: (Math.random() - 0.5) * SPEED
-        });
-      }
-
-      window.addEventListener('resize', resizeCanvas);
 
       // Обработчики языка
       document.getElementById('langUa').addEventListener('click', () => {
@@ -540,9 +476,6 @@
 
       // Кнопка темы
       document.getElementById('themeBtn').addEventListener('click', cycleTheme);
-
-      // Кнопка эффекта
-      document.getElementById('effectBtn').addEventListener('click', toggleEffect);
     });
 
     /* Установка языка */
@@ -632,12 +565,6 @@
           break;
       }
 
-      // Если эффект включён – перезапускаем анимацию для смены цвета линий
-      if (effectOn) {
-        cancelAnimationFrame(animationId);
-        animate();
-      }
-
       // Запускаем анимации появления контента заново
       animateElements();
     }
@@ -655,103 +582,6 @@
         document.getElementById('description').classList.add('animate');
         document.querySelector('.buttons').classList.add('animate');
       }, 50);
-    }
-
-    /* Включаем/выключаем нейросетевой эффект */
-    function toggleEffect() {
-      effectOn = !effectOn;
-      const btn = document.getElementById('effectBtn');
-      btn.textContent = effectOn ? 'Effect: On' : 'Effect: Off';
-
-      if (effectOn) {
-        // Показываем canvas, запускаем анимацию
-        document.getElementById('bgCanvas').style.display = 'block';
-        animate();
-      } else {
-        // Останавливаем анимацию
-        document.getElementById('bgCanvas').style.display = 'none';
-        cancelAnimationFrame(animationId);
-      }
-    }
-
-    /* Подгоняем Canvas под окно */
-    function resizeCanvas() {
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
-      ctx.scale(dpr, dpr);
-    }
-
-    /* Главный цикл анимации */
-    function animate() {
-      // Если эффект отключён — прерываем
-      if (!effectOn) return;
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Определяем цвет линий в зависимости от темы
-      const lineColor = getLineColor();
-
-      // Двигаем точки
-      for (let p of points) {
-        p.x += p.vx;
-        p.y += p.vy;
-        // Отражаем от краёв
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-      }
-
-      // Соединяем точки
-      for (let i = 0; i < POINTS_NUM; i++) {
-        for (let j = i + 1; j < POINTS_NUM; j++) {
-          const p1 = points[i];
-          const p2 = points[j];
-          const dist = distance(p1, p2);
-          const maxDist = 150;
-          if (dist < maxDist) {
-            const alpha = 1 - dist / maxDist;
-            ctx.strokeStyle = lineColor + alphaToHex(alpha);
-            ctx.beginPath();
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.stroke();
-          }
-        }
-      }
-
-      animationId = requestAnimationFrame(animate);
-    }
-
-    /* Цвет линий для каждой темы */
-    function getLineColor() {
-      if (document.documentElement.classList.contains('theme-light')) {
-        return '#000';
-      } else if (document.documentElement.classList.contains('theme-dark')) {
-        return '#fff';
-      } else if (document.documentElement.classList.contains('theme-cyber')) {
-        return '#0ff';
-      } else if (document.documentElement.classList.contains('theme-retro')) {
-        return '#3b2d1f'; 
-      } else if (document.documentElement.classList.contains('theme-forest')) {
-        return '#b0ffb0';
-      } else if (document.documentElement.classList.contains('theme-minimal')) {
-        return '#333';
-      }
-      return '#000'; // fallback
-    }
-
-    /* Расстояние между двумя точками */
-    function distance(p1, p2) {
-      const dx = p1.x - p2.x;
-      const dy = p1.y - p2.y;
-      return Math.sqrt(dx * dx + dy * dy);
-    }
-
-    /* Преобразуем alpha (0..1) в двухсимвольный HEX */
-    function alphaToHex(alpha) {
-      let hex = Math.floor(alpha * 255).toString(16);
-      if (hex.length === 1) hex = '0' + hex;
-      return hex;
     }
   </script>
 </body>
