@@ -1,81 +1,45 @@
 <!DOCTYPE html>
-<html lang="uk" class="theme-light">
+<html lang="uk" class="theme-dark">
 <head>
   <meta charset="UTF-8">
   <title>AppLab</title>
-
-  <!-- Отключаем масштабирование, подстраиваем под экраны -->
+  <!-- Масштабування, підстроювання під екрани -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
-  <!-- Peace Sans (для заголовка) -->
+  <!-- Peace Sans для заголовків -->
   <link rel="preconnect" href="https://fonts.cdnfonts.com" />
   <link href="https://fonts.cdnfonts.com/css/peace-sans" rel="stylesheet" />
 
-  <!-- Montserrat (для основного текста и кнопок) -->
+  <!-- Montserrat для основного тексту та кнопок -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
-    /* Сброс/базовые стили */
+    /* Базові стилі */
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
-      overflow: hidden; /* Без прокрутки */
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
+      overflow: hidden;
       user-select: none;
       -webkit-touch-callout: none;
       font-family: 'Montserrat', sans-serif;
       transition: background 0.5s, color 0.5s;
     }
 
-    /* ====== ТЕМЫ (6 штук) ====== */
-    /* LIGHT */
-    .theme-light {
-      background: #ffffff;
-      color: #000000;
-    }
+    /* ====== Теми (без minimal mode) ====== */
+    .theme-light { background: #ffffff; color: #000000; }
+    .theme-dark  { background: #111111; color: #eeeeee; }
+    .theme-cyber { background: #000000; color: #0ff; }
+    .theme-retro { background: #f2dcb3; color: #3b2d1f; }
+    .theme-forest{ background: #2e4600; color: #b0ffb0; }
 
-    /* DARK */
-    .theme-dark {
-      background: #111111;
-      color: #eeeeee;
-    }
-
-    /* CYBER */
-    .theme-cyber {
-      background: #000000;
-      color: #0ff;
-    }
-
-    /* RETRO */
-    .theme-retro {
-      background: #f2dcb3;
-      color: #3b2d1f;
-    }
-
-    /* FOREST */
-    .theme-forest {
-      background: #2e4600;
-      color: #b0ffb0;
-    }
-
-    /* MINIMAL */
-    .theme-minimal {
-      background: #f0f0f0;
-      color: #333;
-    }
-
-    /* Экран загрузки (5 секунд, чёрный фон) */
+    /* Екран завантаження */
     .loader {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
       background: #000;
       color: #fff;
       display: flex;
@@ -86,9 +50,8 @@
     }
     .loader h2 {
       font-family: 'Peace Sans', sans-serif;
-      font-size: 2rem;
+      font-size: 3rem;
       margin: 0;
-      padding: 0;
       animation: pulseText 2s ease-in-out infinite;
     }
     .loader p {
@@ -101,27 +64,38 @@
       50%      { text-shadow: 0 0 10px #fff; }
     }
     .spinner {
-      width: 40px;
-      height: 40px;
+      width: 40px; height: 40px;
       border: 4px solid #fff;
       border-top-color: transparent;
       border-radius: 50%;
       margin-top: 20px;
       animation: spin 1s linear infinite, glow 1.5s ease-in-out infinite alternate;
     }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
     @keyframes glow {
       0%   { box-shadow: 0 0 10px #fff; }
       100% { box-shadow: 0 0 20px #fff; }
     }
 
-    /* Блок управления (правый верх) */
+    /* Соц. іконки */
+    .social-icons {
+      position: absolute;
+      top: 10px; left: 10px;
+      display: flex;
+      gap: 15px;
+      z-index: 9999;
+    }
+    .social-link { text-decoration: none; color: currentColor; }
+    .social-icon {
+      width: 24px; height: 24px;
+      fill: currentColor;
+      transition: fill 0.3s;
+    }
+
+    /* Кнопки управління (правий верх) */
     .controls {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: 10px; right: 10px;
       display: flex;
       align-items: center;
       gap: 15px;
@@ -132,15 +106,10 @@
       font-weight: 700;
       text-decoration: underline;
     }
-    .lang-switch span:hover {
-      opacity: 0.7;
-    }
-
-    /* Кнопка смены темы */
+    .lang-switch span:hover { opacity: 0.7; }
     .theme-btn {
       cursor: pointer;
       font-weight: 700;
-      font-family: 'Montserrat', sans-serif;
       background: transparent;
       border: 1px solid currentColor;
       padding: 3px 8px;
@@ -150,31 +119,29 @@
       transition: 0.3s;
       color: currentColor;
     }
-    .theme-btn:hover {
-      opacity: 0.7;
+    .theme-btn:hover { opacity: 0.7; }
+    .theme-icon {
+      width: 16px; height: 16px;
+      fill: currentColor;
+      transition: fill 0.3s;
     }
 
-    /* Основной контейнер (центр экрана) */
+    /* Основний контейнер */
     .container {
-      width: 100vw;
-      height: 100vh;
+      width: 100vw; height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      box-sizing: border-box;
       padding: 20px;
+      box-sizing: border-box;
     }
 
-    /* Заголовок, описание, кнопки – по умолчанию прозрачны (для анимаций) */
-    #title, #description, .buttons {
-      opacity: 0;
-    }
-
-    /* Анимации (ключевые кадры) */
+    /* Анімації появи */
+    #title, #description, .buttons, #boldLine { opacity: 0; }
     @keyframes fadeInUp {
       from { transform: translateY(20px); opacity: 0; }
-      to   { transform: translateY(0);    opacity: 1; }
+      to   { transform: translateY(0);     opacity: 1; }
     }
     @keyframes fadeInLeft {
       from { transform: translateX(-20px); opacity: 0; }
@@ -182,7 +149,7 @@
     }
     @keyframes fadeInRight {
       from { transform: translateX(20px); opacity: 0; }
-      to   { transform: translateX(0);    opacity: 1; }
+      to   { transform: translateX(0);     opacity: 1; }
     }
     @keyframes fadeInDown {
       from { transform: translateY(-20px); opacity: 0; }
@@ -197,70 +164,39 @@
       to   { opacity: 1; }
     }
 
-    /* Тема LIGHT: всплывают вверх */
-    .theme-light #title.animate {
-      animation: fadeInUp 0.8s ease forwards;
-    }
-    .theme-light #description.animate {
-      animation: fadeInUp 0.8s ease 0.2s forwards;
-    }
-    .theme-light .buttons.animate {
-      animation: fadeInUp 0.8s ease 0.4s forwards;
-    }
+    /* Анімації в залежності від теми */
+    .theme-light #title.animate { animation: fadeInUp 0.8s ease forwards; }
+    .theme-light #description.animate { animation: fadeInUp 0.8s ease 0.2s forwards; }
+    .theme-light #boldLine.animate { animation: fadeInUp 0.8s ease 0.3s forwards; }
+    .theme-light .buttons.animate { animation: fadeInUp 0.8s ease 0.4s forwards; }
 
-    /* Тема DARK: слева */
-    .theme-dark #title.animate {
-      animation: fadeInLeft 0.8s ease forwards;
-    }
-    .theme-dark #description.animate {
-      animation: fadeInLeft 0.8s ease 0.2s forwards;
-    }
-    .theme-dark .buttons.animate {
-      animation: fadeInLeft 0.8s ease 0.4s forwards;
-    }
+    .theme-dark #title.animate { animation: fadeInLeft 0.8s ease forwards; }
+    .theme-dark #description.animate { animation: fadeInLeft 0.8s ease 0.2s forwards; }
+    .theme-dark #boldLine.animate { animation: fadeInLeft 0.8s ease 0.3s forwards; }
+    .theme-dark .buttons.animate { animation: fadeInLeft 0.8s ease 0.4s forwards; }
 
-    /* Тема CYBER: справа */
-    .theme-cyber #title.animate {
-      animation: fadeInRight 0.8s ease forwards;
-    }
-    .theme-cyber #description.animate {
-      animation: fadeInRight 0.8s ease 0.2s forwards;
-    }
-    .theme-cyber .buttons.animate {
-      animation: fadeInRight 0.8s ease 0.4s forwards;
-    }
+    .theme-cyber #title.animate { animation: fadeInRight 0.8s ease forwards; }
+    .theme-cyber #description.animate { animation: fadeInRight 0.8s ease 0.2s forwards; }
+    .theme-cyber #boldLine.animate { animation: fadeInRight 0.8s ease 0.3s forwards; }
+    .theme-cyber .buttons.animate { animation: fadeInRight 0.8s ease 0.4s forwards; }
 
-    /* Тема RETRO: сверху */
-    .theme-retro #title.animate {
-      animation: fadeInDown 0.8s ease forwards;
-    }
-    .theme-retro #description.animate {
-      animation: fadeInDown 0.8s ease 0.2s forwards;
-    }
-    .theme-retro .buttons.animate {
-      animation: fadeInDown 0.8s ease 0.4s forwards;
-    }
+    .theme-retro #title.animate { animation: fadeInDown 0.8s ease forwards; }
+    .theme-retro #description.animate { animation: fadeInDown 0.8s ease 0.2s forwards; }
+    .theme-retro #boldLine.animate { animation: fadeInDown 0.8s ease 0.3s forwards; }
+    .theme-retro .buttons.animate { animation: fadeInDown 0.8s ease 0.4s forwards; }
 
-    /* Тема FOREST: scaleUp */
     .theme-forest #title.animate,
     .theme-forest #description.animate,
+    .theme-forest #boldLine.animate,
     .theme-forest .buttons.animate {
       animation: scaleUp 0.8s ease forwards;
     }
-    /* Иконку листочка делаем меньше */
     .theme-forest .theme-icon path {
       transform: scale(0.8);
       transform-origin: center;
     }
 
-    /* Тема MINIMAL: простое проявление */
-    .theme-minimal #title.animate,
-    .theme-minimal #description.animate,
-    .theme-minimal .buttons.animate {
-      animation: fadeIn 0.8s ease forwards;
-    }
-
-    /* Заголовок (по центру) */
+    /* Заголовок та опис */
     #title {
       font-family: 'Peace Sans', sans-serif;
       font-size: 2.8rem;
@@ -268,21 +204,19 @@
       font-weight: 700;
       text-align: center;
     }
-
-    /* Описание (по центру, уменьшенный line-height) */
     #description {
       font-size: 1rem;
-      line-height: 1.3;
+      line-height: 1.2;
       max-width: 600px;
       margin: 0 20px;
-      text-align: center;
+      text-align: justify;
     }
-    /* Жирным выделяем отдельную фразу */
     #boldLine {
       font-weight: 700;
+      font-size: 0.9rem;
+      margin: 10px 20px 0 20px;
+      text-align: center;
     }
-
-    /* Блок кнопок (ниже описания, немного поднят ближе к центру) */
     .buttons {
       display: flex;
       flex-direction: column;
@@ -292,11 +226,35 @@
       margin-top: 15px;
     }
 
-    /* Кнопки (цвет зависит от темы) */
+    /* Сервіс-картки */
+    .service-card {
+      flex: 0 0 100%;
+      margin: 0;
+      border-radius: 6px;
+      padding: 15px;
+      text-align: center;
+      animation: slideIn 0.5s ease forwards;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      min-height: 350px;
+      position: relative;
+    }
+    @keyframes slideIn {
+      from { transform: translateX(20px); opacity: 0; }
+      to   { transform: translateX(0);     opacity: 1; }
+    }
+    /* Центрування іконок */
+    .service-icon {
+      width: 40px;
+      height: 40px;
+      margin: 0 auto 10px auto;
+      display: block;
+    }
+
+    /* Кнопки */
     .btn {
       font-family: 'Montserrat', sans-serif;
-      position: relative;
-      display: inline-block;
       padding: 12px 0;
       font-weight: 700;
       font-size: 1.1rem;
@@ -304,6 +262,7 @@
       text-align: center;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
       border: 1px solid;
+      cursor: pointer;
     }
     .btn:hover {
       transform: translateY(-2px);
@@ -313,37 +272,43 @@
       transform: scale(0.95);
       box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
     }
-
-    /* Цвет кнопок в темах */
-    .theme-light .btn {
-      background-color: #000;
-      color: #fff;
-      border-color: #000;
-    }
+    /* Темний режим – кнопки з підсвічуванням обідку */
     .theme-dark .btn {
-      background-color: #fff;
-      color: #000;
       border-color: #fff;
     }
-    .theme-cyber .btn {
-      background-color: #0ff;
-      color: #000;
-      border-color: #0ff;
+    .theme-dark .btn:hover {
+      box-shadow: 0 0 5px rgba(255,255,255,0.6);
     }
-    .theme-retro .btn {
-      background-color: #3b2d1f;
-      color: #f2dcb3;
-      border-color: #3b2d1f;
+
+    /* Стиль для кнопки "Детальніше" – чуть меньше шириной */
+    .detail-btn {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 10px 8px; /* уменьшили горизонтальные отступы */
+      text-decoration: none;
+      text-align: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      border: 1px solid;
+      cursor: pointer;
+      background-color: inherit;
+      color: inherit;
+      margin-top: auto; /* выравниваем внизу */
     }
-    .theme-forest .btn {
-      background-color: #b0ffb0;
-      color: #2e4600;
-      border-color: #b0ffb0;
+    .detail-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
     }
-    .theme-minimal .btn {
-      background-color: #fff;
-      color: #333;
-      border-color: #fff;
+    .detail-btn:active {
+      transform: scale(0.95);
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+    }
+
+    .service-card p {
+      font-size: 1rem;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      text-align: justify;
     }
 
     /* Футер */
@@ -356,115 +321,751 @@
       font-weight: 400;
       transition: color 0.5s;
     }
+
+    /* Модальні вікна та overlay з плавним переходом */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 99998;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal {
+      position: relative;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 500px;
+      width: 80%;
+      min-height: 350px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    .modal.active {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Модальне вікно "Детальний опис послуги" (на весь екран) */
+    .modal-fullscreen {
+      max-width: 100vw;
+      width: 100vw;
+      max-height: 100vh;
+      height: 100vh;
+      border-radius: 0;
+      overflow-y: auto;
+    }
+    .modal-fullscreen .modal-close {
+      font-size: 2.5rem;
+    }
+    .service-detail-content {
+      text-align: left;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .service-detail-content p {
+      font-size: 1rem;
+      line-height: 1.4;
+      margin: 10px 0;
+      text-align: justify;
+    }
+    .service-detail-content strong {
+      font-weight: 700;
+    }
+
+    /* Слайдер в модальном окне "Послуги" */
+    #modalServices { 
+      text-align: center; 
+      padding-top: 10px; /* чуть поднимаем */
+    }
+    .slider-container {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      margin-top: 0; /* убрали большой отступ */
+      height: 350px;
+    }
+    .slider {
+      display: flex;
+      transition: transform 0.3s ease;
+      height: 100%;
+    }
+
+    /* Слайдер для детальных картинок (одна на экран) */
+    .detail-slider-container {
+      position: relative;
+      width: 100%;
+      height: 320px; /* высота под картинку */
+      margin-top: 20px;
+      overflow: hidden;
+    }
+    .detail-slider-wrapper {
+      display: flex;
+      transition: transform 0.3s ease;
+      height: 100%;
+    }
+    .detail-slide {
+      min-width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #000;
+    }
+    .detail-slide img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+    }
+    .detail-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.4);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      padding: 10px 15px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      z-index: 10;
+    }
+    .detail-arrow:hover {
+      background: rgba(0,0,0,0.7);
+    }
+    .detail-arrow:active {
+      transform: translateY(-50%) scale(0.95);
+    }
+    .detail-arrow-left {
+      left: 5px;
+    }
+    .detail-arrow-right {
+      right: 5px;
+    }
+
+    /* Різний фон/тінь для тем */
+    .theme-light .modal {
+      background: #fff; color: #000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    .theme-dark .modal {
+      background: #222; color: #eee;
+      box-shadow: 0 2px 10px rgba(255,255,255,0.2);
+      border: 1px solid #444;
+    }
+    .theme-cyber .modal {
+      background: #111; color: #0ff;
+      box-shadow: 0 2px 10px rgba(0,255,255,0.3);
+      border: 1px solid #0ff;
+    }
+    .theme-retro .modal {
+      background: #f2dcb3; color: #3b2d1f;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    .theme-forest .modal {
+      background: #2e4600; color: #b0ffb0;
+      box-shadow: 0 2px 10px rgba(0,255,0,0.3);
+      border: 1px solid #5a8f00;
+    }
+
+    .modal .modal-close {
+      position: absolute;
+      top: 10px; right: 10px;
+      cursor: pointer;
+      font-size: 2.5rem;
+    }
+
+    /* Модальне вікно "Про нас": вирівнювання по центру */
+    #modalAbout { text-align: center; }
   </style>
 </head>
 <body>
-  <!-- Экран загрузки (5 секунд) -->
+  <!-- Екран завантаження (5 секунд) -->
   <div class="loader" id="loader">
     <h2>AppLab</h2>
     <p>Будуємо майбутнє разом...</p>
     <div class="spinner"></div>
   </div>
 
-  <!-- Блок управления (правый верх) -->
+  <!-- Соц. іконки -->
+  <div class="social-icons">
+    <!-- Telegram -->
+    <a href="#" target="_blank" class="social-link" title="Telegram">
+      <svg class="social-icon" viewBox="0 0 448 512">
+        <path fill="currentColor"
+              d="M446.7 72.2c-5.7-4.7-13.5-5.7-20.2-2.6L25 
+                 210.6c-7.8 3.1-12.9 10.1-13.6 18s3.2 15.5 10.5 
+                 19.6l111.2 59.6 42.7 136.4c2.1 6.6 7.6 11.4 
+                 14.3 12.5 6.7 1.2 13.4-1.2 17.7-6.1l58.3-68.1 
+                 99.3 80.3c3.6 2.9 8 4.4 12.6 4.4 2.6 0 5.2-.5 
+                 7.7-1.6 6.9-2.9 11.8-8.9 13-16.2l64-368
+                 c1.2-6.8-1.3-13.7-6.9-18.3z"/>
+      </svg>
+    </a>
+    <!-- Instagram -->
+    <a href="#" target="_blank" class="social-link" title="Instagram">
+      <svg class="social-icon" viewBox="0 0 448 512">
+        <path fill="currentColor"
+              d="M224.1 141c-63.6 0-114.9 
+                 51.3-114.9 114.9s51.3 114.9 114.9 
+                 114.9 114.9-51.3 114.9-114.9S287.7 
+                 141 224.1 141zm0 189.6c-41.2 0-74.7
+                 -33.5-74.7-74.7s33.5-74.7 74.7-74.7 
+                 74.7 33.5 74.7 74.7-33.5 74.7-74.7 
+                 74.7zm146.4-194.3c0 14.9-12.1 27-27 
+                 27s-27-12.1-27-27 12.1-27 27-27 
+                 27 12.1 27 27zm76.1 27.2c-1.7-35.7
+                 -9.9-67.3-36.2-93.6s-57.9-34.4-93.6
+                 -36.2c-37-2.1-147.9-2.1-184.9 0
+                 -35.7 1.7-67.3 9.9-93.6 36.2s
+                 -34.4 57.9-36.2 93.6c-2.1 37-2.1 
+                 147.9 0 184.9 1.7 35.7 9.9 67.3 
+                 36.2 93.6s57.9 34.4 93.6 36.2
+                 c37 2.1 147.9 2.1 184.9 0 35.7
+                 -1.7 67.3-9.9 93.6-36.2s34.4
+                 -57.9 36.2-93.6c2.1-37 2.1
+                 -147.9 0-184.9zM398.8 388c-7.8 
+                 19.6-22.9 34.7-42.6 42.6-29.5 
+                 11.7-99.5 9-132.1 9s-102.7 2.6
+                 -132.1-9c-19.6-7.8-34.7-22.9
+                 -42.6-42.6-11.7-29.5-9-99.5
+                 -9-132.1s-2.6-102.7 9-132.1
+                 c7.8-19.6 22.9-34.7 42.6-42.6
+                 29.5-11.7 99.5-9 132.1-9s
+                 102.7-2.6 132.1 9c19.6 7.8 
+                 34.7 22.9 42.6 42.6 11.7 
+                 29.5 9 99.5 9 132.1s2.7 
+                 102.7-9 132.1z"/>
+      </svg>
+    </a>
+  </div>
+
+  <!-- Кнопки управління (правий верх) -->
   <div class="controls">
     <div class="lang-switch">
       <span id="langUa">UA</span> |
       <span id="langEn">EN</span>
     </div>
-    <!-- Переключение тем -->
     <button class="theme-btn" id="themeBtn">
       <svg class="theme-icon" id="themeIcon" viewBox="0 0 24 24">
-        <!-- Иконка солнца (по умолчанию) -->
-        <path d="M12 3v2m0 14v2m7.07-7.07h2M3 
-                 12h2m15.07 4.93l1.414 1.414M4.93
-                 4.93L6.343 6.343m12.727 0l-1.414
-                 1.414M4.93 19.07l1.414-1.414M12
-                 8a4 4 0 100 8 4 4 0 000-8z"/>
+        <path d="M17.293 13.293A8 8 0 1110.707 2.707a8.003 8.003 0 006.586 10.586z"/>
       </svg>
-      <span id="themeBtnText">Light Mode</span>
+      <span id="themeBtnText">Dark Mode</span>
     </button>
   </div>
 
-  <!-- Основной контейнер -->
+  <!-- Основний контейнер -->
   <div class="container">
     <h1 id="title">AppLab</h1>
     <p id="description">
-      Ласкаво просимо до AppLab – вашого надійного партнера у створенні 
-      Telegram-ботів, міні-ігор, мобільних додатків та інтернет-магазинів. 
-      Також ми розробляємо програми та боти з ШІ, включно з торговими ботами для трейдингу, 
-      що допоможуть автоматизувати бізнес, залучити нових клієнтів та вивести ваші проєкти 
-      на новий рівень! <br><br>
-      <span id="boldLine">Ми можемо реалізувати все, незалежно від рівня складності.</span>
+      Ласкаво просимо до AppLab – вашого надійного партнера у створенні Telegram-ботів, міні-ігор, мобільних додатків та інтернет-магазинів. Також ми розробляємо програми та боти з ШІ, що допоможуть автоматизувати бізнес, залучити нових клієнтів та вивести ваші проєкти на новий рівень!
     </p>
+    <p id="boldLine">Ми можемо реалізувати все, незалежно від рівня складності.</p>
     <div class="buttons">
-      <a href="#" class="btn" id="btn1">Про нас</a>
-      <a href="#" class="btn" id="btn2">Замовити</a>
-      <a href="#" class="btn" id="btn3">Послуги</a>
-      <a href="#" class="btn" id="btn4">Контакти</a>
+      <div class="btn" id="btn1">Про нас</div>
+      <div class="btn" id="btn3">Послуги</div>
+      <div class="btn" id="btn2">Замовити</div>
+      <div class="btn" id="btn4">Контакти</div>
     </div>
   </div>
 
   <!-- Футер -->
   <div id="footer"></div>
 
+  <!-- Модальні вікна -->
+  <!-- Модальне вікно "Про нас" -->
+  <div class="modal-overlay" id="modalOverlayAbout">
+    <div class="modal" id="modalAbout">
+      <span class="modal-close" data-modal="modalOverlayAbout">&times;</span>
+      <h2 id="modalAboutTitle">Про нас</h2>
+      <p id="modalAboutContent">
+        Ми – компанія AppLab, що спеціалізується на розробці інноваційних рішень та технологій для вашого бізнесу. Наш багаторічний досвід, команда висококваліфікованих спеціалістів та індивідуальний підхід до кожного клієнта дозволяють нам втілювати найсміливіші ідеї в реальність. Ми створюємо продукти, що відповідають найвищим стандартам якості, використовуючи сучасні технології та креативні рішення. Наша мета – допомогти вашому бізнесу зростати, оптимізувати процеси та виводити проєкти на новий рівень.
+      </p>
+    </div>
+  </div>
+
+  <!-- Модальне вікно "Послуги" (зі слайдером) -->
+  <div class="modal-overlay" id="modalOverlayServices">
+    <div class="modal" id="modalServices">
+      <!-- Убрали заголовок "Послуги" -->
+      <span class="modal-close" data-modal="modalOverlayServices">&times;</span>
+      <!-- Слайдер послуг -->
+      <div id="servicesSliderContainer" class="slider-container">
+        <div id="servicesSlider" class="slider"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальне вікно "Замовити" -->
+  <div class="modal-overlay" id="modalOverlayOrder">
+    <div class="modal" id="modalOrder">
+      <span class="modal-close" data-modal="modalOverlayOrder">&times;</span>
+      <h2 id="modalOrderTitle">Замовити</h2>
+      <p id="modalOrderContent">
+        Звертайтесь до нас, щоб замовити розробку вашого проекту. Ми гарантуємо високу якість, своєчасну доставку та індивідуальний підхід до кожного клієнта. Заповніть форму замовлення або зателефонуйте нам для отримання консультації.
+      </p>
+    </div>
+  </div>
+
+  <!-- Модальне вікно "Контакти" -->
+  <div class="modal-overlay" id="modalOverlayContacts">
+    <div class="modal" id="modalContacts">
+      <span class="modal-close" data-modal="modalOverlayContacts">&times;</span>
+      <h2 id="modalContactsTitle">Контакти</h2>
+      <p id="modalContactsContent">
+        Зв'яжіться з нами за телефоном або електронною поштою: contact@app.lab. Ми завжди готові відповісти на ваші запитання, надати додаткову інформацію про наші послуги та організувати особисту зустріч в нашому офісі.
+      </p>
+    </div>
+  </div>
+
+  <!-- Модальне вікно "Детальний опис послуги" (на весь екран) -->
+  <div class="modal-overlay" id="modalOverlayServiceDetail">
+    <div class="modal modal-fullscreen" id="modalServiceDetail">
+      <span class="modal-close" data-modal="modalOverlayServiceDetail">&times;</span>
+      <h2 id="modalServiceDetailTitle" style="text-align: center;"></h2>
+      <div class="service-detail-content" id="modalServiceDetailContent"></div>
+      <!-- Слайдер для картинок -->
+      <div class="detail-slider-container" id="detailSliderContainer">
+        <button class="detail-arrow detail-arrow-left" id="detailArrowLeft">&#9664;</button>
+        <div class="detail-slider-wrapper" id="detailSliderWrapper"></div>
+        <button class="detail-arrow detail-arrow-right" id="detailArrowRight">&#9654;</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    /* Тексты для двух языков */
+    /* Тексти для двох мов */
     const translations = {
       ua: {
         title: "AppLab",
-        paragraph: `
-          Ласкаво просимо до AppLab – вашого надійного партнера у створенні 
+        paragraph: 
+          `Ласкаво просимо до AppLab – вашого надійного партнера у створенні 
           Telegram-ботів, міні-ігор, мобільних додатків та інтернет-магазинів. 
-          Також ми розробляємо програми та боти з ШІ, включно з торговими ботами для трейдингу, 
-          що допоможуть автоматизувати бізнес, залучити нових клієнтів та вивести ваші проєкти 
-          на новий рівень! <br><br>
-          <span id="boldLine">Ми можемо реалізувати все, незалежно від рівня складності.</span>
-        `,
+          Також ми розробляємо програми та боти з ШІ, що допоможуть автоматизувати бізнес, 
+          залучити нових клієнтів та вивести ваші проєкти на новий рівень!`,
+        boldLine: "Ми можемо реалізувати все, незалежно від рівня складності.",
         btn1: "Про нас",
         btn2: "Замовити",
         btn3: "Послуги",
         btn4: "Контакти",
-        footer: "&copy; 2025 AppLab. Усі права захищено."
+        detailBtn: "Детальніше",
+        footer: "&copy; 2025 AppLab. Усі права захищено.",
+        modalAboutTitle: "Про нас",
+        modalAboutContent: "Ми – компанія AppLab, що спеціалізується на розробці інноваційних рішень...",
+        modalOrderTitle: "Замовити",
+        modalOrderContent: "Звертайтесь до нас, щоб замовити розробку вашого проекту...",
+        modalContactsTitle: "Контакти",
+        modalContactsContent: "Зв'яжіться з нами за телефоном або електронною поштою..."
       },
       en: {
         title: "AppLab",
-        paragraph: `
-          Welcome to AppLab – your reliable partner in creating 
+        paragraph: 
+          `Welcome to AppLab – your reliable partner in creating 
           Telegram bots, mini-games, mobile apps, and online stores. 
-          We also develop AI-powered programs and bots, including trading bots, 
-          to help automate your business, attract new customers, and take your projects 
-          to the next level! <br><br>
-          <span id="boldLine">We can create anything, regardless of complexity.</span>
-        `,
+          We also develop programs and bots with AI to help automate your business, 
+          attract new customers, and take your projects to the next level!`,
+        boldLine: "We can create anything, regardless of complexity.",
         btn1: "About Us",
         btn2: "Order Now",
         btn3: "Services",
         btn4: "Contacts",
-        footer: "&copy; 2025 AppLab. All rights reserved."
+        detailBtn: "More Details",
+        footer: "&copy; 2025 AppLab. All rights reserved.",
+        modalAboutTitle: "About Us",
+        modalAboutContent: "We are AppLab, a company specializing in innovative solutions...",
+        modalOrderTitle: "Order Now",
+        modalOrderContent: "Contact us to order the development of your project...",
+        modalContactsTitle: "Contacts",
+        modalContactsContent: "Reach out to us by phone or email..."
       }
     };
 
-    /* Список тем */
+    /* Универсальный массив картинок (i.ibb.co) */
+    const universalImages = [
+      "https://i.ibb.co/3YBqCB22/photo-2025-03-02-13-49-58.jpg",
+      "https://i.ibb.co/G39BZdKw/photo-2025-03-02-13-49-57-2.jpg",
+      "https://i.ibb.co/3yYJHf9m/photo-2025-03-02-13-49-57.jpg",
+      "https://i.ibb.co/7d0GVvMC/photo-2025-03-02-13-49-56-3.jpg",
+      "https://i.ibb.co/tnSzvYd/photo-2025-03-02-13-49-56-2.jpg",
+      "https://i.ibb.co/Fb6whT32/photo-2025-03-02-13-49-56.jpg",
+      "https://i.ibb.co/gb7CJrf4/photo-2025-03-02-13-49-55.jpg"
+    ];
+
+    /* Все 8 услуг на украинском */
+    const servicesDataUa = [
+      {
+        title: "Розумні Telegram-боти для продажів",
+        icon: 
+          `<svg class="service-icon" viewBox="0 0 24 24">
+            <path fill="currentColor"
+              d="M2 12c0 5.514 4.486 10 10 10 
+              5.513 0 10-4.486 10-10S17.513 
+              2 12 2 2 6.486 2 12zm15.466 
+              1.125l-2.125 2.125a1 1 0 0 1-1.334.06
+              l-1.699-1.36-1.36-1.699a1 1 0 0 1 
+              .06-1.334l2.125-2.125a.5.5 0 0 1 
+              .707 0l3.626 3.626a.5.5 0 0 1 0 
+              .707z"/>
+          </svg>`,
+        content: 
+          `Створюємо інтелектуальні Telegram-боти, які автоматизують процес продажів та забезпечують швидку обробку запитів клієнтів.`,
+        detail:
+          `<p><strong>Опис:</strong></p>
+          <p>Наші рішення включають комплексну інтеграцію з CRM, аналітику, автоматизацію замовлень та безпечне управління даними.</p>
+          <p><strong>Ми робимо:</strong></p>
+          <ul>
+            <li>Інтерактивні чат-боти з персоналізованими відповідями;</li>
+            <li>Автоматичне оновлення інформації про товари;</li>
+            <li>Інтеграцію з платіжними системами;</li>
+            <li>Оптимізацію процесів продажів.</li>
+          </ul>
+          <p><strong>Додатковий опис:</strong> Ми враховуємо специфіку вашого бізнесу та пропонуємо індивідуальні налаштування, які підвищать ефективність продажів і збільшать конверсію.</p>`,
+        screenshots: universalImages
+      },
+      {
+        title: "Ігри для Telegram (клікери, P2E, міні-ігри)",
+        icon: 
+          `<svg class="service-icon" viewBox="0 0 24 24">
+            <path fill="currentColor"
+              d="M21 8h-1V6a2 2 0 0 0-2-2h-2
+              a2 2 0 0 0-2 2v2H10V6a2 2 0 0 0-2-2H6
+              a2 2 0 0 0-2 2v2H3c-1.1 0-2 .9-2 
+              2v7a2 2 0 0 0 2 2h18a2 2 0 0 0 
+              2-2v-7c0-1.1-.9-2-2-2zm-9 7h-2v-2
+              h2v2zm4 0h-2v-2h2v2z"/>
+          </svg>`,
+        content: 
+          `Розробляємо захоплюючі ігри для Telegram, що поєднують інноваційний геймплей із монетизацією через P2E та NFT.`,
+        detail:
+          `<p><strong>Опис:</strong></p>
+          <p>Наші ігри розроблені з урахуванням останніх трендів у геймдизайні, що дозволяє утримувати увагу користувачів і стимулювати повторні заходи.</p>
+          <p><strong>Ми робимо:</strong></p>
+          <ul>
+            <li>Унікальні клікери з бонусами;</li>
+            <li>Інтеграцію P2E механік;</li>
+            <li>Конкурентні міні-ігри;</li>
+            <li>Системи рейтингів та змагань.</li>
+          </ul>
+          <p><strong>Додатковий опис:</strong> Створюємо можливості для активної ігрової спільноти, івентів та акцій, що підвищують інтерес до вашого проєкту.</p>`,
+        screenshots: universalImages
+      },
+      {
+        title: "Додатки та боти з штучним інтелектом",
+        icon: 
+          `<svg class="service-icon" viewBox="0 0 24 24">
+            <path fill="currentColor"
+              d="M12 2C6.486 2 2 6.486 2 
+              12s4.486 10 10 10 10-4.486
+              10-10S17.514 2 12 2zm0 2c4.411 
+              0 8 3.589 8 8 0 4.411-3.589
+              8-8 8-4.411 0-8-3.589-8
+              -8 0-4.411 3.589-8 8-8zm0 
+              2c-3.309 0-6 2.691-6 6 0 
+              3.309 2.691 6 6 6s6-2.691 
+              6-6c0-3.309-2.691-6-6-6z"/>
+          </svg>`,
+        content: 
+          `Створюємо інноваційні рішення на основі ШІ для оптимізації бізнес-процесів і покращення взаємодії з клієнтами.`,
+        detail:
+          `<p><strong>Опис:</strong></p>
+          <p>Інтегруємо штучний інтелект у ваші сервіси для персоналізації, аналітики та автоматизації. Це дозволяє швидко обробляти великі обсяги даних.</p>
+          <p><strong>Ми робимо:</strong></p>
+          <ul>
+            <li>Системи рекомендацій;</li>
+            <li>Чат-боти з підтримкою NLP;</li>
+            <li>Автоматизацію аналітики даних;</li>
+            <li>Інтеграцію AI-алгоритмів у бізнес-процеси.</li>
+          </ul>
+          <p><strong>Додатковий опис:</strong> Забезпечуємо повну інтеграцію з сучасними технологіями ШІ, що допоможе вашому бізнесу бути на крок попереду конкурентів.</p>`,
+        screenshots: universalImages
+      },
+      {
+        title: "Мобільні додатки для App Store та Google Play",
+        icon: 
+          `<svg class="service-icon" viewBox="0 0 24 24">
+            <path fill="currentColor"
+              d="M17 2H7C5.346 2 4 3.346 4 
+              5v14c0 1.654 1.346 3 3 3h10
+              c1.654 0 3-1.346 3-3V5c0-1.654
+              -1.346-3-3-3zm1 17c0 .551-.448
+              1-1 1H7c-.552 0-1-.449-1-1V5c0
+              -.551.448-1 1-1h10c.552 0 1
+              .449 1 1v14z"/>
+          </svg>`,
+        content: 
+          `Проектуємо сучасні мобільні додатки з інтуїтивно зрозумілим дизайном та високою продуктивністю.`,
+        detail:
+          `<p><strong>Опис:</strong></p>
+          <p>Розробляємо додатки, що працюють бездоганно на iOS та Android. Забезпечуємо стабільну роботу, швидке завантаження і адаптивний дизайн.</p>
+          <p><strong>Ми робимо:</strong></p>
+          <ul>
+            <li>Адаптивні інтерфейси;</li>
+            <li>Інтеграцію з App Store та Google Play;</li>
+            <li>Оптимізацію продуктивності;</li>
+            <li>Підтримку сучасних функціональних можливостей.</li>
+          </ul>
+          <p><strong>Додатковий опис:</strong> Гарантуємо безперебійну роботу та комфорт користування. Додатки масштабуються під різні екрани і мають інтуїтивну навігацію.</p>`,
+        screenshots: universalImages
+      },
+      {
+        title: "Інтернет-магазини з інтеграцією оплат",
+        icon: 
+          `<svg class="service-icon" viewBox="0 0 24 24">
+            <path fill="currentColor"
+              d="M7 4h10l1 3H6l1-3zm13 
+              3.184C20 7.079 19.552 7 
+              19 7H5c-.552 0-1 .08-1 
+              .184l2.486 9.948A3 3 0 0 0 
+              9.36 19h5.28a3 3 0 0 0 
+              2.874-1.868L20 7.184zM10 
+              22a2 2 0 1 1-4 0 2 2 0 
+              0 1 4 0zm8 0a2 2 0 1 1-4 
+              0 2 2 0 0 1 4 0z"/>
+          </svg>`,
+        content: 
+          `Розробляємо масштабовані онлайн-магазини з інтуїтивно зрозумілим інтерфейсом та швидкою інтеграцією оплат.`,
+        detail:
+          `<p><strong>Опис:</strong></p>
+          <p>Створюємо інтернет-магазини, що дозволяють швидко здійснювати покупки та легко керувати замовленнями. Вбудовані платіжні системи та зручний кошик.</p>
+          <p><strong>Ми робимо:</strong></p>
+          <ul>
+            <li>Інтеграцію з платіжними системами;</li>
+            <li>Сучасний дизайн;</li>
+            <li>Системи управління товарами;</li>
+            <li>Оптимізацію UX для високої конверсії.</li>
+          </ul>
+          <p><strong>Додатковий опис:</strong> Забезпечуємо повну підтримку e-commerce рішень: аналітика, звіти, маркетингові інструменти та автоматичні сповіщення, що допомагають вашому бізнесу зростати.</p>`,
+        screenshots: universalImages
+      },
+      {
+        title: "Торгові боти для трейдингу",
+        icon: 
+          `<svg class="service-icon" viewBox="0 0 24 24">
+            <path fill="currentColor"
+              d="M20 3H4c-1.654 0-3 1.346
+              -3 3v12c0 1.654 1.346 3 3 
+              3h16c1.654 0 3-1.346 3
+              -3V6c0-1.654-1.346-3-3
+              -3zM4 5h16c.551 0 1 .449
+              1 1v1H3V6c0-.551.448-1 
+              1-1zm16 14H4c-.552 0-1
+              -.449-1-1V9h18v9c0 .551
+              -.449 1-1 1z"/>
+          </svg>`,
+        content: 
+          `Розробляємо ботів, які автоматично аналізують ринок та здійснюють торги за заданими параметрами, мінімізуючи ризики.`,
+        detail:
+          `<p><strong>Опис:</strong></p>
+          <p>Наші торгові боти використовують передові алгоритми для аналізу ринку в режимі реального часу та автоматичного виконання угод.</p>
+          <p><strong>Ми робимо:</strong></p>
+          <ul>
+            <li>Реальний час аналізу ринку;</li>
+            <li>Автоматизацію торгових операцій;</li>
+            <li>Постійний моніторинг та управління ризиками;</li>
+            <li>Оптимізацію стратегії торгівлі.</li>
+          </ul>
+          <p><strong>Додатковий опис:</strong> Забезпечуємо ефективне управління ризиками та високоточне виконання угод. Ви отримуєте інструмент, що працює 24/7 і оперативно реагує на ринкові коливання.</p>`,
+        screenshots: universalImages
+      },
+      {
+        title: "Автоматизація бізнесу",
+        icon: 
+          `<svg class="service-icon" viewBox="0 0 24 24">
+            <path fill="currentColor"
+              d="M12 2C6.486 2 2 6.486 
+              2 12s4.486 10 10 10 10-4.486
+              10-10S17.514 2 12 2zm5 
+              13h-2.071c-.221.586-.57 
+              1.113-1.02 1.564l1.465 
+              1.465-1.414 1.414-1.465
+              -1.465A3.97 3.97 0 0 1 
+              12 18a3.97 3.97 0 0 1
+              -1.564-.322l-1.465 1.465
+              -1.414-1.414 1.465-1.465Z"/>
+          </svg>`,
+        content: 
+          `Оптимізуємо та автоматизуємо рутинні процеси у вашій компанії, впроваджуючи ERP/CRM та спеціалізовані боти.`,
+        detail:
+          `<p><strong>Опис:</strong></p>
+          <p>Впроваджуємо ERP та CRM системи, автоматизуємо внутрішні процеси для підвищення ефективності роботи. Це знижує витрати часу та мінімізує людський фактор.</p>
+          <p><strong>Ми робимо:</strong></p>
+          <ul>
+            <li>Інтеграцію ERP та CRM систем;</li>
+            <li>Автоматизацію звітності;</li>
+            <li>Оптимізацію робочих процесів;</li>
+            <li>Розробку кастомних автоматизованих рішень.</li>
+          </ul>
+          <p><strong>Додатковий опис:</strong> Допомагаємо зменшити витрати та підвищити продуктивність, щоб ви могли зосередитися на розвитку ключових напрямів бізнесу.</p>`,
+        screenshots: universalImages
+      },
+      {
+        title: "Інтеграція штучного інтелекту",
+        icon: 
+          `<svg class="service-icon" viewBox="0 0 24 24">
+            <path fill="currentColor"
+              d="M12 2C6.486 2 2 6.486 
+              2 12s4.486 10 10 10 10-4.486
+              10-10S17.514 2 12 2zm3 
+              15h-2v1a1 1 0 1 1-2 0v-1H9
+              a1 1 0 1 1 0-2h2v-2H8
+              a1 1 0 1 1 0-2h3V9H9
+              a1 1 0 1 1 0-2h2V6a1 
+              1 0 1 1 2 0v1h2a1 1 
+              0 1 1 0 2h-2v2h3a1 1 
+              0 1 1 0 2h-3v2h2a1 1 
+              0 1 1 0 2z"/>
+          </svg>`,
+        content: 
+          `Інтегруємо ШІ для підвищення ефективності та персоналізації сервісів: від розпізнавання мовлення до аналітики даних.`,
+        detail:
+          `<p><strong>Опис:</strong></p>
+          <p>Впроваджуємо сучасні AI-рішення для аналізу даних, автоматизації комунікації та підвищення конкурентоспроможності. Технології штучного інтелекту відкривають нові можливості для вашого бізнесу.</p>
+          <p><strong>Ми робимо:</strong></p>
+          <ul>
+            <li>Розробку систем рекомендацій;</li>
+            <li>Чат-боти з підтримкою NLP;</li>
+            <li>Інтелектуальну аналітику;</li>
+            <li>Адаптацію AI-рішень під бізнес-процеси.</li>
+          </ul>
+          <p><strong>Додатковий опис:</strong> Забезпечуємо повну інтеграцію штучного інтелекту для зростання вашого бізнесу: від обробки природної мови до машинного навчання і комп'ютерного зору.</p>`,
+        screenshots: universalImages
+      },
+      {
+        title: "Сайти та блокчейн-додатки",
+        icon: 
+          `<svg class="service-icon" viewBox="0 0 24 24">
+            <path fill="currentColor"
+              d="M12 2C6.486 2 2 6.486 
+              2 12s4.486 10 10 10 10-4.486
+              10-10S17.514 2 12 2zm-1 
+              15H8V7h3c1.654 0 3 1.346 
+              3 3s-1.346 3-3 3h-1v4zm1-6c
+              .551 0 1-.449 1-1s-.449
+              -1-1-1H9v2h2Z"/>
+          </svg>`,
+        content: 
+          `Розробляємо сучасні сайти та блокчейн-додатки з високим рівнем безпеки і масштабованості для різних галузей.`,
+        detail:
+          `<p><strong>Опис:</strong></p>
+          <p>Створюємо адаптивні веб-сайти та децентралізовані додатки з акцентом на безпеку, масштабованість та зручність управління.</p>
+          <p><strong>Ми робимо:</strong></p>
+          <ul>
+            <li>Респонсівний дизайн;</li>
+            <li>Інтеграцію з блокчейн-технологіями;</li>
+            <li>Оптимізацію швидкодії;</li>
+            <li>Повнофункціональні децентралізовані рішення.</li>
+          </ul>
+          <p><strong>Додатковий опис:</strong> Використовуємо останні стандарти безпеки та надійні фреймворки, щоб ваш продукт був конкурентоспроможним і стабільним.</p>`,
+        screenshots: universalImages
+      }
+    ];
+
+    /* Пример набора услуг на английском (2 услуги для примера, можно расширять) */
+    const servicesDataEn = [
+      {
+        title: "Smart Telegram Bots for Sales",
+        icon: 
+          `<svg class="service-icon" viewBox="0 0 24 24">
+            <path fill="currentColor"
+              d="M2 12c0 5.514 4.486 10 10 10 
+              5.513 0 10-4.486 10-10S17.513 
+              2 12 2 2 6.486 2 12zm15.466 
+              1.125l-2.125 2.125a1 1 0 0 1-1.334.06
+              l-1.699-1.36-1.36-1.699a1 1 0 0 1 
+              .06-1.334l2.125-2.125a.5.5 0 0 1 
+              .707 0l3.626 3.626a.5.5 0 0 1 0 
+              .707z"/>
+          </svg>`,
+        content: 
+          `We create intelligent Telegram bots that automate sales processes and handle customer inquiries quickly.`,
+        detail:
+          `<p><strong>Description:</strong></p>
+          <p>Our solutions include CRM integration, analytics systems, order automation, and secure data handling.</p>
+          <p><strong>We do:</strong></p>
+          <ul>
+            <li>Interactive chatbots with personalized responses;</li>
+            <li>Automatic product data updates;</li>
+            <li>Integration with payment gateways;</li>
+            <li>Sales process optimization.</li>
+          </ul>
+          <p><strong>Additional details:</strong> We develop adaptive solutions to boost conversion and improve customer interaction. Our bots can be customized for your business needs and provide real-time analytics.</p>`,
+        screenshots: universalImages
+      },
+      {
+        title: "Telegram Games (Clickers, P2E, Mini-Games)",
+        icon: 
+          `<svg class="service-icon" viewBox="0 0 24 24">
+            <path fill="currentColor"
+              d="M21 8h-1V6a2 2 0 0 0-2-2h-2
+              a2 2 0 0 0-2 2v2H10V6a2 2 0 0 0-2-2H6
+              a2 2 0 0 0-2 2v2H3c-1.1 0-2 .9-2 
+              2v7a2 2 0 0 0 2 2h18a2 2 0 0 0 
+              2-2v-7c0-1.1-.9-2-2-2zm-9 7h-2v-2
+              h2v2zm4 0h-2v-2h2v2z"/>
+          </svg>`,
+        content: 
+          `We develop captivating Telegram games that engage users with innovative gameplay and potential monetization via P2E and NFTs.`,
+        detail:
+          `<p><strong>Description:</strong></p>
+          <p>Our games combine clicker mechanics, NFT integration, and competition to retain users and encourage repeat visits.</p>
+          <p><strong>We do:</strong></p>
+          <ul>
+            <li>Unique clickers with bonuses;</li>
+            <li>P2E mechanics integration;</li>
+            <li>Competitive mini-games;</li>
+            <li>Ranking and competition systems.</li>
+          </ul>
+          <p><strong>Additional details:</strong> We focus on community building, special events, and creative monetization strategies that keep players engaged.</p>`,
+        screenshots: universalImages
+      }
+      // ...добавьте при желании остальные
+    ];
+
+    /* Собираем все услуги в зависимости от языка */
+    const servicesData = {
+      ua: servicesDataUa,
+      en: servicesDataEn
+    };
+
+    /* Список тем (без minimal mode) */
     const themes = [
       "theme-light",
       "theme-dark",
       "theme-cyber",
       "theme-retro",
-      "theme-forest",
-      "theme-minimal"
+      "theme-forest"
     ];
-    let currentThemeIndex = 0;
+    // По умолчанию Dark Mode (индекс 1)
+    let currentThemeIndex = 1;
+    let currentLang = "ua";
+
+    // Основной слайдер
+    let servicesSlider, servicesSliderContainer;
+    let currentServiceIndex = 0, startX = 0, isDragging = false;
+
+    // Детальный слайдер
+    let detailImages = [];
+    let detailCurrentIndex = 0;
+    let detailSliderContainer, detailSliderWrapper;
 
     document.addEventListener('DOMContentLoaded', () => {
       // Показываем лоадер 5 секунд
       setTimeout(() => {
         document.getElementById('loader').style.display = 'none';
-        setLanguage('ua'); // Язык по умолчанию
-        animateElements(); // Запускаем анимации появления
+        setLanguage('ua');
+        animateElements();
       }, 5000);
 
-      // Обработчики языка
+      // Переключение языка
       document.getElementById('langUa').addEventListener('click', () => {
         setLanguage('ua');
         animateElements();
@@ -474,115 +1075,260 @@
         animateElements();
       });
 
-      // Кнопка темы
+      // Переключение темы
       document.getElementById('themeBtn').addEventListener('click', cycleTheme);
+
+      // Открытие модальных окон
+      document.getElementById('btn1').addEventListener('click', () => {
+        openModal('modalOverlayAbout');
+      });
+      document.getElementById('btn3').addEventListener('click', () => {
+        openModal('modalOverlayServices');
+        currentServiceIndex = 0;
+        updateServicesSlider();
+      });
+      document.getElementById('btn2').addEventListener('click', () => {
+        openModal('modalOverlayOrder');
+      });
+      document.getElementById('btn4').addEventListener('click', () => {
+        openModal('modalOverlayContacts');
+      });
+
+      // Закрытие модальных окон
+      const closeButtons = document.querySelectorAll('.modal-close');
+      closeButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const modalId = e.target.getAttribute('data-modal');
+          closeModal(modalId);
+        });
+      });
+      const overlays = document.querySelectorAll('.modal-overlay');
+      overlays.forEach(overlay => {
+        overlay.addEventListener('click', (e) => {
+          if(e.target === overlay) {
+            closeModal(overlay.id);
+          }
+        });
+      });
+
+      // Инициализация основного слайдера
+      servicesSliderContainer = document.getElementById('servicesSliderContainer');
+      servicesSlider = document.getElementById('servicesSlider');
+
+      servicesSliderContainer.addEventListener('touchstart', handleTouchStart);
+      servicesSliderContainer.addEventListener('touchmove', handleTouchMove);
+      servicesSliderContainer.addEventListener('touchend', handleTouchEnd);
+
+      // Инициализация детального слайдера
+      detailSliderContainer = document.getElementById('detailSliderContainer');
+      detailSliderWrapper = document.getElementById('detailSliderWrapper');
+      document.getElementById('detailArrowLeft').addEventListener('click', () => {
+        slideDetailImages(-1);
+      });
+      document.getElementById('detailArrowRight').addEventListener('click', () => {
+        slideDetailImages(1);
+      });
     });
 
     /* Установка языка */
     function setLanguage(lang) {
+      currentLang = lang;
       const t = translations[lang];
+
       document.getElementById('title').textContent = t.title;
       document.getElementById('description').innerHTML = t.paragraph;
+      document.getElementById('boldLine').textContent = t.boldLine;
       document.getElementById('btn1').textContent = t.btn1;
       document.getElementById('btn2').textContent = t.btn2;
       document.getElementById('btn3').textContent = t.btn3;
       document.getElementById('btn4').textContent = t.btn4;
       document.getElementById('footer').innerHTML = t.footer;
+
+      document.getElementById('modalAboutTitle').textContent = t.modalAboutTitle;
+      document.getElementById('modalAboutContent').textContent = t.modalAboutContent;
+      document.getElementById('modalOrderTitle').textContent = t.modalOrderTitle;
+      document.getElementById('modalOrderContent').textContent = t.modalOrderContent;
+      document.getElementById('modalContactsTitle').textContent = t.modalContactsTitle;
+      document.getElementById('modalContactsContent').textContent = t.modalContactsContent;
+
+      // Рендерим услуги
+      renderServicesSlider(lang);
     }
 
-    /* Переключение тем по циклу */
+    /* Рендерим слайдер с услугами */
+    function renderServicesSlider(lang) {
+      currentServiceIndex = 0;
+      servicesSlider.innerHTML = "";
+
+      const arr = servicesData[lang];
+      arr.forEach((service, index) => {
+        const card = document.createElement('div');
+        card.className = 'service-card';
+        card.innerHTML = `
+          ${service.icon}
+          <h3>${service.title}</h3>
+          <p>${service.content}</p>
+          <button class="detail-btn" data-index="${index}">${translations[lang].detailBtn}</button>
+        `;
+        card.querySelector('.detail-btn').addEventListener('click', (e) => {
+          const idx = e.target.getAttribute('data-index');
+          openServiceDetail(idx);
+        });
+        servicesSlider.appendChild(card);
+      });
+
+      updateServicesSlider();
+    }
+
+    /* Логика свайпа */
+    function handleTouchStart(e) {
+      startX = e.touches[0].clientX;
+      isDragging = true;
+    }
+    function handleTouchMove(e) {
+      if(!isDragging) return;
+      const currentX = e.touches[0].clientX;
+      const dx = currentX - startX;
+      servicesSlider.style.transform = `translateX(${ -currentServiceIndex * servicesSliderContainer.clientWidth + dx }px)`;
+    }
+    function handleTouchEnd(e) {
+      isDragging = false;
+      const endX = e.changedTouches[0].clientX;
+      const dx = endX - startX;
+      const threshold = 50;
+      const arrLength = servicesData[currentLang].length;
+      if(dx < -threshold && currentServiceIndex < arrLength - 1) {
+        currentServiceIndex++;
+      } else if(dx > threshold && currentServiceIndex > 0) {
+        currentServiceIndex--;
+      }
+      updateServicesSlider();
+    }
+    function updateServicesSlider() {
+      servicesSlider.style.transform = `translateX(${ -currentServiceIndex * servicesSliderContainer.clientWidth }px)`;
+    }
+
+    /* Переключение тем */
     function cycleTheme() {
-      // Удаляем старую тему
       document.documentElement.classList.remove(themes[currentThemeIndex]);
-      // Переходим к следующей
       currentThemeIndex = (currentThemeIndex + 1) % themes.length;
       const newTheme = themes[currentThemeIndex];
       document.documentElement.classList.add(newTheme);
 
-      // Меняем иконку и текст в зависимости от темы
       const themeBtnText = document.getElementById('themeBtnText');
       const themeIcon = document.getElementById('themeIcon');
       switch(newTheme) {
         case "theme-light":
           themeBtnText.textContent = "Light Mode";
           themeIcon.setAttribute('viewBox', '0 0 24 24');
-          themeIcon.innerHTML = `
-            <path d="M12 3v2m0 14v2m7.07-7.07h2M3 
+          themeIcon.innerHTML = 
+            `<path d="M12 3v2m0 14v2m7.07-7.07h2M3 
                      12h2m15.07 4.93l1.414 1.414M4.93
                      4.93L6.343 6.343m12.727 0l-1.414
                      1.414M4.93 19.07l1.414-1.414M12
-                     8a4 4 0 100 8 4 4 0 000-8z"/>
-          `;
+                     8a4 4 0 100 8 4 4 0 000-8z"/>`;
           break;
         case "theme-dark":
           themeBtnText.textContent = "Dark Mode";
           themeIcon.setAttribute('viewBox', '0 0 24 24');
-          themeIcon.innerHTML = `
-            <path d="M17.293 13.293A8 8 0 1110.707 
+          themeIcon.innerHTML = 
+            `<path d="M17.293 13.293A8 8 0 1110.707 
                      2.707a8.003 8.003 0 006.586 
-                     10.586z"/>
-          `;
+                     10.586z"/>`;
           break;
         case "theme-cyber":
           themeBtnText.textContent = "Cyber Mode";
           themeIcon.setAttribute('viewBox', '0 0 24 24');
-          themeIcon.innerHTML = `
-            <path d="M13 2L3 14h7v6l7-12h-7z"/>
-          `;
+          themeIcon.innerHTML = 
+            `<path d="M13 2L3 14h7v6l7-12h-7z"/>`;
           break;
         case "theme-retro":
           themeBtnText.textContent = "Retro Mode";
-          themeIcon.setAttribute('viewBox', '0 0 24 24');
-          /* Кассета (SVG) – fill="currentColor" */
-          themeIcon.innerHTML = `
-            <path fill="currentColor"
-                  d="M448 80v352H0V80h448zM64
-                   304c0 8.8 7.2 16 16 16h288c8.8
-                   0 16-7.2 16-16v-96c0-8.8-7.2
-                   -16-16-16H80c-8.8 0-16 7.2
-                   -16 16v96zm256-48c0 17.7-14.3
-                   32-32 32s-32-14.3-32-32
-                   14.3-32 32-32 32 14.3 32
-                   32z"/>
-          `;
+          themeIcon.setAttribute('viewBox', '0 0 512 512');
+          themeIcon.innerHTML = 
+            `<path fill="currentColor"
+                  d="M256 8C119 8 8 119 8 256s111 248 
+                  248 248 248-111 248-248S393 8 256 8zm0 400
+                  a152 152 0 11152-152 152 152 0 01-152 
+                  152zm0-224a72 72 0 1072 72 72 72 0 00-72-72z"/>`;
           break;
         case "theme-forest":
           themeBtnText.textContent = "Forest Mode";
           themeIcon.setAttribute('viewBox', '0 0 24 24');
-          themeIcon.innerHTML = `
-            <path d="M12 2C8 6 5 10 5 14c0 
+          themeIcon.innerHTML = 
+            `<path d="M12 2C8 6 5 10 5 14c0 
                      5.523 4.477 10 10 10 4 
                      0 8-3 8-8 0-4-4-7-8
-                     -14z"/>
-          `;
-          break;
-        case "theme-minimal":
-          themeBtnText.textContent = "Minimal Mode";
-          themeIcon.setAttribute('viewBox', '0 0 24 24');
-          themeIcon.innerHTML = `
-            <circle cx="12" cy="12" r="8"/>
-          `;
+                     -14z"/>`;
           break;
       }
-
-      // Запускаем анимации появления контента заново
       animateElements();
     }
 
-    /* Запуск анимаций для #title, #description, .buttons */
+    /* Анимация появления */
     function animateElements() {
-      // Сбрасываем стили анимации (opacity), чтобы при переключении темы всё анимировалось заново
       document.getElementById('title').style.opacity = 0;
       document.getElementById('description').style.opacity = 0;
+      document.getElementById('boldLine').style.opacity = 0;
       document.querySelector('.buttons').style.opacity = 0;
-
-      // Небольшая задержка, чтобы успеть сбросить opacity
       setTimeout(() => {
         document.getElementById('title').classList.add('animate');
         document.getElementById('description').classList.add('animate');
+        document.getElementById('boldLine').classList.add('animate');
         document.querySelector('.buttons').classList.add('animate');
       }, 50);
     }
-  </script>
-</body>
-</html>
+
+    /* Модальные окна */
+    function openModal(modalId) {
+      const modalOverlay = document.getElementById(modalId);
+      modalOverlay.classList.add('active');
+      const modal = modalOverlay.querySelector('.modal');
+      setTimeout(() => { modal.classList.add('active'); }, 10);
+    }
+    function closeModal(modalId) {
+      const modalOverlay = document.getElementById(modalId);
+      const modal = modalOverlay.querySelector('.modal');
+      modal.classList.remove('active');
+      setTimeout(() => { modalOverlay.classList.remove('active'); }, 300);
+    }
+
+    /* Детальное описание услуги + слайдер */
+    function openServiceDetail(index) {
+      const arr = servicesData[currentLang];
+      const service = arr[index];
+      document.getElementById('modalServiceDetailTitle').textContent = service.title;
+      document.getElementById('modalServiceDetailContent').innerHTML = service.detail;
+
+      // Настраиваем слайдер
+      detailImages = service.screenshots || [];
+      detailCurrentIndex = 0;
+      detailSliderWrapper.innerHTML = "";
+
+      if(detailImages.length === 0) {
+        detailSliderContainer.style.display = "none";
+      } else {
+        detailSliderContainer.style.display = "block";
+        detailImages.forEach(src => {
+          const slide = document.createElement('div');
+          slide.className = 'detail-slide';
+          slide.innerHTML = `<img src="${src}" alt="image">`;
+          detailSliderWrapper.appendChild(slide);
+        });
+        updateDetailSlider();
+      }
+
+      openModal('modalOverlayServiceDetail');
+    }
+
+    function slideDetailImages(direction) {
+      detailCurrentIndex += direction;
+      if(detailCurrentIndex < 0) detailCurrentIndex = detailImages.length - 1;
+      if(detailCurrentIndex >= detailImages.length) detailCurrentIndex = 0;
+      updateDetailSlider();
+    }
+    function updateDetailSlider() {
+      detailSliderWrapper.style.transform = `translateX(${-detailCurrentIndex * detailSliderContainer.client
+width}px)`; } </script>
+
+</body> </html> ```
