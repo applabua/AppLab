@@ -745,8 +745,8 @@
       document.getElementById('submitOrder').addEventListener('click', () => {
         const description = document.getElementById('projectDescription').value;
         const phone = document.getElementById('phoneNumber').value;
-        const message = Нове замовлення з AppLab:\nОпис: ${description}\nТелефон: ${phone};
-        fetch(https://api.telegram.org/bot7548740282:AAGjI2kJsiVC8C1dJWHU9EXDHdEF2BVJgkM/sendMessage?chat_id=2045410830&text=${encodeURIComponent(message)})
+        const message = `Нове замовлення з AppLab:\nОпис: ${description}\nТелефон: ${phone}`;
+        fetch(`https://api.telegram.org/bot7548740282:AAGjI2kJsiVC8C1dJWHU9EXDHdEF2BVJgkM/sendMessage?chat_id=2045410830&text=${encodeURIComponent(message)}`)
           .then(response => response.json())
           .then(data => console.log(data))
           .catch(error => console.error('Error:', error));
@@ -754,7 +754,7 @@
         document.getElementById('orderStep2').style.display = 'none';
         const responseDiv = document.getElementById('orderResponse');
         responseDiv.style.display = 'block';
-        responseDiv.innerHTML = <div class="spinner"></div>;
+        responseDiv.innerHTML = `<div class="spinner"></div>`;
         setTimeout(() => {
           responseDiv.innerHTML = (currentLang === 'ua')
             ? "Дякуємо, ми зв’яжемося з вами протягом години."
@@ -967,10 +967,10 @@
       arr.forEach((service) => {
         const card = document.createElement('div');
         card.className = 'service-card';
-        card.innerHTML = 
+        card.innerHTML = `
           <h3>${service.title}</h3>
           <p>${service.content}</p>
-        ;
+        `;
         servicesSlider.appendChild(card);
       });
 
@@ -999,9 +999,9 @@
 
     /* ОБНОВЛЕНИЕ СЛАЙДЕРА И ТОЧЕК */
     function updateServicesSlider() {
-      servicesSlider.style.transform = translateX(${
+      servicesSlider.style.transform = `translateX(${
         -currentServiceIndex * servicesSliderContainer.clientWidth
-      }px);
+      }px)`;
       updateDots();
     }
 
@@ -1038,9 +1038,9 @@
       if(!isDragging) return;
       const currentX = e.touches[0].clientX;
       const dx = currentX - startX;
-      servicesSlider.style.transform = translateX(${
+      servicesSlider.style.transform = `translateX(${
         -currentServiceIndex * servicesSliderContainer.clientWidth + dx
-      }px);
+      }px)`;
     }
     function handleTouchEnd(e) {
       isDragging = false;
@@ -1068,27 +1068,27 @@
         case "theme-light":
           themeBtnText.textContent = "Light Mode";
           themeIcon.setAttribute('viewBox', '0 0 24 24');
-          themeIcon.innerHTML = <path d="M12 3v2m0 14v2m7.07-7.07h2M3 12h2m15.07 4.93l1.414 1.414M4.93 4.93L6.343 6.343m12.727 0l-1.414 1.414M4.93 19.07l1.414-1.414M12 8a4 4 0 100 8 4 4 0 000-8z"/>;
+          themeIcon.innerHTML = `<path d="M12 3v2m0 14v2m7.07-7.07h2M3 12h2m15.07 4.93l1.414 1.414M4.93 4.93L6.343 6.343m12.727 0l-1.414 1.414M4.93 19.07l1.414-1.414M12 8a4 4 0 100 8 4 4 0 000-8z"/>`;
           break;
         case "theme-dark":
           themeBtnText.textContent = "Dark Mode";
           themeIcon.setAttribute('viewBox', '0 0 24 24');
-          themeIcon.innerHTML = <path d="M17.293 13.293A8 8 0 1110.707 2.707a8.003 8.003 0 006.586 10.586z"/>;
+          themeIcon.innerHTML = `<path d="M17.293 13.293A8 8 0 1110.707 2.707a8.003 8.003 0 006.586 10.586z"/>`;
           break;
         case "theme-cyber":
           themeBtnText.textContent = "Cyber Mode";
           themeIcon.setAttribute('viewBox', '0 0 24 24');
-          themeIcon.innerHTML = <path d="M13 2L3 14h7v6l7-12h-7z"/>;
+          themeIcon.innerHTML = `<path d="M13 2L3 14h7v6l7-12h-7z"/>`;
           break;
         case "theme-retro":
           themeBtnText.textContent = "Retro Mode";
           themeIcon.setAttribute('viewBox', '0 0 512 512');
-          themeIcon.innerHTML = <path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 400a152 152 0 11152-152 152 152 0 01-152 152zm0-224a72 72 0 1072 72 72 72 0 00-72-72z"/>;
+          themeIcon.innerHTML = `<path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 400a152 152 0 11152-152 152 152 0 01-152 152zm0-224a72 72 0 1072 72 72 72 0 00-72-72z"/>`;
           break;
         case "theme-forest":
           themeBtnText.textContent = "Forest Mode";
           themeIcon.setAttribute('viewBox', '0 0 24 24');
-          themeIcon.innerHTML = <path d="M12 2C8 6 5 10 5 14c0 5.523 4.477 10 10 10 4 0 8-3 8-8 0-4-4-7-8-14z"/>;
+          themeIcon.innerHTML = `<path d="M12 2C8 6 5 10 5 14c0 5.523 4.477 10 10 10 4 0 8-3 8-8 0-4-4-7-8-14z"/>`;
           break;
       }
       animateElements();
