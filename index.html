@@ -26,8 +26,6 @@
       -webkit-touch-callout: none;
       font-family: 'Montserrat', sans-serif;
       transition: background 0.5s, color 0.5s;
-      overscroll-behavior: auto;
-      touch-action: auto;
     }
 
     /* ТЕМЫ */
@@ -36,13 +34,6 @@
     .theme-cyber { background: #000000; color: #0ff; }
     .theme-retro { background: #f2dcb3; color: #3b2d1f; }
     .theme-forest{ background: #2e4600; color: #b0ffb0; }
-
-    /* Скрываем соц. иконки и основное меню до завершения загрузки */
-    .social-icons,
-    .container {
-      opacity: 0;
-      transition: opacity 0.5s ease;
-    }
 
     /* ЭКРАН ЗАГРУЗКИ */
     .loader {
@@ -487,8 +478,7 @@
       transform: scale(1.5);
     }
 
-    /* МОДАЛЬНОЕ ОКНО "Замовити" (оригинальный вариант) */
-    <!-– Замовити – modal, как было изначально – -->
+    /* КНОПКИ УСЛУГ В МОДАЛЬНОМ ОКНЕ "ЗАМОВИТИ" */
     .order-btn {
       cursor: pointer;
       font-weight: 700;
@@ -501,6 +491,8 @@
       margin: 10px 0;
       font-size: 0.8rem;
     }
+
+    /* ФОРМА В МОДАЛЬНОМ ОКНЕ "ЗАМОВИТИ" */
     #modalOrder textarea, #modalOrder input {
       font-family: 'Montserrat', sans-serif;
       padding: 8px;
@@ -511,6 +503,8 @@
       box-sizing: border-box;
       color: #000;
     }
+
+    /* СТИЛИ СПИННЕРА */
     .spinner {
       border: 4px solid rgba(255, 255, 255, 0.3);
       border-top: 4px solid currentColor;
@@ -531,23 +525,59 @@
   <div class="loader" id="loader">
     <h2>AppLab</h2>
     <p>Будуємо майбутнє разом...</p>
+    <!-- Прогресс-бар загрузки -->
     <div class="loader-progress"></div>
   </div>
 
-  <!-- Соц. иконки -->
+  <!-- Соц. иконки (ссылки обновлены) -->
   <div class="social-icons">
     <!-- Telegram -->
     <a href="https://t.me/applab_ua" target="_blank" class="social-link" title="Telegram">
       <svg class="social-icon" viewBox="0 0 448 512">
         <path fill="currentColor"
-              d="M446.7 72.2c-5.7-4.7-13.5-5.7-20.2-2.6L25 210.6c-7.8 3.1-12.9 10.1-13.6 18s3.2 15.5 10.5 19.6l111.2 59.6 42.7 136.4c2.1 6.6 7.6 11.4 14.3 12.5 6.7 1.2 13.4-1.2 17.7-6.1l58.3-68.1 99.3 80.3c3.6 2.9 8 4.4 12.6 4.4 2.6 0 5.2-.5 7.7-1.6 6.9-2.9 11.8-8.9 13-16.2l64-368c1.2-6.8-1.3-13.7-6.9-18.3z"/>
+              d="M446.7 72.2c-5.7-4.7-13.5-5.7-20.2-2.6L25 
+                 210.6c-7.8 3.1-12.9 10.1-13.6 18s3.2 15.5 10.5 
+                 19.6l111.2 59.6 42.7 136.4c2.1 6.6 7.6 11.4 
+                 14.3 12.5 6.7 1.2 13.4-1.2 17.7-6.1l58.3-68.1 
+                 99.3 80.3c3.6 2.9 8 4.4 12.6 4.4 2.6 0 5.2-.5 
+                 7.7-1.6 6.9-2.9 11.8-8.9 13-16.2l64-368
+                 c1.2-6.8-1.3-13.7-6.9-18.3z"/>
       </svg>
     </a>
     <!-- Instagram -->
     <a href="https://www.instagram.com/applabua?igsh=MXJkdmJocnJ5cnFy&utm_source=qr" target="_blank" class="social-link" title="Instagram">
       <svg class="social-icon" viewBox="0 0 448 512">
         <path fill="currentColor"
-              d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9 114.9-51.3 114.9-114.9S287.7 141 224.1 141zm0 189.6c-41.2 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.5 74.7-74.7 74.7zm146.4-194.3c0 14.9-12.1 27-27 27s-27-12.1-27-27 12.1-27 27-27 27 12.1 27 27zm76.1 27.2c-1.7-35.7-9.9-67.3-36.2-93.6s-57.9-34.4-93.6-36.2c-37-2.1-147.9-2.1-184.9 0-35.7 1.7-67.3 9.9-93.6 36.2s-34.4 57.9-34.4 93.6c-2.1 37-2.1 147.9 0 184.9 1.7 35.7 9.9 67.3 36.2 93.6s57.9 34.4 93.6 36.2c37 2.1 147.9 2.1 184.9 0 35.7-1.7 67.3-9.9 93.6-36.2s34.4-57.9 34.4-93.6c2.1-37 2.1-147.9 0-184.9zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
+              d="M224.1 141c-63.6 0-114.9 
+                 51.3-114.9 114.9s51.3 114.9 114.9 
+                 114.9 114.9-51.3 114.9-114.9S287.7 
+                 141 224.1 141zm0 189.6c-41.2 0-74.7
+                 -33.5-74.7-74.7s33.5-74.7 74.7-74.7 
+                 74.7 33.5 74.7 74.7-33.5 74.7-74.7 
+                 74.7zm146.4-194.3c0 14.9-12.1 27-27 
+                 27s-27-12.1-27-27 12.1-27 27-27 
+                 27 12.1 27 27zm76.1 27.2c-1.7-35.7
+                 -9.9-67.3-36.2-93.6s-57.9-34.4-93.6
+                 -36.2c-37-2.1-147.9-2.1-184.9 0
+                 -35.7 1.7-67.3 9.9-93.6 36.2s
+                 -34.4 57.9-34.4 93.6c-2.1 37-2.1 
+                 147.9 0 184.9 1.7 35.7 9.9 67.3 
+                 36.2 93.6s57.9 34.4 93.6 36.2
+                 c37 2.1 147.9 2.1 184.9 0 35.7
+                 -1.7 67.3-9.9 93.6-36.2s34.4
+                 -57.9 34.4-93.6c2.1-37 2.1
+                 -147.9 0-184.9zM398.8 388c-7.8 
+                 19.6-22.9 34.7-42.6 42.6-29.5 
+                 11.7-99.5 9-132.1 9s-102.7 2.6
+                 -132.1-9c-19.6-7.8-34.7-22.9
+                 -42.6-42.6-11.7-29.5-9-99.5
+                 -9-132.1s-2.6-102.7 9-132.1
+                 c7.8-19.6 22.9-34.7 42.6-42.6
+                 29.5-11.7 99.5-9 132.1-9s
+                 102.7-2.6 132.1 9c19.6 7.8 
+                 34.7 22.9 42.6 42.6 11.7 
+                 29.5 9 99.5 9 132.1s2.7 
+                 102.7-9 132.1z"/>
       </svg>
     </a>
   </div>
@@ -601,14 +631,16 @@
   <div class="modal-overlay" id="modalOverlayServices">
     <div class="modal" id="modalServices">
       <span class="modal-close" data-modal="modalOverlayServices">&times;</span>
+      <!-- Слайдер услуг -->
       <div id="servicesSliderContainer" class="slider-container">
         <div id="servicesSlider" class="slider"></div>
+        <!-- Точки (пагинация) -->
         <div class="dots" id="dotsContainer"></div>
       </div>
     </div>
   </div>
 
-  <!-- Модальное окно "Замовити" (оригинальный вариант) -->
+  <!-- Модальное окно "Замовити" -->
   <div class="modal-overlay" id="modalOverlayOrder">
     <div class="modal" id="modalOrder">
       <span class="modal-close" data-modal="modalOverlayOrder">&times;</span>
@@ -635,6 +667,7 @@
       <span class="modal-close" data-modal="modalOverlayContacts">&times;</span>
       <h2 id="modalContactsTitle">Контакти</h2>
       <p id="modalContactsContent">
+        <!-- Текст устанавливается через translations -->
       </p>
     </div>
   </div>
@@ -642,12 +675,16 @@
   <script>
     /* ПОЛНЫЙ JAVASCRIPT */
 
+    /* Якщо відкрито в Telegram Web App – вимикаємо системну кнопку (якщо можливо) та вмикаємо підтвердження при закритті */
     document.addEventListener('DOMContentLoaded', () => {
-      // Убираем фиксации Telegram (никаких вызовов WebApp.*)
+      if (window.Telegram && Telegram.WebApp) {
+        Telegram.WebApp.enableClosingConfirmation();
+        Telegram.WebApp.BackButton.hide();
+      }
+
+      // Лоадер скрывается через 5 секунд
       setTimeout(() => {
         document.getElementById('loader').style.display = 'none';
-        document.querySelector('.container').style.opacity = '1';
-        document.querySelector('.social-icons').style.opacity = '1';
         setLanguage('ua'); // Язык по умолчанию
         animateElements();
       }, 5000);
@@ -665,7 +702,7 @@
       // Переключатель тем
       document.getElementById('themeBtn').addEventListener('click', cycleTheme);
 
-      // Кнопки открытия модальных окон
+      // Кнопки открытия модалок
       document.getElementById('btn1').addEventListener('click', () => {
         openModal('modalOverlayAbout');
       });
@@ -682,7 +719,7 @@
         openModal('modalOverlayContacts');
       });
 
-      // Закрытие модалок по клику на кнопку закрытия или по оверлею
+      // Закрытие модалок
       document.querySelectorAll('.modal-close').forEach(btn => {
         btn.addEventListener('click', (e) => {
           const modalId = e.target.getAttribute('data-modal');
@@ -692,8 +729,7 @@
       document.querySelectorAll('.modal-overlay').forEach(overlay => {
         overlay.addEventListener('click', (e) => {
           if(e.target === overlay) {
-            const id = overlay.getAttribute('id');
-            closeModal(id);
+            closeModal(overlay.id);
           }
         });
       });
@@ -705,12 +741,12 @@
       servicesSliderContainer.addEventListener('touchmove', handleTouchMove);
       servicesSliderContainer.addEventListener('touchend', handleTouchEnd);
       
-      // Отправка заявки (этап 2)
+      // Отправка заявки (этап 2) – теперь отправляем данные в Telegram
       document.getElementById('submitOrder').addEventListener('click', () => {
         const description = document.getElementById('projectDescription').value;
         const phone = document.getElementById('phoneNumber').value;
-        const message = `Нове замовлення з AppLab:\nОпис: ${description}\nТелефон: ${phone}`;
-        fetch(`https://api.telegram.org/bot7548740282:AAGjI2kJsiVC8C1dJWHU9EXDHdEF2BVJgkM/sendMessage?chat_id=2045410830&text=${encodeURIComponent(message)}`)
+        const message = Нове замовлення з AppLab:\nОпис: ${description}\nТелефон: ${phone};
+        fetch(https://api.telegram.org/bot7548740282:AAGjI2kJsiVC8C1dJWHU9EXDHdEF2BVJgkM/sendMessage?chat_id=2045410830&text=${encodeURIComponent(message)})
           .then(response => response.json())
           .then(data => console.log(data))
           .catch(error => console.error('Error:', error));
@@ -718,7 +754,7 @@
         document.getElementById('orderStep2').style.display = 'none';
         const responseDiv = document.getElementById('orderResponse');
         responseDiv.style.display = 'block';
-        responseDiv.innerHTML = `<div class="spinner"></div>`;
+        responseDiv.innerHTML = <div class="spinner"></div>;
         setTimeout(() => {
           responseDiv.innerHTML = (currentLang === 'ua')
             ? "Дякуємо, ми зв’яжемося з вами протягом години."
@@ -776,29 +812,102 @@
     /* ДАННЫЕ ПО УСЛУГАМ */
     const servicesData = {
       ua: [
-        { title: "Додатки для Telegram (клікери, P2E, міні-ігри)" },
-        { title: "Розумні Telegram-боти для продажів" },
-        { title: "Додатки та боти з штучним інтелектом" },
-        { title: "Мобільні додатки для App Store та Google Play" },
-        { title: "Інтернет-магазини з інтеграцією оплат" },
-        { title: "Торгові боти для трейдингу" },
-        { title: "Автоматизація бізнесу" },
-        { title: "Інтеграція штучного інтелекту" },
-        { title: "Сайти та блокчейн-додатки" }
+        {
+          title: "Додатки для Telegram (клікери, P2E, міні-ігри)",
+          content:
+            "Ми розробляємо захоплюючі додатки для Telegram, які не лише розважають, а й залучають аудиторію. Наші проекти враховують сучасні тренди, мають інтерактивні елементи, P2E-механіку та можливості для монетизації. Додаткові деталі та розширені функції забезпечують ще більшу залученість користувачів і відкривають нові канали взаємодії. Також ми пропонуємо постійну технічну підтримку та аналітику для вдосконалення вашого додатку."
+        },
+        {
+          title: "Розумні Telegram-боти для продажів",
+          content:
+            "Наші бот-системи автоматизують процес продажів, інтегруючи CRM, аналітику та платіжні системи. Вони здатні обробляти замовлення, відповідати на запитання клієнтів та надсилати повідомлення менеджерам у режимі реального часу. Додаткові можливості інтеграції дозволяють оптимізувати процес продажів та підвищити ефективність. Завдяки цьому ви зможете швидко реагувати на запити клієнтів та отримувати повноцінну статистику для ухвалення виважених рішень."
+        },
+        {
+          title: "Додатки та боти з штучним інтелектом",
+          content:
+            "Створюємо рішення з використанням штучного інтелекту для аналізу даних, автоматизації бізнес-процесів та створення рекомендаційних систем. Наші рішення використовують передові алгоритми, що забезпечують високу точність та ефективність. Ми можемо інтегрувати машинне навчання, обробку природної мови та інші AI-технології, щоб надати вашому проєкту конкурентні переваги."
+        },
+        {
+          title: "Мобільні додатки для App Store та Google Play",
+          content:
+            "Розробляємо мобільні додатки з інтуїтивно зрозумілим дизайном, високою продуктивністю та підтримкою сучасних функцій. Оптимізація продуктивності гарантує зручний та швидкий досвід використання. Наші фахівці супроводжують проєкт від концепції до публікації, надаючи консультації щодо маркетингу та монетизації."
+        },
+        {
+          title: "Інтернет-магазини з інтеграцією оплат",
+          content:
+            "Створюємо сучасні та масштабовані інтернет-магазини з інтегрованими платіжними системами (LiqPay, Stripe та ін.). Наші рішення забезпечують безпечні транзакції, зручний інтерфейс та розширену аналітику продажів. Забезпечуємо безперебійну роботу та високий рівень безпеки онлайн-транзакцій, а також пропонуємо інструменти для маркетингу й просування."
+        },
+        {
+          title: "Торгові боти для трейдингу",
+          content:
+            "Розробляємо торгових ботів, які аналізують ринкові дані у режимі реального часу та автоматично виконують операції. Наші системи використовують сучасні алгоритми для аналізу ринку та прийняття швидких рішень. Завдяки гнучким налаштуванням бот може адаптуватися під різні стратегії та торгові майданчики, мінімізуючи ризики та збільшуючи прибуток."
+        },
+        {
+          title: "Автоматизація бізнесу",
+          content:
+            "Оптимізуємо бізнес-процеси шляхом інтеграції ERP та CRM систем. Наші рішення зменшують витрати часу на рутинні завдання, підвищують продуктивність команди та сприяють зростанню прибутку. Інтегровані рішення дозволяють суттєво скоротити час на рутинні операції, а також забезпечують гнучку аналітику й контроль над усіма процесами."
+        },
+        {
+          title: "Інтеграція штучного інтелекту",
+          content:
+            "Впроваджуємо AI-модулі для аналізу великих даних, прогнозування трендів та створення персоналізованих рекомендацій. Модулі AI оптимізують робочі процеси та допомагають приймати зважені рішення на основі даних. Окрім базового функціоналу, ми пропонуємо індивідуальну адаптацію під ваші бізнес-задачі, а також масштабування системи з розвитком вашої компанії."
+        },
+        {
+          title: "Сайти та блокчейн-додатки",
+          content:
+            "Розробляємо безпечні веб-сайти та децентралізовані рішення з використанням технологій блокчейну та смарт-контрактів. Сучасні технології та безпека даних гарантують надійність та ефективність ваших рішень. Ми можемо інтегрувати NFT-маркети, DeFi-платформи та інші блокчейн-функції, щоб вивести ваш продукт на новий рівень."
+        }
       ],
       en: [
-        { title: "Telegram Games (Clickers, P2E, Mini-Games)" },
-        { title: "Smart Telegram Bots for Sales" },
-        { title: "AI Applications and Bots" },
-        { title: "Mobile Apps for App Store & Google Play" },
-        { title: "Online Stores with Payment Integration" },
-        { title: "Trading Bots for Automated Trading" },
-        { title: "Business Process Automation" },
-        { title: "Integration of Artificial Intelligence" },
-        { title: "Websites & Blockchain Applications" }
+        {
+          title: "Telegram Games (Clickers, P2E, Mini-Games)",
+          content:
+            "We develop captivating Telegram games that entertain and engage users. Our projects incorporate modern trends, interactive elements, and P2E mechanics to drive monetization and steady user growth. Additional details and functionalities enhance interactivity and user engagement. We also provide ongoing technical support and analytics to continuously improve your game."
+        },
+        {
+          title: "Smart Telegram Bots for Sales",
+          content:
+            "Our bot systems automate sales processes by integrating CRM, analytics, and payment gateways. They efficiently handle orders, answer customer queries, and notify managers in real time to boost business productivity. Advanced integration capabilities further optimize sales processes and efficiency. This allows you to quickly respond to client requests and gather comprehensive statistics for informed decision-making."
+        },
+        {
+          title: "AI Applications and Bots",
+          content:
+            "We create solutions with artificial intelligence for data analysis, business process automation, and recommendation systems. Our solutions leverage cutting-edge algorithms to deliver precise and effective performance. We can integrate machine learning, natural language processing, and other AI technologies to give your project a competitive edge."
+        },
+        {
+          title: "Mobile Apps for App Store & Google Play",
+          content:
+            "We design mobile apps with intuitive interfaces, high performance, and modern features. Performance optimization ensures a smooth user experience. Our experts guide your project from concept to launch, providing marketing and monetization advice along the way."
+        },
+        {
+          title: "Online Stores with Payment Integration",
+          content:
+            "We build modern, scalable online stores integrated with secure payment gateways such as LiqPay and Stripe. Our solutions ensure safe transactions, user-friendly interfaces, and comprehensive analytics for sales. We guarantee reliable operation, high-level security, and offer marketing tools to help you promote your online store."
+        },
+        {
+          title: "Trading Bots for Automated Trading",
+          content:
+            "Our trading bots analyze market data in real time and execute trades automatically. Our systems use modern algorithms for market analysis and quick decision-making. Thanks to flexible settings, the bot can adapt to different strategies and platforms, minimizing risks while maximizing profit."
+        },
+        {
+          title: "Business Process Automation",
+          content:
+            "We optimize business operations by integrating ERP and CRM systems. Our solutions reduce time spent on routine tasks, increase team productivity, and drive profitability. Integrated solutions significantly cut routine operations time while offering flexible analytics and control over all processes."
+        },
+        {
+          title: "Integration of Artificial Intelligence",
+          content:
+            "We implement AI modules for big data analytics, trend forecasting, and personalized recommendations. AI modules optimize workflows and enable data-driven decisions. Beyond basic functionality, we offer custom adaptations for your business needs and scalable solutions as your company grows."
+        },
+        {
+          title: "Websites & Blockchain Applications",
+          content:
+            "We design secure websites and decentralized solutions using blockchain technology and smart contracts. State-of-the-art technologies and robust security ensure reliability and efficiency. We can integrate NFT marketplaces, DeFi platforms, and other blockchain features to elevate your product to a new level."
+        }
       ]
     };
 
+    /* СПИСОК ТЕМ */
     const themes = [
       "theme-light",
       "theme-dark",
@@ -806,15 +915,23 @@
       "theme-retro",
       "theme-forest"
     ];
-    let currentThemeIndex = 1;
-    let currentLang = "ua";
+    let currentThemeIndex = 1; // Начинаем с темной
+    let currentLang = "ua";    // Язык по умолчанию
 
+    // ДЛЯ СЛАЙДЕРА
     let servicesSlider, servicesSliderContainer;
     let currentServiceIndex = 0, startX = 0, isDragging = false;
+    // Массив точек пагинации
     let dots = [];
 
+    // ДЛЯ ФОРМЫ "ЗАМОВИТИ"
     let selectedOrderServiceIndex = null;
 
+    document.addEventListener('DOMContentLoaded', () => {
+      // (Уже описано выше)
+    });
+
+    /* УСТАНОВКА ЯЗЫКА */
     function setLanguage(lang) {
       currentLang = lang;
       const t = translations[lang];
@@ -840,20 +957,30 @@
       renderServicesSlider(lang);
     }
 
+    /* РЕНДЕР СЛАЙДЕРА + ТОЧЕК */
     function renderServicesSlider(lang) {
       currentServiceIndex = 0;
       servicesSlider.innerHTML = "";
       const arr = servicesData[lang];
+
+      // Создаем карточки услуг
       arr.forEach((service) => {
         const card = document.createElement('div');
         card.className = 'service-card';
-        card.innerHTML = `<h3>${service.title}</h3><p>${service.content || ""}</p>`;
+        card.innerHTML = 
+          <h3>${service.title}</h3>
+          <p>${service.content}</p>
+        ;
         servicesSlider.appendChild(card);
       });
+
+      // Создаем точки (пагинацию)
       createDots(arr.length);
+
       updateServicesSlider();
     }
 
+    /* СОЗДАНИЕ ТОЧЕК (ПАГИНАЦИЯ) */
     function createDots(count) {
       const dotsContainer = document.getElementById('dotsContainer');
       dotsContainer.innerHTML = "";
@@ -870,10 +997,11 @@
       }
     }
 
+    /* ОБНОВЛЕНИЕ СЛАЙДЕРА И ТОЧЕК */
     function updateServicesSlider() {
-      servicesSlider.style.transform = `translateX(${
+      servicesSlider.style.transform = translateX(${
         -currentServiceIndex * servicesSliderContainer.clientWidth
-      }px)`;
+      }px);
       updateDots();
     }
 
@@ -883,6 +1011,7 @@
       });
     }
 
+    /* РЕНДЕР КНОПОК ВЫБОРА УСЛУГ В "ЗАМОВИТИ" */
     function renderOrderServices() {
       const container = document.getElementById('orderServicesButtons');
       container.innerHTML = "";
@@ -900,6 +1029,7 @@
       });
     }
 
+    /* СВАЙП-СОБЫТИЯ */
     function handleTouchStart(e) {
       startX = e.touches[0].clientX;
       isDragging = true;
@@ -908,9 +1038,9 @@
       if(!isDragging) return;
       const currentX = e.touches[0].clientX;
       const dx = currentX - startX;
-      servicesSlider.style.transform = `translateX(${
+      servicesSlider.style.transform = translateX(${
         -currentServiceIndex * servicesSliderContainer.clientWidth + dx
-      }px)`;
+      }px);
     }
     function handleTouchEnd(e) {
       isDragging = false;
@@ -926,6 +1056,7 @@
       updateServicesSlider();
     }
 
+    /* ПЕРЕКЛЮЧЕНИЕ ТЕМ */
     function cycleTheme() {
       document.documentElement.classList.remove(themes[currentThemeIndex]);
       currentThemeIndex = (currentThemeIndex + 1) % themes.length;
@@ -937,39 +1068,47 @@
         case "theme-light":
           themeBtnText.textContent = "Light Mode";
           themeIcon.setAttribute('viewBox', '0 0 24 24');
-          themeIcon.innerHTML = `<path d="M12 3v2m0 14v2m7.07-7.07h2M3 12h2m15.07 4.93l1.414 1.414M4.93 4.93L6.343 6.343m12.727 0l-1.414 1.414M4.93 19.07l1.414-1.414M12 8a4 4 0 100 8 4 4 0 000-8z"/>`;
+          themeIcon.innerHTML = <path d="M12 3v2m0 14v2m7.07-7.07h2M3 12h2m15.07 4.93l1.414 1.414M4.93 4.93L6.343 6.343m12.727 0l-1.414 1.414M4.93 19.07l1.414-1.414M12 8a4 4 0 100 8 4 4 0 000-8z"/>;
           break;
         case "theme-dark":
           themeBtnText.textContent = "Dark Mode";
           themeIcon.setAttribute('viewBox', '0 0 24 24');
-          themeIcon.innerHTML = `<path d="M17.293 13.293A8 8 0 1110.707 2.707a8.003 8.003 0 006.586 10.586z"/>`;
+          themeIcon.innerHTML = <path d="M17.293 13.293A8 8 0 1110.707 2.707a8.003 8.003 0 006.586 10.586z"/>;
           break;
         case "theme-cyber":
           themeBtnText.textContent = "Cyber Mode";
           themeIcon.setAttribute('viewBox', '0 0 24 24');
-          themeIcon.innerHTML = `<path d="M13 2L3 14h7v6l7-12h-7z"/>`;
+          themeIcon.innerHTML = <path d="M13 2L3 14h7v6l7-12h-7z"/>;
           break;
         case "theme-retro":
           themeBtnText.textContent = "Retro Mode";
           themeIcon.setAttribute('viewBox', '0 0 512 512');
-          themeIcon.innerHTML = `<path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 400a152 152 0 11152-152 152 152 0 01-152 152zm0-224a72 72 0 1072 72 72 72 0 00-72-72z"/>`;
+          themeIcon.innerHTML = <path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 400a152 152 0 11152-152 152 152 0 01-152 152zm0-224a72 72 0 1072 72 72 72 0 00-72-72z"/>;
           break;
         case "theme-forest":
           themeBtnText.textContent = "Forest Mode";
           themeIcon.setAttribute('viewBox', '0 0 24 24');
-          themeIcon.innerHTML = `<path d="M12 2C8 6 5 10 5 14c0 5.523 4.477 10 10 10 4 0 8-3 8-8 0-4-4-7-8-14z"/>`;
+          themeIcon.innerHTML = <path d="M12 2C8 6 5 10 5 14c0 5.523 4.477 10 10 10 4 0 8-3 8-8 0-4-4-7-8-14z"/>;
           break;
       }
       animateElements();
     }
 
+    /* АНИМАЦИЯ ПОЯВЛЕНИЯ ЭЛЕМЕНТОВ */
     function animateElements() {
-      document.getElementById('title').classList.add('animate');
-      document.getElementById('description').classList.add('animate');
-      document.getElementById('boldLine').classList.add('animate');
-      document.querySelector('.buttons').classList.add('animate');
+      document.getElementById('title').style.opacity = 0;
+      document.getElementById('description').style.opacity = 0;
+      document.getElementById('boldLine').style.opacity = 0;
+      document.querySelector('.buttons').style.opacity = 0;
+      setTimeout(() => {
+        document.getElementById('title').classList.add('animate');
+        document.getElementById('description').classList.add('animate');
+        document.getElementById('boldLine').classList.add('animate');
+        document.querySelector('.buttons').classList.add('animate');
+      }, 50);
     }
 
+    /* ОТКРЫТЬ/ЗАКРЫТЬ МОДАЛКУ */
     function openModal(modalId) {
       const modalOverlay = document.getElementById(modalId);
       modalOverlay.classList.add('active');
@@ -981,6 +1120,8 @@
       const modal = modalOverlay.querySelector('.modal');
       modal.classList.remove('active');
       setTimeout(() => { modalOverlay.classList.remove('active'); }, 300);
+
+      // Сброс шагов "Замовити"
       if(modalId === 'modalOverlayOrder'){
         document.getElementById('orderStep1').style.display = 'block';
         document.getElementById('orderStep2').style.display = 'none';
