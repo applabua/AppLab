@@ -38,7 +38,7 @@
     .theme-retro { background: #f2dcb3; color: #3b2d1f; }
     .theme-forest{ background: #2e4600; color: #b0ffb0; }
     
-    /* ЕКРАН ЗАВАНТАЖЕННЯ */
+    /* ЭКРАН ЗАГРУЗКИ */
     .loader {
       position: fixed;
       top: 0; left: 0;
@@ -107,7 +107,7 @@
       from { width: 0%; }
       to { width: 100%; }
     }
-    /* СОЦІАЛЬНІ ІКОНКИ */
+    /* СОЦ. ИКОНКИ */
     .social-icons {
       position: absolute;
       top: 10px; left: 10px;
@@ -121,7 +121,7 @@
       fill: currentColor;
       transition: fill 0.3s;
     }
-    /* КНОПКИ КЕРУВАННЯ (ПРАВИЙ ВЕРХ) */
+    /* КНОПКИ УПРАВЛЕНИЯ (ПРАВЫЙ ВЕРХ) */
     .controls {
       position: absolute;
       top: 10px; right: 10px;
@@ -154,7 +154,7 @@
       fill: currentColor;
       transition: fill 0.3s;
     }
-    /* ОСНОВНИЙ КОНТЕЙНЕР */
+    /* ОСНОВНОЙ КОНТЕЙНЕР */
     .container {
       width: 100vw; height: 100vh;
       display: flex;
@@ -164,7 +164,7 @@
       padding: 20px;
       box-sizing: border-box;
     }
-    /* Анімації появи */
+    /* АНИМАЦИИ ПОЯВЛЕНИЯ */
     #title, #description, .buttons, #boldLine { opacity: 0; }
     @keyframes fadeInUp {
       from { transform: translateY(20px); opacity: 0; }
@@ -301,7 +301,7 @@
       font-weight: 400;
       transition: color 0.5s;
     }
-    /* Модальний оверлей */
+    /* Модальне вікно */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0;
@@ -319,16 +319,109 @@
       opacity: 1;
       pointer-events: auto;
     }
-    /* Стилі кнопки закриття модального вікна */
+    /* Пульсація рамки модалок */
+    @keyframes pulseGlowLight {
+      0%, 100% {
+        box-shadow: 0 0 5px #000000, 0 0 10px #000000;
+      }
+      50% {
+        box-shadow: 0 0 15px #000000, 0 0 30px #000000;
+      }
+    }
+    @keyframes pulseGlowDark {
+      0%, 100% {
+        box-shadow: 0 0 5px #f0f0f0, 0 0 10px #f0f0f0;
+      }
+      50% {
+        box-shadow: 0 0 15px #f0f0f0, 0 0 30px #f0f0f0;
+      }
+    }
+    @keyframes pulseGlowCyber {
+      0%, 100% {
+        box-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
+      }
+      50% {
+        box-shadow: 0 0 15px #0ff, 0 0 30px #0ff;
+      }
+    }
+    @keyframes pulseGlowRetro {
+      0%, 100% {
+        box-shadow: 0 0 5px #3b2d1f, 0 0 10px #3b2d1f;
+      }
+      50% {
+        box-shadow: 0 0 15px #3b2d1f, 0 0 30px #3b2d1f;
+      }
+    }
+    @keyframes pulseGlowForest {
+      0%, 100% {
+        box-shadow: 0 0 5px #b0ffb0, 0 0 10px #b0ffb0;
+      }
+      50% {
+        box-shadow: 0 0 15px #b0ffb0, 0 0 30px #b0ffb0;
+      }
+    }
+    .theme-light .modal {
+      background: #ffffff;
+      color: #000000;
+      border: 2px solid #000000;
+      box-shadow: 0 0 5px #000000, 0 0 10px #000000;
+      animation: pulseGlowLight 2s infinite ease-in-out;
+    }
+    .theme-dark .modal {
+      background: #000000;
+      color: #f0f0f0;
+      border: 2px solid #f0f0f0;
+      box-shadow: 0 0 5px #f0f0f0, 0 0 10px #f0f0f0;
+      animation: pulseGlowDark 2s infinite ease-in-out;
+    }
+    .theme-cyber .modal {
+      background: #000000;
+      color: #0ff;
+      border: 2px solid #0ff;
+      box-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
+      animation: pulseGlowCyber 2s infinite ease-in-out;
+    }
+    .theme-retro .modal {
+      background: #f2dcb3;
+      color: #3b2d1f;
+      border: 2px solid #3b2d1f;
+      box-shadow: 0 0 5px #3b2d1f, 0 0 10px #3b2d1f;
+      animation: pulseGlowRetro 2s infinite ease-in-out;
+    }
+    .theme-forest .modal {
+      background: #2e4600;
+      color: #b0ffb0;
+      border: 2px solid #b0ffb0;
+      box-shadow: 0 0 5px #b0ffb0, 0 0 10px #b0ffb0;
+      animation: pulseGlowForest 2s infinite ease-in-out;
+    }
+    /* Стилі модального вікна */
+    .modal {
+      position: relative;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 600px;
+      width: 80%;
+      min-height: 450px;
+      transform: translateY(-20px);
+      opacity: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .modal.active {
+      transform: translateY(0);
+      opacity: 1;
+    }
     .modal .modal-close {
       position: absolute;
-      top: 0;
-      right: 0;
+      top: 10px; right: 10px;
       cursor: pointer;
       font-size: 2.5rem;
       color: inherit;
-      /* Збільшуємо область кліку */
-      padding: 20px;
     }
     /* Контейнер для слайдера */
     .slider-container {
@@ -344,7 +437,7 @@
       transition: transform 0.3s ease;
       height: 100%;
     }
-    /* Точки пагінації */
+    /* Точки (пагінація) */
     .dots {
       position: absolute;
       bottom: 10px;
@@ -366,7 +459,7 @@
     .dot.active {
       transform: scale(1.5);
     }
-    /* Кнопки послуг в модальному вікні "Замовити" */
+    /* Кнопки послуг у модальному вікні "Замовити" */
     .order-btn {
       cursor: pointer;
       font-weight: 700;
@@ -379,7 +472,7 @@
       margin: 10px 0;
       font-size: 0.8rem;
     }
-    /* Форма в модальному вікні "Замовити" */
+    /* Форма у модальному вікні "Замовити" */
     #modalOrder textarea, #modalOrder input {
       font-family: 'Montserrat', sans-serif;
       padding: 8px;
@@ -411,10 +504,11 @@
   <div class="loader" id="loader">
     <h2>AppLab</h2>
     <p>Будуємо майбутнє разом...</p>
+    <!-- Прогрес-бар завантаження -->
     <div class="loader-progress"></div>
   </div>
   
-  <!-- Соціальні іконки -->
+  <!-- Соц. іконки -->
   <div class="social-icons">
     <!-- Telegram -->
     <a href="https://t.me/applab_ua" target="_blank" class="social-link" title="Telegram">
@@ -555,13 +649,6 @@
   </div>
   
   <script>
-    // Якщо застосунок відкрито як Telegram Web App, розгортаємо його на весь екран
-    document.addEventListener("DOMContentLoaded", function() {
-      if (window.Telegram && Telegram.WebApp) {
-         Telegram.WebApp.expand();
-      }
-    });
-    
     /* JavaScript-код для управління мовою, темами, слайдером та модальними вікнами */
     const translations = {
       ua: {
