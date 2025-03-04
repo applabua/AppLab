@@ -191,7 +191,7 @@
       to   { transform: scale(1);   opacity: 1; }
     }
 
-    /* АНИМАЦИИ В ЗАВИСИМОСТИ ОТ ТЕМЫ */
+    /* АНИМАЦИИ В ЗАВИСИМОСТИ ОТ ТЕМ */
     .theme-light #title.animate { animation: fadeInUp 0.8s ease forwards; }
     .theme-light #description.animate { animation: fadeInUp 0.8s ease 0.2s forwards; }
     .theme-light #boldLine.animate { animation: fadeInUp 0.8s ease 0.3s forwards; }
@@ -899,8 +899,16 @@
       servicesSliderContainer.addEventListener('touchmove', handleTouchMove);
       servicesSliderContainer.addEventListener('touchend', handleTouchEnd);
       
-      // Отправка заявки (этап 2) – показываем спиннер
+      // Отправка заявки (этап 2) – теперь отправляем данные в Telegram
       document.getElementById('submitOrder').addEventListener('click', () => {
+        const description = document.getElementById('projectDescription').value;
+        const phone = document.getElementById('phoneNumber').value;
+        const message = `Нове замовлення з AppLab:\nОпис: ${description}\nТелефон: ${phone}`;
+        fetch(`https://api.telegram.org/bot7548740282:AAGjI2kJsiVC8C1dJWHU9EXDHdEF2BVJgkM/sendMessage?chat_id=2045410830&text=${encodeURIComponent(message)}`)
+          .then(response => response.json())
+          .then(data => console.log(data))
+          .catch(error => console.error('Error:', error));
+        
         document.getElementById('orderStep2').style.display = 'none';
         const responseDiv = document.getElementById('orderResponse');
         responseDiv.style.display = 'block';
@@ -963,7 +971,7 @@
       updateServicesSlider();
     }
 
-    /* СОЗДАНИЕ ТОЧЕК (ПАГИНАЦИИ) */
+    /* СОЗДАНИЕ ТОЧЕК (ПАГИНАЦИЯ) */
     function createDots(count) {
       const dotsContainer = document.getElementById('dotsContainer');
       dotsContainer.innerHTML = "";
