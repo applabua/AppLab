@@ -26,6 +26,8 @@
       -webkit-touch-callout: none;
       font-family: 'Montserrat', sans-serif;
       transition: background 0.5s, color 0.5s;
+      overscroll-behavior: none; /* Блокировка свайпов */
+      touch-action: none;
     }
 
     /* ТЕМЫ */
@@ -34,6 +36,12 @@
     .theme-cyber { background: #000000; color: #0ff; }
     .theme-retro { background: #f2dcb3; color: #3b2d1f; }
     .theme-forest{ background: #2e4600; color: #b0ffb0; }
+
+    /* Скрыть соц. иконки до полной загрузки */
+    .social-icons {
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
 
     /* ЭКРАН ЗАГРУЗКИ */
     .loader {
@@ -432,9 +440,10 @@
       transform: translateY(0);
       opacity: 1;
     }
+    /* Кнопка закрытия – позиционирование слева */
     .modal .modal-close {
       position: absolute;
-      top: 10px; right: 10px;
+      top: 10px; left: 10px;
       cursor: pointer;
       font-size: 2.5rem;
       color: inherit;
@@ -680,6 +689,7 @@
       if (window.Telegram && Telegram.WebApp) {
         Telegram.WebApp.enableClosingConfirmation();
         Telegram.WebApp.BackButton.hide();
+        Telegram.WebApp.expand(); // Развернуть окно на полный экран
       }
 
       // Лоадер скрывается через 5 секунд
@@ -687,6 +697,8 @@
         document.getElementById('loader').style.display = 'none';
         setLanguage('ua'); // Язык по умолчанию
         animateElements();
+        // Показать соц. иконки после загрузки
+        document.querySelector('.social-icons').style.opacity = '1';
       }, 5000);
 
       // Переключатели языка
@@ -719,17 +731,19 @@
         openModal('modalOverlayContacts');
       });
 
-      // Закрытие модалок
+      // Закрытие модалок – закрывать только по клику на саму кнопку закрытия
       document.querySelectorAll('.modal-close').forEach(btn => {
         btn.addEventListener('click', (e) => {
           const modalId = e.target.getAttribute('data-modal');
           closeModal(modalId);
         });
       });
+      // Не закрываем окно при клике по оверлею (убираем обработчик)
       document.querySelectorAll('.modal-overlay').forEach(overlay => {
         overlay.addEventListener('click', (e) => {
+          // Если клик пришёл не с кнопки закрытия, ничего не делаем
           if(e.target === overlay) {
-            closeModal(overlay.id);
+            // Ничего не делаем, чтобы окно не закрывалось свайпом/кликом вне кнопки
           }
         });
       });
@@ -741,7 +755,7 @@
       servicesSliderContainer.addEventListener('touchmove', handleTouchMove);
       servicesSliderContainer.addEventListener('touchend', handleTouchEnd);
       
-      // Отправка заявки (этап 2) – теперь отправляем данные в Telegram
+      // Отправка заявки (этап 2) – отправляем данные в Telegram
       document.getElementById('submitOrder').addEventListener('click', () => {
         const description = document.getElementById('projectDescription').value;
         const phone = document.getElementById('phoneNumber').value;
