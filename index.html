@@ -5,16 +5,20 @@
   <title>AppLab</title>
   <!-- Масштабування, підстроювання під екрани -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-
+  <!-- PWA Meta Tags для повноекранного режиму -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#000000">
+  
   <!-- Peace Sans для заголовків -->
   <link rel="preconnect" href="https://fonts.cdnfonts.com" />
   <link href="https://fonts.cdnfonts.com/css/peace-sans" rel="stylesheet" />
-
   <!-- Montserrat для основного тексту та кнопок -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-
+  
   <style>
     /* БАЗОВЫЕ СТИЛИ */
     html, body {
@@ -27,14 +31,13 @@
       font-family: 'Montserrat', sans-serif;
       transition: background 0.5s, color 0.5s;
     }
-
     /* ТЕМЫ */
     .theme-light { background: #ffffff; color: #000000; }
     .theme-dark  { background: #000000; color: #f0f0f0; }
     .theme-cyber { background: #000000; color: #0ff; }
     .theme-retro { background: #f2dcb3; color: #3b2d1f; }
     .theme-forest{ background: #2e4600; color: #b0ffb0; }
-
+    
     /* ЭКРАН ЗАГРУЗКИ */
     .loader {
       position: fixed;
@@ -48,7 +51,6 @@
       align-items: center;
       z-index: 99999;
     }
-    /* Псевдоэлемент для анимированного белого блика */
     .loader::after {
       content: "";
       position: absolute;
@@ -84,8 +86,6 @@
       0%, 100% { text-shadow: 0 0 0px #fff; }
       50%      { text-shadow: 0 0 10px #fff; }
     }
-    
-    /* Прогресс-бар загрузки */
     .loader-progress {
       position: absolute;
       bottom: 20px;
@@ -107,7 +107,6 @@
       from { width: 0%; }
       to { width: 100%; }
     }
-
     /* СОЦ. ИКОНКИ */
     .social-icons {
       position: absolute;
@@ -122,7 +121,6 @@
       fill: currentColor;
       transition: fill 0.3s;
     }
-
     /* КНОПКИ УПРАВЛЕНИЯ (ПРАВЫЙ ВЕРХ) */
     .controls {
       position: absolute;
@@ -156,7 +154,6 @@
       fill: currentColor;
       transition: fill 0.3s;
     }
-
     /* ОСНОВНОЙ КОНТЕЙНЕР */
     .container {
       width: 100vw; height: 100vh;
@@ -167,7 +164,6 @@
       padding: 20px;
       box-sizing: border-box;
     }
-
     /* АНИМАЦИИ ПОЯВЛЕНИЯ */
     #title, #description, .buttons, #boldLine { opacity: 0; }
     @keyframes fadeInUp {
@@ -190,28 +186,23 @@
       from { transform: scale(0.8); opacity: 0; }
       to   { transform: scale(1);   opacity: 1; }
     }
-
-    /* АНИМАЦИИ В ЗАВИСИМОСТИ ОТ ТЕМ */
+    /* Анімації для різних тем */
     .theme-light #title.animate { animation: fadeInUp 0.8s ease forwards; }
     .theme-light #description.animate { animation: fadeInUp 0.8s ease 0.2s forwards; }
     .theme-light #boldLine.animate { animation: fadeInUp 0.8s ease 0.3s forwards; }
     .theme-light .buttons.animate { animation: fadeInUp 0.8s ease 0.4s forwards; }
-
     .theme-dark #title.animate { animation: fadeInLeft 0.8s ease forwards; }
     .theme-dark #description.animate { animation: fadeInLeft 0.8s ease 0.2s forwards; }
     .theme-dark #boldLine.animate { animation: fadeInLeft 0.8s ease 0.3s forwards; }
     .theme-dark .buttons.animate { animation: fadeInLeft 0.8s ease 0.4s forwards; }
-
     .theme-cyber #title.animate { animation: fadeInRight 0.8s ease forwards; }
     .theme-cyber #description.animate { animation: fadeInRight 0.8s ease 0.2s forwards; }
     .theme-cyber #boldLine.animate { animation: fadeInRight 0.8s ease 0.3s forwards; }
     .theme-cyber .buttons.animate { animation: fadeInRight 0.8s ease 0.4s forwards; }
-
     .theme-retro #title.animate { animation: fadeInDown 0.8s ease forwards; }
     .theme-retro #description.animate { animation: fadeInDown 0.8s ease 0.2s forwards; }
     .theme-retro #boldLine.animate { animation: fadeInDown 0.8s ease 0.3s forwards; }
     .theme-retro .buttons.animate { animation: fadeInDown 0.8s ease 0.4s forwards; }
-
     .theme-forest #title.animate,
     .theme-forest #description.animate,
     .theme-forest #boldLine.animate,
@@ -222,8 +213,7 @@
       transform: scale(0.8);
       transform-origin: center;
     }
-
-    /* ЗАГОЛОВОК И ОПИСАНИЕ */
+    /* Заголовок і опис */
     #title {
       font-family: 'Peace Sans', sans-serif;
       font-size: 2.8rem;
@@ -252,8 +242,7 @@
       max-width: 350px;
       margin-top: 15px;
     }
-
-    /* КАРТОЧКИ УСЛУГ */
+    /* Карточки послуг */
     .service-card {
       flex: 0 0 100%;
       margin: 0;
@@ -282,8 +271,7 @@
       text-align: justify;
       line-height: 1.2;
     }
-
-    /* СТИЛИ КНОПОК */
+    /* Стилі кнопок */
     .btn {
       font-family: 'Montserrat', sans-serif;
       padding: 12px 0;
@@ -303,8 +291,7 @@
       transform: scale(0.95);
       box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
     }
-
-    /* ФУТЕР */
+    /* Футер */
     #footer {
       font-size: 0.85rem;
       position: absolute;
@@ -314,8 +301,7 @@
       font-weight: 400;
       transition: color 0.5s;
     }
-
-    /* МОДАЛЬНЫЙ ОВЕРЛЕЙ */
+    /* Модальне вікно */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0;
@@ -333,8 +319,7 @@
       opacity: 1;
       pointer-events: auto;
     }
-
-    /* ПУЛЬСАЦИЯ РАМКИ МОДАЛОК */
+    /* Пульсація рамки модалок */
     @keyframes pulseGlowLight {
       0%, 100% {
         box-shadow: 0 0 5px #000000, 0 0 10px #000000;
@@ -410,8 +395,7 @@
       box-shadow: 0 0 5px #b0ffb0, 0 0 10px #b0ffb0;
       animation: pulseGlowForest 2s infinite ease-in-out;
     }
-
-    /* СТИЛИ МОДАЛЬНОГО ОКНА */
+    /* Стилі модального вікна */
     .modal {
       position: relative;
       padding: 20px;
@@ -439,8 +423,7 @@
       font-size: 2.5rem;
       color: inherit;
     }
-
-    /* КОНТЕЙНЕР ДЛЯ СЛАЙДЕРА */
+    /* Контейнер для слайдера */
     .slider-container {
       position: relative;
       overflow: hidden;
@@ -454,8 +437,7 @@
       transition: transform 0.3s ease;
       height: 100%;
     }
-
-    /* ТОЧКИ (ПАГИНАЦИЯ) */
+    /* Точки (пагінація) */
     .dots {
       position: absolute;
       bottom: 10px;
@@ -477,8 +459,7 @@
     .dot.active {
       transform: scale(1.5);
     }
-
-    /* КНОПКИ УСЛУГ В МОДАЛЬНОМ ОКНЕ "ЗАМОВИТИ" */
+    /* Кнопки послуг у модальному вікні "Замовити" */
     .order-btn {
       cursor: pointer;
       font-weight: 700;
@@ -491,8 +472,7 @@
       margin: 10px 0;
       font-size: 0.8rem;
     }
-
-    /* ФОРМА В МОДАЛЬНОМ ОКНЕ "ЗАМОВИТИ" */
+    /* Форма у модальному вікні "Замовити" */
     #modalOrder textarea, #modalOrder input {
       font-family: 'Montserrat', sans-serif;
       padding: 8px;
@@ -503,8 +483,7 @@
       box-sizing: border-box;
       color: #000;
     }
-
-    /* СТИЛИ СПИННЕРА */
+    /* Стилі спінера */
     .spinner {
       border: 4px solid rgba(255, 255, 255, 0.3);
       border-top: 4px solid currentColor;
@@ -521,15 +500,15 @@
   </style>
 </head>
 <body>
-  <!-- Экран загрузки (5 секунд) -->
+  <!-- Екран завантаження (5 секунд) -->
   <div class="loader" id="loader">
     <h2>AppLab</h2>
     <p>Будуємо майбутнє разом...</p>
-    <!-- Прогресс-бар загрузки -->
+    <!-- Прогрес-бар завантаження -->
     <div class="loader-progress"></div>
   </div>
-
-  <!-- Соц. иконки (ссылки обновлены) -->
+  
+  <!-- Соц. іконки -->
   <div class="social-icons">
     <!-- Telegram -->
     <a href="https://t.me/applab_ua" target="_blank" class="social-link" title="Telegram">
@@ -581,8 +560,8 @@
       </svg>
     </a>
   </div>
-
-  <!-- Кнопки управления (правый верх) -->
+  
+  <!-- Кнопки управління (правий верх) -->
   <div class="controls">
     <div class="lang-switch">
       <span id="langUa">UA</span> |
@@ -595,8 +574,8 @@
       <span id="themeBtnText">Dark Mode</span>
     </button>
   </div>
-
-  <!-- Основной контейнер -->
+  
+  <!-- Основний контейнер -->
   <div class="container">
     <h1 id="title">AppLab</h1>
     <p id="description">
@@ -610,13 +589,12 @@
       <div class="btn" id="btn4">Контакти</div>
     </div>
   </div>
-
+  
   <!-- Футер -->
   <div id="footer"></div>
-
-  <!-- Модальные окна -->
-
-  <!-- Модальное окно "Про нас" -->
+  
+  <!-- Модальні вікна -->
+  <!-- Модальне вікно "Про нас" -->
   <div class="modal-overlay" id="modalOverlayAbout">
     <div class="modal" id="modalAbout">
       <span class="modal-close" data-modal="modalOverlayAbout">&times;</span>
@@ -626,21 +604,21 @@
       </p>
     </div>
   </div>
-
-  <!-- Модальное окно "Послуги" (со слайдером) -->
+  
+  <!-- Модальне вікно "Послуги" (зі слайдером) -->
   <div class="modal-overlay" id="modalOverlayServices">
     <div class="modal" id="modalServices">
       <span class="modal-close" data-modal="modalOverlayServices">&times;</span>
-      <!-- Слайдер услуг -->
+      <!-- Слайдер послуг -->
       <div id="servicesSliderContainer" class="slider-container">
         <div id="servicesSlider" class="slider"></div>
-        <!-- Точки (пагинация) -->
+        <!-- Точки (пагінація) -->
         <div class="dots" id="dotsContainer"></div>
       </div>
     </div>
   </div>
-
-  <!-- Модальное окно "Замовити" -->
+  
+  <!-- Модальне вікно "Замовити" -->
   <div class="modal-overlay" id="modalOverlayOrder">
     <div class="modal" id="modalOrder">
       <span class="modal-close" data-modal="modalOverlayOrder">&times;</span>
@@ -660,22 +638,18 @@
       <div id="orderResponse" style="display: none; margin-top: 10px;"></div>
     </div>
   </div>
-
-  <!-- Модальное окно "Контакти" -->
+  
+  <!-- Модальне вікно "Контакти" -->
   <div class="modal-overlay" id="modalOverlayContacts">
     <div class="modal" id="modalContacts">
       <span class="modal-close" data-modal="modalOverlayContacts">&times;</span>
       <h2 id="modalContactsTitle">Контакти</h2>
-      <p id="modalContactsContent">
-        <!-- Текст устанавливается через translations -->
-      </p>
+      <p id="modalContactsContent"></p>
     </div>
   </div>
-
+  
   <script>
-    /* ПОЛНЫЙ JAVASCRIPT */
-
-    /* ТЕКСТЫ ДЛЯ ДВУХ ЯЗЫКОВ */
+    /* JavaScript-код для управління мовою, темами, слайдером та модальними вікнами */
     const translations = {
       ua: {
         title: "AppLab",
@@ -721,7 +695,6 @@
       }
     };
 
-    /* ДАННЫЕ ПО УСЛУГАМ */
     const servicesData = {
       ua: [
         {
@@ -819,7 +792,6 @@
       ]
     };
 
-    /* СПИСОК ТЕМ */
     const themes = [
       "theme-light",
       "theme-dark",
@@ -827,27 +799,20 @@
       "theme-retro",
       "theme-forest"
     ];
-    let currentThemeIndex = 1; // Начинаем с темной
-    let currentLang = "ua";    // Язык по умолчанию
-
-    // ДЛЯ СЛАЙДЕРА
+    let currentThemeIndex = 1;
+    let currentLang = "ua";
     let servicesSlider, servicesSliderContainer;
     let currentServiceIndex = 0, startX = 0, isDragging = false;
-    // Массив точек пагинации
     let dots = [];
-
-    // ДЛЯ ФОРМЫ "ЗАМОВИТИ"
     let selectedOrderServiceIndex = null;
-
+    
     document.addEventListener('DOMContentLoaded', () => {
-      // Лоадер скрывается через 5 секунд
       setTimeout(() => {
         document.getElementById('loader').style.display = 'none';
-        setLanguage('ua'); // Язык по умолчанию
+        setLanguage('ua');
         animateElements();
       }, 5000);
-
-      // Переключатели языка
+      
       document.getElementById('langUa').addEventListener('click', () => {
         setLanguage('ua');
         animateElements();
@@ -856,11 +821,7 @@
         setLanguage('en');
         animateElements();
       });
-
-      // Переключатель тем
       document.getElementById('themeBtn').addEventListener('click', cycleTheme);
-
-      // Кнопки открытия модалок
       document.getElementById('btn1').addEventListener('click', () => {
         openModal('modalOverlayAbout');
       });
@@ -876,8 +837,7 @@
       document.getElementById('btn4').addEventListener('click', () => {
         openModal('modalOverlayContacts');
       });
-
-      // Закрытие модалок
+      
       document.querySelectorAll('.modal-close').forEach(btn => {
         btn.addEventListener('click', (e) => {
           const modalId = e.target.getAttribute('data-modal');
@@ -891,15 +851,13 @@
           }
         });
       });
-
-      // Инициализация слайдера
+      
       servicesSliderContainer = document.getElementById('servicesSliderContainer');
       servicesSlider = document.getElementById('servicesSlider');
       servicesSliderContainer.addEventListener('touchstart', handleTouchStart);
       servicesSliderContainer.addEventListener('touchmove', handleTouchMove);
       servicesSliderContainer.addEventListener('touchend', handleTouchEnd);
       
-      // Отправка заявки (этап 2) – теперь отправляем данные в Telegram
       document.getElementById('submitOrder').addEventListener('click', () => {
         const description = document.getElementById('projectDescription').value;
         const phone = document.getElementById('phoneNumber').value;
@@ -920,12 +878,10 @@
         }, 3000);
       });
     });
-
-    /* УСТАНОВКА ЯЗЫКА */
+    
     function setLanguage(lang) {
       currentLang = lang;
       const t = translations[lang];
-
       document.getElementById('title').textContent = t.title;
       document.getElementById('description').innerHTML = t.paragraph;
       document.getElementById('boldLine').textContent = t.boldLine;
@@ -934,7 +890,6 @@
       document.getElementById('btn3').textContent = t.btn3;
       document.getElementById('btn4').textContent = t.btn4;
       document.getElementById('footer').innerHTML = t.footer;
-
       document.getElementById('modalAboutTitle').textContent = t.modalAboutTitle;
       document.getElementById('modalAboutContent').textContent = t.modalAboutContent;
       document.getElementById('orderStep2Desc').textContent = t.orderStep2Desc;
@@ -943,17 +898,13 @@
       document.getElementById('modalContactsTitle').textContent = t.modalContactsTitle;
       document.getElementById('modalContactsContent').innerHTML = t.modalContactsContent;
       document.getElementById('orderTitle').textContent = t.orderTitle;
-
       renderServicesSlider(lang);
     }
-
-    /* РЕНДЕР СЛАЙДЕРА + ТОЧЕК */
+    
     function renderServicesSlider(lang) {
       currentServiceIndex = 0;
       servicesSlider.innerHTML = "";
       const arr = servicesData[lang];
-
-      // Создаем карточки услуг
       arr.forEach((service) => {
         const card = document.createElement('div');
         card.className = 'service-card';
@@ -963,14 +914,10 @@
         `;
         servicesSlider.appendChild(card);
       });
-
-      // Создаем точки (пагинацию)
       createDots(arr.length);
-
       updateServicesSlider();
     }
-
-    /* СОЗДАНИЕ ТОЧЕК (ПАГИНАЦИЯ) */
+    
     function createDots(count) {
       const dotsContainer = document.getElementById('dotsContainer');
       dotsContainer.innerHTML = "";
@@ -986,22 +933,20 @@
         dots.push(dot);
       }
     }
-
-    /* ОБНОВЛЕНИЕ СЛАЙДЕРА И ТОЧЕК */
+    
     function updateServicesSlider() {
       servicesSlider.style.transform = `translateX(${
         -currentServiceIndex * servicesSliderContainer.clientWidth
       }px)`;
       updateDots();
     }
-
+    
     function updateDots() {
       dots.forEach((dot, index) => {
         dot.classList.toggle('active', index === currentServiceIndex);
       });
     }
-
-    /* РЕНДЕР КНОПОК ВЫБОРА УСЛУГ В "ЗАМОВИТИ" */
+    
     function renderOrderServices() {
       const container = document.getElementById('orderServicesButtons');
       container.innerHTML = "";
@@ -1018,8 +963,7 @@
         container.appendChild(btn);
       });
     }
-
-    /* СВАЙП-СОБЫТИЯ */
+    
     function handleTouchStart(e) {
       startX = e.touches[0].clientX;
       isDragging = true;
@@ -1045,8 +989,7 @@
       }
       updateServicesSlider();
     }
-
-    /* ПЕРЕКЛЮЧЕНИЕ ТЕМ */
+    
     function cycleTheme() {
       document.documentElement.classList.remove(themes[currentThemeIndex]);
       currentThemeIndex = (currentThemeIndex + 1) % themes.length;
@@ -1083,8 +1026,7 @@
       }
       animateElements();
     }
-
-    /* АНИМАЦИЯ ПОЯВЛЕНИЯ ЭЛЕМЕНТОВ */
+    
     function animateElements() {
       document.getElementById('title').style.opacity = 0;
       document.getElementById('description').style.opacity = 0;
@@ -1097,21 +1039,19 @@
         document.querySelector('.buttons').classList.add('animate');
       }, 50);
     }
-
-    /* ОТКРЫТЬ/ЗАКРЫТЬ МОДАЛКУ */
+    
     function openModal(modalId) {
       const modalOverlay = document.getElementById(modalId);
       modalOverlay.classList.add('active');
       const modal = modalOverlay.querySelector('.modal');
       setTimeout(() => { modal.classList.add('active'); }, 10);
     }
+    
     function closeModal(modalId) {
       const modalOverlay = document.getElementById(modalId);
       const modal = modalOverlay.querySelector('.modal');
       modal.classList.remove('active');
       setTimeout(() => { modalOverlay.classList.remove('active'); }, 300);
-
-      // Сброс шагов "Замовити"
       if(modalId === 'modalOverlayOrder'){
         document.getElementById('orderStep1').style.display = 'block';
         document.getElementById('orderStep2').style.display = 'none';
