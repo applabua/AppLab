@@ -16,6 +16,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
+    /* Ховаємо всі елементи, окрім лоадера, поки не буде додано клас .loaded до body */
+    body:not(.loaded) > :not(.loader) {
+      display: none;
+    }
     /* БАЗОВЫЕ СТИЛИ */
     html, body {
       margin: 0;
@@ -524,7 +528,7 @@
   <!-- Экран загрузки (5 секунд) -->
   <div class="loader" id="loader">
     <h2>AppLab</h2>
-    <p>Будуємо майбутнє разом...</p>
+    <p>Будуємо майбутнє разом</p>
     <!-- Прогресс-бар загрузки -->
     <div class="loader-progress"></div>
   </div>
@@ -682,9 +686,11 @@
         Telegram.WebApp.BackButton.hide();
       }
 
-      // Лоадер скрывается через 5 секунд
+      // Лоадер скрывается через 5 секунд, після чого додаємо клас .loaded до body,
+      // що дозволяє показати основний контент без "пробликів"
       setTimeout(() => {
         document.getElementById('loader').style.display = 'none';
+        document.body.classList.add('loaded');
         setLanguage('ua'); // Язык по умолчанию
         animateElements();
       }, 5000);
